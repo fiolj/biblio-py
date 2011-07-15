@@ -1,0 +1,22 @@
+Last Changes
+************
+
+v. 0.6.0
+--------
+
+* Fixed bugs to all scripts and added option for version information output
+
+* bibextract.py now determines the bibtex file from the source.
+
+
+v. 0.5.9
+--------
+
+* Slightly improved parsing of bibtex files
+
+* Improved output for html, latex and bibtex
+	It is possible to decide what (and in which order) fields should be exported
+
+
+
+

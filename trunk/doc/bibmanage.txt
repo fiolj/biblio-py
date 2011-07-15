@@ -1,0 +1,54 @@
+.. _bibmanage:
+
+====================
+ bibmanage examples
+====================
+
+* Example:  Import the BibTeX file myrefs.bib and save them to the database myrefs.dmp::
+  
+  $ bibmanage.py myrefs.bib -d myrefs.dmp 
+* Example:  Merge two bibtex files, create a new bibtex file and also dump to `database.dmp`
+
+  - If we want to keep the original keys on the BibTeX files we have to explicitly use::
+
+      $ bibmanage.py myrefs1.bib  myrefs1.bib -f bib -o bib allrefs.bib -o database.dump  --keep-keys
+
+  - The following line will uniformize the keys from the data in the items::
+
+    $ bibmanage.py myrefs1.bib  myrefs1.bib -f bib -o allrefs.bib -o database.dump
+
+    Observe that this is the default behaviour and will create a (hopefully) unique key using a simple algorithm. For articles it uses:
+
+    *First seven characters of name + year + journal abbreviation + p + page*
+
+* Example: Select only those items with some substring in the key (output to stdout) from a bz2-comprised database::
+
+    $ bibmanage.py myrefs.bib.bz2 -s substring:key -o -
+
+* Example:  Select only those items whose author is (among others) autor1,B. and print them in HTML format to file autor1.html use one of the (short or long options are equivalent)::
+
+  $ bibmanage.py myrefs.dmp -s autor1,B:author -o autor1.html -f html
+  $ bibmanage.py myrefs.dmp --search=autor1,B:author --output=autor1.html --format=html
+
+* The last example may be repeated using as source the original BibTeX file, but the parsing is slower::
+
+    $ bibmanage.py myrefs.bib -s autor1,B:author -o autor1.html
+
+  Note that the `--format` option is redundant if the output is to a file with the *right* extension
+
+* Example:  Select only those items whose author is (among others) autor1,B. but not autor2,C and print them in LaTeX format to file ejemplo.tex::
+
+   $ bibmanage.py myrefs.dmp -s autor1,B:author -x autor2,C:author -o ejemplo.tex
+
+* Restrict the last example to publications between years 2004 and 2006::
+
+    $ bibmanage.py myrefs.dmp -x autor1,B:author -x autor2,C:author --start-year=2004 \
+      --end-year=2006 -o ejemplo.tex
+
+* Working with pipes::
+
+   $ bibmanage -s LastName1:author biblio1.bib -f bib -o - | bibmanage \
+     -s LastName2:author biblio2.dmp - -o biblio.html
+
+Will get the items with LastName1 as author from biblio1.bib and the results are taken as input to merge with items by LastName2 from database biblio2.dmp. The output is in html format to the file biblio.html
+

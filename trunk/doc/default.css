@@ -1,0 +1,269 @@
+
+
+
+
+
+
+
+
+
+
+
+
+html {
+	background-color: rgb(220,220,220) ;
+}
+
+pre	{ 
+  background-color:rgb(255,255,255) ; 
+  color: #313292 ;
+  border: 5px solid rgb(39,78,144) ; 
+  text-align: left;
+  font-size:normal; 
+  font-family:Monospace; 
+}
+
+
+body {
+  position: relative;
+  color: rgb(20,20,20) ;
+  background-color: rgb(240,240,240) ;
+}
+
+#intro,
+#supportingText{
+}
+
+h1,
+h2,
+h3,
+h4{
+  color: rgb(255,255,255) ;
+  background-color: #313292 ;
+  font-weight:normal;
+  padding-left:1%;
+}
+
+#pagetitle {
+  color: rgb(39,78,144) ;
+  background-color: rgb(140,170,230) ;
+  font-size: 150%;
+  font-weight:bold;
+}
+
+#screenshots {
+    width : 100%;
+}
+
+strong{
+	color: rgb(0,102,204)  ;
+}
+
+a,
+a:active,
+a:visited{
+	color: rgb(0,102,204) ;
+	text-decoration:none;
+}
+a:hover{
+	text-decoration:underline;
+}
+
+.icon {
+  size:1.45em;
+}
+
+img{
+  vertical-align : middle;
+	border: 5px;
+}
+
+a img{
+	border:0px;
+}
+
+
+dt {
+  font-weight:bold;
+}
+
+
+dd{
+  padding-bottom:1%;
+}
+
+ul > li {
+    list-style-type : circle;
+}
+
+ul > li:hover {
+  list-style-type : disc;
+}
+
+#header {
+  margin: .15ex 0ex 0ex 0ex;
+  font-size: 200%;
+  font-weight:bold;
+}
+
+#header,
+#footer {
+  color: rgb(39,78,144) ;
+  background-color: rgb(140,170,230) ;
+  line-height: 1.45em;
+  padding: 0em 2.5mm 0.5ex 2.5mm;
+}
+
+.left {
+  float: left;
+  clear: left;
+}
+
+
+#header .right,
+#footer .right {
+  text-align: right;
+}
+
+#header a,
+#footer a {
+  color: rgb(39,78,144) ;
+  text-decoration: underline;
+}
+
+#header a:hover,
+#footer a:hover {
+  text-decoration: none;
+}
+
+.topOfPage {
+  background-color: transparent;
+  font-size: 91%;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 2.5ex 1ex 0 0; 
+  padding: 0;
+  float: right;
+}
+
+
+#mainmenu {
+  background-color: rgb(220,220,220) ;
+  height: 2.1em;
+  line-height: 1.7em;
+  font-weight: bold;
+  margin: 0px 0px .2px 0px;
+}
+
+#mainmenu .menu {	
+  background-color: rgb(220,220,220) ;
+  text-align: center;
+	width: 22%;
+  float: right;
+	color: rgb(39,78,144) ;
+	border: 2px outset rgb(170,170,200) ;
+}
+
+#mainmenu .menu a { 
+	color: rgb(39,78,144) ;
+  text-decoration: none;
+}
+
+#mainmenu .aca {
+	border: 2px inset #313292 ;
+  background-color: rgb(140,170,230) ;
+}
+
+#mainmenu .menu ul {		
+	position:absolute;
+	width: 22%;
+	display: none; 
+	border: 2px solid rgb(130,100,110) ;
+}
+
+#mainmenu .menu:hover { 
+	color: rgb(0,102,204)  ;
+  background-color: rgb(100,150,230) ;
+}
+
+#mainmenu .menu a:hover { 
+	color: rgb(0,102,204)  ;
+}
+
+#mainmenu ul li{
+	list-style-type:none;
+	text-align:center;
+}
+
+
+#mainmenu .menu:hover ul li{
+	color: rgb(0,102,204)  ;
+	border: 3px outset rgb(100,150,230) ;
+  padding-left:1em;
+	margin: 0px;
+}
+
+#mainmenu .menu ul li:hover{
+	color: rgb(0,102,204)  ;
+	background-color: rgb(100,150,230) ;
+	border: 3px inset rgb(170,170,200) ;
+}
+
+#mainmenu .menu:hover > ul {
+	display:block;
+  background-color: rgb(140,170,230) ;
+	margin: 0px; 
+	padding: 0;
+	list-style-type:none ; 
+}
+
+.title a,
+.title {
+  font-weight: bold;
+	color: rgb(20,20,20) ;
+}
+
+ol.bibliography li{
+	margin-bottom:0.5em;
+}
+
+.journal {
+  font-style: italic;
+}
+
+.journal:after {
+content:", ";
+}
+
+.authors {
+display:block;
+}
+
+.volume {
+  font-weight: bold;
+}
+
+.button {
+display:inline; 
+border: 3px ridge;
+line-height:2.2em;
+padding:1pt;
+}
+
+.masterthesis{content:"Master Thesis"}
+.phdthesis{content:"Phd Thesis"}
+
+div.abstracts {
+  display: inline;
+  font-weight: bold;
+  text-decoration : none; 
+  border: 3px ridge;
+}
+
+div.abstract {
+	display: none;
+	padding: 0em 1% 0em 1%;
+  border: 3px double rgb(130,100,110) ;
+  text-align: justify;
+} 
+
