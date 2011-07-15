@@ -1,0 +1,419 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>The BibTeX Format</title>
+<style>
+P.new {background:#FFFFCC;}
+div.new {background:#FFFFCC;}
+</style>
+</head>
+<body>
+
+<h1>BibTeX (mainly from wikipedia)</h1>
+
+<h2 name="bibtexformat">Description</h2> BibTeX is a program and file format designed by Oren
+  Patashnik and Leslie Lamport in 1985 for
+  the <a href="http://tex.loria.fr/english/index.html">LaTeX</a>
+  document preparation system.  The format is entirely character based, so
+  it can be used by any program (although the standard character set for accents
+  is TeX). It is field (tag) based and the BibTeX program will ignore unknown
+  fields, so it is expandable. It is probably the most common format for
+  bibliographies on the Internet.
+
+<p>The BibTeX program uses style files, a list of citations from LaTeX, and a
+BibTeX database to create a LaTeX file listing the cited references. The idea of
+style files is that a final copy in any journal-specific form can be done
+automatically.
+</p>
+
+<h2>Bibliographic information file</h2>
+
+BibTeX uses a style-independent text-based file format for lists of bibliography items, such as articles, books, theses. BibTeX bibliography files usually end in <code>.bib</code>.</p>
+<p>Bibliography entries each contain some subset of standard data entries:</p>
+
+<ul>
+<li><tt>address</tt>: Publisher's address (usually just the city, but can be the full address for lesser-known publishers)</li>
+
+<li><tt>annote</tt>: An annotation for annotated bibliography styles (not typical)</li>
+<li><tt>author</tt>: The name(s) of the author(s) (in the case of more than one author, separated by <tt>and</tt>)</li>
+<li><tt>booktitle</tt>: The title of the book, if only part of it is being cited</li>
+<li><tt>chapter</tt>: The chapter number</li>
+<li><tt>crossref</tt>: The key of the cross-referenced entry</li>
+
+<li><tt>edition</tt>: The edition of a book, long form (such as "first" or "second")</li>
+<li><tt>editor</tt>: The name(s) of the editor(s)</li>
+<li><tt>eprint</tt>: A specification of an electronic publication, often a preprint or a technical report</li>
+<li><tt>howpublished</tt>: How it was published, if the publishing method is nonstandard</li>
+<li><tt>institution</tt>: The institution that was involved in the publishing, but not necessarily the publisher</li>
+<li><tt>journal</tt>: The journal or magazine the work was published in</li>
+
+<li><tt>key</tt>: A hidden field used for specifying or overriding the alphabetical order of entries (when the "author" and "editor" fields are missing). Note that this is very different from the key (mentioned just after this list) that is used to cite or cross-reference the entry.</li>
+<li><tt>month</tt>: The month of publication (or, if unpublished, the month of creation)</li>
+<li><tt>note</tt>: Miscellaneous extra information</li>
+<li><tt>number</tt>: The "number" of a journal, magazine, or tech-report, if applicable. (Most publications have a "volume", but no "number" field.)</li>
+<li><tt>organization</tt>: The conference sponsor</li>
+<li><tt>pages</tt>: Page numbers, separated either by commas or double-hyphens. For books, the total number of pages.</li>
+
+<li><tt>publisher</tt>: The publisher's name</li>
+<li><tt>school</tt>: The school where the thesis was written</li>
+<li><tt>series</tt>: The series of books the book was published in (e.g. "Lecture Notes in Computer Science")</li>
+<li><tt>title</tt>: The title of the work</li>
+<li><tt>type</tt>: The type of tech-report, for example, "Research Note"</li>
+
+<li><tt>url</tt>: The WWW address</li>
+<li><tt>volume</tt>: The volume of a journal or multi-volume book</li>
+<li><tt>year</tt>: The year of publication (or, if unpublished, the year of creation)</li>
+</ul>
+<p>In addition, each entry contains a key that is used to cite or cross-reference the entry. This key is the first item in a BibTeX entry, and is not part of any field.</p>
+<p><a name="Entry_Types" id="Entry_Types"></a></p>
+
+<h3>Entry Types</h3>
+
+<p>Bibliography entries included in a <code>.bib</code> file are split by types. The following types are understood by virtually all BibTeX styles:</p>
+<dl>
+<dt><tt>article</tt></dt>
+<dd>An article from a journal or magazine.<br>
+Required fields: <span style="font-variant: small-caps;">author, title, journal, year</span><br>
+Optional fields: <span style="font-variant: small-caps;">volume, number, pages, month, note, key</span></dd>
+<dt><tt>book</tt></dt>
+
+<dd>A book with an explicit publisher.<br>
+Required fields: <span style="font-variant: small-caps;">author/editor, title, publisher, year</span><br>
+Optional fields: <span style="font-variant: small-caps;">volume, series, address, edition, month, note, key, pages</span></dd>
+<dt><tt>booklet</tt></dt>
+<dd>A work that is printed and bound, but without a named publisher or sponsoring institution.<br>
+Required fields: <span style="font-variant: small-caps;">title</span><br>
+Optional fields: <span style="font-variant: small-caps;">author, howpublished, address, month, year, note, key</span></dd>
+
+<dt><tt>conference</tt></dt>
+<dd>The same as <tt>inproceedings</tt>, included for <em>Scribe</em> compatibility.<br>
+Required fields: <span style="font-variant: small-caps;">author, title, booktitle, year</span><br>
+Optional fields: <span style="font-variant: small-caps;">editor, pages, organization, publisher, address, month, note, key</span></dd>
+<dt><tt>inbook</tt></dt>
+
+<dd>A part of a book, usually untitled. May be a chapter (or section or whatever) and/or a range of pages.<br>
+Required fields: <span style="font-variant: small-caps;">author/editor, title, chapter/pages, publisher, year</span><br>
+Optional fields: <span style="font-variant: small-caps;">volume, series, address, edition, month, note, key</span></dd>
+<dt><tt>incollection</tt></dt>
+<dd>A part of a book having its own title.<br>
+Required fields: <span style="font-variant: small-caps;">author, title, booktitle, year</span><br>
+Optional fields: <span style="font-variant: small-caps;">editor, pages, organization, publisher, address, month, note, key</span></dd>
+
+<dt><tt>inproceedings</tt></dt>
+<dd>An article in a conference proceedings.<br>
+Required fields: <span style="font-variant: small-caps;">author, title, booktitle, year</span><br>
+Optional fields: <span style="font-variant: small-caps;">editor, pages, organization, publisher, address, month, note, key</span></dd>
+<dt><tt>manual</tt></dt>
+<dd>Technical documentation.<br>
+Required fields: <span style="font-variant: small-caps;">title</span><br>
+
+Optional fields: <span style="font-variant: small-caps;">author, organization, address, edition, month, year, note, key</span></dd>
+<dt><tt>mastersthesis</tt></dt>
+<dd>A Master's thesis.<br>
+Required fields: <span style="font-variant: small-caps;">author, title, school, year</span><br>
+Optional fields: <span style="font-variant: small-caps;">address, month, note, key</span></dd>
+
+<dt><tt>misc</tt></dt>
+<dd>For use when nothing else fits.<br>
+Required fields: <span style="font-variant: small-caps;">none</span><br>
+Optional fields: <span style="font-variant: small-caps;">author, title, howpublished, month, year, note, key</span></dd>
+<dt><tt>phdthesis</tt></dt>
+<dd>A Ph.D. thesis.<br>
+
+Required fields: <span style="font-variant: small-caps;">author, title, school, year</span><br>
+Optional fields: <span style="font-variant: small-caps;">address, month, note, key</span></dd>
+<dt><tt>proceedings</tt></dt>
+<dd>The proceedings of a conference.<br>
+Required fields: <span style="font-variant: small-caps;">title, year</span><br>
+Optional fields: <span style="font-variant: small-caps;">editor, publisher, organization, address, month, note, key</span></dd>
+<dt><tt>techreport</tt></dt>
+
+<dd>A report published by a school or other institution, usually numbered within a series.<br>
+Required fields: <span style="font-variant: small-caps;">author, title, institution, year</span><br>
+Optional fields: <span style="font-variant: small-caps;">type, number, address, month, note, key</span></dd>
+<dt><tt>unpublished</tt></dt>
+<dd>A document having an author and title, but not formally published.<br>
+Required fields: <span style="font-variant: small-caps;">author, title, note</span><br>
+Optional fields: <span style="font-variant: small-caps;">month, year, key</span></dd>
+
+</dl>
+
+<h2>Examples</h2>
+
+<pre>
+@article{Gettys90,
+   author = {Jim Gettys and Phil Karlton and Scott McGregor},
+   title = {The {X} Window System, Version 11},
+   journal = {Software Practice and Experience},
+   volume = {20},
+   number = {S2},
+   year = {1990},
+   abstract = {A technical overview of the X11 functionality.  This is an update
+of the X10 TOG paper by Scheifler \&amp; Gettys.}
+}
+</pre>
+
+<h2>Format Description</h2>
+
+<h3>Special features</h3>
+
+  The <tt>@STRING</tt> command is used to define abbreviations for use
+by BibTeX.  The command
+<tt>@string{jgg1 = "Journal of Gnats and Gnus, Series~1"}</tt>
+defines 'jgg1' to be the abbreviation for the string "Journal of Gnats
+and Gnus, Series~1".  Any reference outside of quotes or braces to
+<tt>jgg1</tt> will be filled in with the full string.
+<p>
+  The <tt>@PREAMBLE</tt> command is used to define formatter code that will be
+output directly to the <tt>bbl</tt> file produced by the BibTeX program.
+This usually consists of LaTeX macros.  It is unclear what one should do
+with the fields when converting to a format that does not use TeX.
+</p><p>
+  The <tt>@COMMENT</tt> command lets you put any text inside it.  It isn't
+really necessary, since BibTeX will ignore any text that isn't inside an
+entry.  However, you can not have an <b>@</b> character outside of an item.
+
+</p>
+<h3 name="_type">Standard entry types</h3>
+
+<dl>
+<dt><tt>@article</tt>
+</dt><dd>An article from a journal or magazine.
+</dd><dt><tt>@book</tt>
+</dt><dd>A book with an explicit publisher.
+</dd><dt><tt>@booklet</tt>
+</dt><dd>A work that is printed and bound, but without a named publisher or
+    sponsoring institution.
+</dd><dt><tt>@conference</tt>
+</dt><dd>The same as <tt>inproceedings</tt>.
+</dd><dt><tt>@inbook</tt>
+</dt><dd>A part of a book, which may be a chapter (or section or whatever)
+    and/or a range of pages.
+</dd><dt><tt>@incollection</tt>
+</dt><dd>A part of a book having its own title.
+</dd><dt><tt>@inproceedings</tt>
+</dt><dd>An article in a conference proceedings.
+</dd><dt><tt>@manual</tt>
+</dt><dd>Technical documentation.
+</dd><dt><tt>@mastersthesis</tt>
+</dt><dd>A Master's thesis.
+</dd><dt><tt>@misc</tt>
+</dt><dd>Use this type when nothing else fits.
+</dd><dt><tt>@phdthesis</tt>
+</dt><dd>A PhD thesis.
+</dd><dt><tt>@proceedings</tt>
+</dt><dd>The proceedings of a conference.
+</dd><dt><tt>@techreport</tt>
+</dt><dd>A report published by a school or other institution, usually numbered
+    within a series.
+</dd><dt><tt>@unpublished</tt>
+</dt><dd>A document having an author and title, but not formally published.
+</dd></dl>
+
+<h3>Other entry types</h3>
+
+  Using these entry types is not recommended, but they might occur in some bibliographies.
+<dl>
+<dt><tt>@collection</tt>
+</dt><dd>A collection of works.  The same as <tt>proceedings</tt>
+</dd><dt><tt>@patent</tt>
+</dt><dd>A patent.
+</dd></dl>
+
+<h3>Standard fields</h3>
+
+<dl>
+
+<dt name="address"><tt>address</tt>
+</dt><dd>Usually the address of the <tt>publisher</tt> or other type of institution.
+    For major publishing houses,
+van Leunen recommends omitting the information entirely.
+For small publishers, on the other hand, you can help the
+reader by giving the complete address.
+
+</dd><dt name="annote"><tt>annote</tt>
+</dt><dd>An annotation.
+It is not used by the standard bibliography styles,
+but may be used by others that produce an annotated bibliography.
+
+</dd><dt name="author"><tt>author</tt>
+</dt><dd>The name(s) of the author(s),
+in the format described in the LaTeX book.
+
+</dd><dt name="booktitle"><tt>booktitle</tt>
+</dt><dd>Title of a book, part of which is being cited.
+See the LaTeX book for how to type titles.
+For book entries, use the <tt>title</tt> field instead.
+
+</dd><dt name="chapter"><tt>chapter</tt>
+</dt><dd>A chapter (or section or whatever) number.
+
+</dd><dt name="crossref"><tt>crossref</tt>
+</dt><dd>The database key of the entry being cross referenced.  Any fields
+that are missing from the current record are inherited from the field
+being cross referenced.
+
+</dd><dt name="edition"><tt>edition</tt>
+</dt><dd>The edition of a book---for example, ``Second''.
+This should be an ordinal, and
+should have the first letter capitalized, as shown here;
+the standard styles convert to lower case when necessary.
+
+</dd><dt name="editor"><tt>editor</tt>
+</dt><dd>Name(s) of editor(s), typed as indicated in the LaTeX book.
+If there is also an <tt>author</tt> field, then
+the <tt>editor</tt> field gives the editor of the book or collection
+in which the reference appears.
+
+</dd><dt name="howpublished"><tt>howpublished</tt>
+</dt><dd>How something strange has been published.
+The first word should be capitalized.
+
+</dd><dt name="institution"><tt>institution</tt>
+</dt><dd>The sponsoring institution of a technical report.
+
+</dd><dt name="journal"><tt>journal</tt>
+</dt><dd>A journal name.
+Abbreviations are provided for many journals.
+
+</dd><dt name="key"><tt>key</tt>
+</dt><dd>Used for alphabetizing, cross referencing, and creating a label when
+the ``author'' information
+<!-- See odds-and-ends -->
+is missing.
+This field should not be confused with the key that appears in the
+<tt>cite</tt> command and at the beginning of the database entry.
+
+</dd><dt name="month"><tt>month</tt>
+</dt><dd>The month in which the work was
+published or, for an unpublished work, in which it was written.
+You should use the standard three-letter abbreviation,
+as described in Appendix B.1.3 of the LaTeX book.
+
+</dd><dt name="note"><tt>note</tt>
+</dt><dd>Any additional information that can help the reader.
+The first word should be capitalized.
+
+</dd><dt name="number"><tt>number</tt>
+</dt><dd>The number of a journal, magazine, technical report,
+or of a work in a series.
+An issue of a journal or magazine is usually
+identified by its volume and number;
+the organization that issues a
+technical report usually gives it a number;
+and sometimes books are given numbers in a named series.
+
+</dd><dt name="organization"><tt>organization</tt>
+</dt><dd>The organization that sponsors a conference or that publishes
+    a <tt>manual</tt>.
+
+</dd><dt name="pages"><tt>pages</tt>
+</dt><dd>One or more page numbers or range of numbers,
+such as <tt>42--111</tt> or <tt>7,41,73--97</tt> or <tt>43+</tt>
+(the `<tt>+</tt>' in this last example indicates pages following
+that don't form a simple range).
+To make it easier to maintain <cite>Scribe</cite>-compatible databases,
+the standard styles convert a single dash (as in <tt>7-33</tt>)
+to the double dash used in TeX to denote number ranges
+(as in <tt>7--33</tt>).
+
+</dd><dt name="publisher"><tt>publisher</tt>
+</dt><dd>The publisher's name.
+
+</dd><dt name="school"><tt>school</tt>
+</dt><dd>The name of the school where a thesis was written.
+
+</dd><dt name="series"><tt>series</tt>
+</dt><dd>The name of a series or set of books.
+When citing an entire book, the the <tt>title</tt> field
+gives its title and an optional <tt>series</tt> field gives the
+name of a series or multi-volume set
+in which the book is published.
+
+</dd><dt name="title"><tt>title</tt>
+</dt><dd>The work's title, typed as explained in the LaTeX book.
+
+</dd><dt name="type"><tt>type</tt>
+</dt><dd>The type of a technical report---for example, ``Research Note''.
+
+</dd><dt name="volume"><tt>volume</tt>
+</dt><dd>The volume of a journal or multi-volume book.
+
+</dd><dt name="year"><tt>year</tt>
+</dt><dd>The year of publication or, for
+an unpublished work, the year it was written.
+Generally it should consist of four numerals, such as <tt>1984</tt>,
+although the standard styles can handle any <tt>year</tt> whose
+last four nonpunctuation characters are numerals,
+such as `\hbox{(about 1984)}'.
+
+</dd></dl>
+
+<h3>Other fields</h3>
+
+  BibTeX is extremely popular, and many people have used it to store
+information.  Here is a list of some of the more common fields:
+
+<dl>
+
+<dt name="affiliation"><tt>affiliation</tt>
+</dt><dd>The authors affiliation.
+
+</dd><dt name="abstract"><tt>abstract</tt>
+</dt><dd>An abstract of the work.
+
+</dd><dt name="contents"><tt>contents</tt>
+</dt><dd>A Table of Contents
+
+</dd><dt name="copyright"><tt>copyright</tt>
+</dt><dd>Copyright information.
+
+</dd><dt name="ISBN"><tt>ISBN</tt>
+</dt><dd>The International Standard Book Number.
+
+</dd><dt name="ISSN"><tt>ISSN</tt>
+</dt><dd>The International Standard Serial Number.  Used to identify a journal.
+
+</dd><dt name="keywords"><tt>keywords</tt>
+</dt><dd>Key words used for searching or possibly for annotation.
+
+</dd><dt name="language"><tt>language</tt>
+</dt><dd>The language the document is in.
+
+</dd><dt name="location"><tt>location</tt>
+</dt><dd>A location associated with the entry, such as the city in which a conference took place.
+
+</dd><dt name="LCCN"><tt>LCCN</tt>
+</dt><dd>The Library of Congress Call Number.  I've also seen this as <tt>lib-congress</tt>.
+
+</dd><dt name="mrnumber"><tt>mrnumber</tt>
+</dt><dd>The <i>Mathematical Reviews</i> number.
+
+</dd><dt name="price"><tt>price</tt>
+</dt><dd>The price of the document.
+
+</dd><dt name="size"><tt>size</tt>
+</dt><dd>The physical dimensions of a work.
+
+</dd><dt name="url"><tt>URL</tt>
+</dt><dd>The WWW Universal Resource Locator that points to the item being
+    referenced.  This often is used for technical reports to point to
+    the ftp site where the postscript source of the report is located.
+
+</dd></dl>
+
+<h2>References</h2>
+<ul>
+  <li><cite>LaTeX: A Document Preparation System</cite> by Leslie Lamport, 1986, 
+    Addison-Wesley. 
+  </li><li><cite>BibTeXing</cite> (<a href="ftp://sunsite.unc.edu/pub/packages/TeX/biblio/bibtex/distribs/doc/btxdoc.tex"> 
+    <tt>btxdoc.tex</tt></a>, <a href="http://tex.loria.fr/bibdex/btxdoc.pdf">btxdoc.pdf</a>), 
+    by Oren Patashnik, February 1988, (BibTeX distribution). 
+  </li><li>A <a href="http://www.maths.tcd.ie/%7Edwilkins/LaTeXPrimer/">gentle LaTeX 
+    introduction</a> by David Wilkins
+  </li><li><a href="http://www.cs.stir.ac.uk/guides/latex/guide.html">Another gentle 
+    LaTeX introductio</a>n by David Budgen and Sam Nelson, where particularly 
+    <a href="http://www.cs.stir.ac.uk/guides/latex/chapter2_6.html#SECTION0060000000000000000">this 
+    section</a> is concerned with bibliographies.
+</li></ul>
+</body></html>

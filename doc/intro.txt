@@ -1,0 +1,69 @@
+============================
+ Quick-start with Biblio-py
+============================
+
+Introduction
+============
+
+.. sidebar:: Installation
+
+   The current version is |release|
+
+   Use Easy Install (or pip) to get the last version from `pypi <http://pypi.python.org/pypi/biblio-py>`_ ::
+
+      $ easy_install -U biblio-py
+
+Biblio-py is a package  written in python used to manage bibliography. Currently it contains two subpackages:
+
+* yapbib: Yet Another Python BIBliography  manager tool, mainly for `BibTeX <http://en.wikipedia.org/wiki/Bibtex>`_ files but able to export to `html`, `latex` lists and `xml` and print to *ad-hoc* formats.
+* query_ads: A simple python tool that permits to query `Harvard's Database <http://adsabs.harvard.edu/physics_service.html>`_
+
+Features
+========
+
+The most important features are
+
+* It is **Open source** Software (`GNU General Public License <http://www.gnu.org/licenses>`_)
+* Parsing of BibTeX and ADS portable format
+* Built in conversion to BibTex, LaTeX, HTML and XML formats.
+* Native Format for store uses *standard* python `pickle <http://docs.python.org/library/pickle.html#module-pickle>`_ format
+* Convert accents and *some* non-english characters to XML entities.
+* Handles correctly *some* math constructs, currently superscripts and subscripts. It should not be very difficult to add more.
+* Include scripts to manipulate databases, get bibliography from ADS online database and extract citations from a LaTeX paper
+* You can import the module from your script and perform Python-powered manipulation on the data.
+* Object oriented model
+
+
+Usage
+=====
+
+The package currently includes three scripts: 
+
+bibmanage.py
+  script used to search, extract, sort and export bibliography items from databases
+
+get_papers.py
+   Query Harvard's database
+
+bibextract.py
+   Generates a restricted bibliography including only the items cited in a LaTeX article. Also allows to clean-up the entries.
+
+To get help with any of the scripts just type::
+
+  $ <scriptname> -h
+  $ <scriptname> --help
+
+----------------------------------------
+
+Create your own scripts
+
+It is easy to use the package for your own custom scripts. The scripts that are shipped with the package are good examples to learn to work with it. They are small, but full-fledged examples.
+
+----------------------------------------
+
+Some examples of use:
+
+* :ref:`bibmanage`.
+* :ref:`get_papers`.
+* :ref:`bibextract`.
+* :ref:`scripting`.

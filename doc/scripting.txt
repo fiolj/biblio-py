@@ -1,0 +1,89 @@
+.. _scripting:
+
+=============================
+ Scripting using the library
+=============================
+
+Simple script
+-------------
+
+The simplest useful script to custom-convert your database to latex could be something like:::
+  
+  import yapbib.biblist as biblist
+  # 
+  # Change here to your files
+  bibfile= yourbib.bib  # input database
+  outputfile=myfile.tex # output latex file 
+  # latexstyle, overrides default values
+  latexstyle={ 'url': None, # Do not include url
+               'doi': None, # Do not include doi
+               'author': (r'\textbf{',r'}'), # Write the authors in boldface
+  }
+
+  b=biblist.BibList()
+  b.import_bibtex(bibfile)    
+  # Sort them in your specified order and export them to latex list
+  b.sort(['year','firstpage','author','journal'],reverse=True)
+  b.export_latex(outputfile,style=latexstyle)
+
+Some extra manipulation
+-----------------------
+You can also manipulate the data prior to convert it (though bibmanage.py already does it)::
+  
+  import yapbib.biblist as biblist
+  # 
+  # Change here to your files
+  bibfile= yourbib.bib  # input database
+  outputfile=myfile.tex # output latex file 
+  # latexstyle, overrides default values
+  latexstyle={ 'url': None, # Do not include url
+               'doi': None, # Do not include doi
+               'author': (r'\textbf{',r'}'), # Write the authors in boldface
+  }
+
+  b=biblist.BibList()
+  b.import_bibtex(bibfile)    
+  # Select only some items
+  items= b.search(findstr='name1',fields=['author','key'])
+
+  # Create a reduced database
+  bout= biblist.BibList()
+  for it in items:
+    bout.add_item(b.get_item(it),it)
+
+  # Sort them in your specified order and export them to latex list
+  bout.sort(['year','firstpage','author','journal'],reverse=True)
+  bout.export_latex(outputfile,style=latexstyle)  
+
+
+A Thesis list
+-------------
+
+The `list of thesis performed at our lab <http://fisica.cab.cnea.gov.ar/colisiones/publi/tesis.html>`_ was created with the following script:
+
+.. literalinclude:: tesis.py
+
+
+Exploring the package interactively
+-----------------------------------
+
+::
+
+  >>> import yapbib.biblist as biblist
+  >>> b=biblist.BibList()
+  >>> b.import_bibtex('mybib.bib')
+  >>> items= b.List() # Shows the keys of all entries
+  >>> items
+  ['KEY1','KEY2']
+  >>> it= b.get_item(items[0]) # Get first item 
+  >>> it= b.get_items()[0]  # (Alternative) to get first item
+  >>> it.get_fields() # Show all fields for item
+  >>> it.preview()    # Show a preview (brief info)
+  >>> bib= it.to_bibtex() # get item in BibTeX form
+  >>> tex= it.to_latex() # get item in LaTeX form
+  >>> html= it.to_html() # get item in html form
+  >>> print it  # print full information on the item
+  >>> print unicode(it) # Use this if it has non-ascii characters
+  
+
+
