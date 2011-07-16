@@ -40,18 +40,19 @@ def main():
   parser.add_option("-e", "--end-year", default=str(thisyear),
                     help="Ending year as integer (4 digits)")
 
-  parser.add_option("--year", default= None,
+  parser.add_option("-y", "--year", default= None,
                     help="--year=y is a shortcut to '--start-year=y --end-year=y'")
 
   parser.add_option("--start-month", default='1',
                     help="Starting month as integer (Jan == 1, Dec == 12)")
   parser.add_option("--end-month", default='12',
                     help="Ending month as integer (Jan == 1, Dec == 12)")
-  parser.add_option("--author", default=autores,
+
+  parser.add_option("-a", "--author", default=autores,
                     help="list of semicolon separated author names as last,f")
 
-  parser.add_option("--author-logic", default='OR',
-                    help="Logic to use to search for authors. Default: 'OR'. Use 'AND' to get only common (to all authors) articles")
+  parser.add_option("--author-logic", default='AND',
+                    help="Logic to use to search for authors. Default: 'AND'. Use 'OR' to get ALL authors articles")
 
   parser.add_option("--proxy", default=None,
                     help="Proxy used to connect")
@@ -118,7 +119,7 @@ def main():
   b= biblist.BibList()
   #########################################################################################
   Query= ads.AdsQuery(connection=conexion,options=opciones)
-  nabst,page= Query.query()
+  nabst, page= Query.query()
   if nabst < 0:
     print 'Error (%d), %s' %(nabst,page)
     sys.exit()
