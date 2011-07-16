@@ -174,7 +174,7 @@ def main():
       try: b.import_bibtex(fname, normalize= False)
       except: failed=True
     else: failed= True
-
+    
     if failed: 
       mensaje= 'Database file %s not found or failed to load. Set the name as an option or set the environment variable BIBDB'%(fname)
       parser.error(mensaje)
@@ -195,9 +195,10 @@ def main():
     print '\n'.join(sorted(cit))
 
   bout=biblist.BibList()
+  citekeys= dict([(b.get_item(k).get_field('_code'), k) for k in b.ListItems])
   for k in cit:
-    if k in b.ListItems:
-      item= b.get_item(k)
+    if citekeys[k] in b.ListItems:
+      item= b.get_item(citekeys[k])
       if rem != []:
         for cond in rem:  remove_fields(item, cond)
       bout.add_item(item, k)

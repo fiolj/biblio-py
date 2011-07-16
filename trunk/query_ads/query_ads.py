@@ -278,7 +278,7 @@ class AdsQuery(object):
     if self.verbose > 0:
       print '# Query Command line:\n# ',paper_req,'\n'
     try:
-      response = urllib2.urlopen(paper_req.encode(self.opt['charset']))
+      response = urllib2.urlopen(unicode(paper_req,encoding=self.opt['charset']).encode(self.opt['charset']))
     except urllib2.URLError, e:
       if hasattr(e, 'reason'):
         return -2,'We failed to reach a server.\nReason: '+str(e.reason)
@@ -303,7 +303,7 @@ class AdsQuery(object):
       pass
 
   def __create_query__(self):
-    paper_req=self.url
+    paper_req=  self.url
     for k,v in self.opt.iteritems():
       if isStringLike(v):
         op='%s%s%s%s' % (k,'=',v,'&')

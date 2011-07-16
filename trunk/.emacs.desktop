@@ -2,7 +2,7 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Thu Apr 28 02:05:01 2011
+;; Created Sat Jul 16 17:26:37 2011
 ;; Desktop file format version 206
 ;; Emacs version 23.3.1
 
@@ -10,22 +10,44 @@
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name "/home/fiol/trabajo/programas/biblio-py/yapbib/TAGS")
 (setq tags-table-list '("/home/fiol/trabajo/programas/biblio-py/yapbib/TAGS"))
-(setq search-ring '("preview" "short" "output" "aux" "extend" "parse_auxfile" "parse_aux" "parse_" "War" "parse_auxfile" "re" "bib" "par" "formato" "print" "barrach2"))
+(setq search-ring '("url" "self.opt" "std_opt" "type" "sort" "author" "-a" "author" "-y" "author-l" "args" "preview" "short" "output" "aux" "extend"))
 (setq regexp-search-ring nil)
 (setq register-alist nil)
-(setq file-name-history '("~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/CHANGES.txt" "~/trabajo/programas/biblio-py/yapbib/version.py" "~/trabajo/programas/biblio-py/yapbib/" "~/trabajo/programas/biblio-py/README" "~/trabajo/programas/biblio-py/setup.py" "~/trabajo/programas/biblio-py/TODO" "~/trabajo/programas/biblio-py-dev/CHANGES" "~/trabajo/programas/biblio-py-dev/CHANGES.txt" "~/trabajo/programas/biblio-py-dev/" "~/trabajo/programas/biblio-py-dev/scripts/" "~/trabajo/Proyectos/phys_notes/mainxs.aux" "~/trabajo/programas/biblio-py-dev/" "~/trabajo/programas/biblio-py-dev/newbib.bib" "~/trabajo/programas/biblio-py-dev/tmp2.bib" "~/trabajo/programas/biblio-py-dev/tmp3.bib" "~/trabajo/programas/biblio-py-dev/yapbib/" "~/trabajo/programas/biblio-py-dev/scripts/bibmanage.py" "~/trabajo/Proyectos/phys_notes/mainxs.tex" "~/trabajo/congresos/2011/icpeac_ion/abstract/ion.tex" "~/trabajo/congresos/2011/icpeac_cusp/abstract/cusp.tex" "~/trabajo/programas/biblio-py-dev/scripts/" "~/trabajo/programas/biblio-py-dev/" "~/trabajo/programas/biblio-py-dev/scripts/" "~/trabajo/programas/biblio-py-dev/yapbib/" "~/trabajo/programas/biblio-py-dev/yapbib/biblist.py" "~/trabajo/programas/biblio-py-dev/scripts/bibmanage.py" "~/trabajo/programas/biblio-py-dev/scripts/bibextract.py" "~/trabajo/programas/biblio-py-dev/doc/matplotlib-_templates.tar.gz" "~/trabajo/programas/biblio-py-dev/doc/_templates/layout.html"))
+(setq file-name-history '("~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/setup.py" "~/trabajo/programas/biblio-py/query_ads/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/CHANGES.txt" "~/trabajo/programas/biblio-py/yapbib/version.py" "~/trabajo/programas/biblio-py/yapbib/" "~/trabajo/programas/biblio-py/README" "~/trabajo/programas/biblio-py/setup.py" "~/trabajo/programas/biblio-py/TODO" "~/trabajo/programas/biblio-py-dev/CHANGES" "~/trabajo/programas/biblio-py-dev/CHANGES.txt" "~/trabajo/programas/biblio-py-dev/" "~/trabajo/programas/biblio-py-dev/scripts/" "~/trabajo/Proyectos/phys_notes/mainxs.aux" "~/trabajo/programas/biblio-py-dev/" "~/trabajo/programas/biblio-py-dev/newbib.bib" "~/trabajo/programas/biblio-py-dev/tmp2.bib" "~/trabajo/programas/biblio-py-dev/tmp3.bib" "~/trabajo/programas/biblio-py-dev/yapbib/" "~/trabajo/programas/biblio-py-dev/scripts/bibmanage.py" "~/trabajo/Proyectos/phys_notes/mainxs.tex" "~/trabajo/congresos/2011/icpeac_ion/abstract/ion.tex" "~/trabajo/congresos/2011/icpeac_cusp/abstract/cusp.tex" "~/trabajo/programas/biblio-py-dev/scripts/" "~/trabajo/programas/biblio-py-dev/"))
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
 (desktop-create-buffer 206
   "setup.py"
   "setup.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
-  1238
-  '(708 nil)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode ropemacs-mode)
+  1154
+  '(1238 nil)
   nil
   nil
   '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "scripts/get_papers.py"
+  "get_papers.py"
+  'python-mode
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode ropemacs-mode)
+  4889
+  '(4889 nil)
+  nil
+  nil
+  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "doc/get_papers.txt"
+  "get_papers.txt"
+  'rst-mode
+  '(global-auto-revert-mode yas/minor-mode)
+  602
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
 
 (desktop-create-buffer 206
   "CHANGES"
@@ -42,7 +64,7 @@
   "yapbib/version.py"
   "version.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode ropemacs-mode)
   16
   '(nil nil)
   nil
@@ -53,7 +75,7 @@
   "yapbib/biblist.py"
   "biblist.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode ropemacs-mode)
   16545
   '(16718 nil)
   nil
@@ -64,23 +86,12 @@
   "yapbib/bibitem.py"
   "bibitem.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode smart-operator-mode)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode smart-operator-mode ropemacs-mode)
   5719
   '(26339 nil)
   nil
   nil
   '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . utf-8-unix)))
-
-(desktop-create-buffer 206
-  "scripts/bibmanage.py"
-  "bibmanage.py"
-  'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
-  8912
-  '(5586 nil)
-  nil
-  nil
-  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
 
 (desktop-create-buffer 206
   "README"
@@ -97,7 +108,7 @@
   "scripts/bibextract.py"
   "bibextract.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode ropemacs-mode)
   2130
   '(1961 nil)
   nil
@@ -116,28 +127,6 @@
   '((buffer-file-coding-system . utf-8-unix)))
 
 (desktop-create-buffer 206
-  "../../Proyectos/phys_notes/mainxs.tex"
-  "mainxs.tex"
-  'latex-mode
-  '(global-auto-revert-mode yas/minor-mode reftex-mode)
-  1694
-  '(1 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
-
-(desktop-create-buffer 206
-  "../../Proyectos/phys_notes/mainxs.aux"
-  "mainxs.aux"
-  'fundamental-mode
-  '(global-auto-revert-mode)
-  1435
-  '(1 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix)))
-
-(desktop-create-buffer 206
   "doc/bibmanage.txt"
   "bibmanage.txt"
   'rst-mode
@@ -152,7 +141,7 @@
   "yapbib/bibparse.py"
   "bibparse.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode ropemacs-mode)
   2914
   '(504 nil)
   nil
@@ -196,23 +185,12 @@
   "doc/tesis.py"
   "tesis.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode ropemacs-mode)
   991
   '(nil nil)
   nil
   nil
   '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
-
-(desktop-create-buffer 206
-  "doc/get_papers.txt"
-  "get_papers.txt"
-  'rst-mode
-  '(global-auto-revert-mode yas/minor-mode)
-  602
-  '(1 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix)))
 
 (desktop-create-buffer 206
   "doc/index.html"
@@ -229,7 +207,7 @@
   "doc/conf.py"
   "conf.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode ropemacs-mode)
   1689
   '(1 nil)
   nil
@@ -248,120 +226,10 @@
   '((indent-tabs-mode . t) (buffer-file-coding-system . undecided-unix)))
 
 (desktop-create-buffer 206
-  "../../webpage/Pages/biblio-py_en.html.tmpl"
-  "biblio-py_en.html.tmpl"
-  'cheetah-mode
-  '(global-auto-revert-mode yas/minor-mode)
-  7187
-  '(7154 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix)))
-
-(desktop-create-buffer 206
-  "../../webpage/Pages/biblio-py.html.tmpl"
-  "biblio-py.html.tmpl"
-  'cheetah-mode
-  '(global-auto-revert-mode yas/minor-mode)
-  2367
-  '(1774 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix)))
-
-(desktop-create-buffer 206
-  "../../../downloads/fanstatictemplate-1.2/README.txt"
-  "README.txt"
-  'rst-mode
-  '(global-auto-revert-mode yas/minor-mode)
-  1025
-  '(nil nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix)))
-
-(desktop-create-buffer 206
-  "../../web_colisiones/scripts/tmp2.bib"
-  "tmp2.bib"
-  'bibtex-mode
-  '(global-auto-revert-mode)
-  13026
-  '(1 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (TeX-master . t)))
-
-(desktop-create-buffer 206
-  "../../web_colisiones/scripts/tmp1.bib"
-  "tmp1.bib"
-  'bibtex-mode
-  '(global-auto-revert-mode)
-  13651
-  '(1 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (TeX-master . t)))
-
-(desktop-create-buffer 206
-  "../../web_colisiones/scripts/make_tesis.py"
-  "make_tesis.py"
-  'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
-  1237
-  '(1198 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
-
-(desktop-create-buffer 206
-  "../../web_colisiones/publi/tesis.bib"
-  "tesis.bib"
-  'bibtex-mode
-  '(global-auto-revert-mode)
-  15248
-  '(1 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (TeX-master . t)))
-
-(desktop-create-buffer 206
-  nil
-  "scripts"
-  'dired-mode
-  '(global-auto-revert-mode)
-  454
-  '(nil nil)
-  t
-  '("../../web_colisiones/scripts/")
-  nil)
-
-(desktop-create-buffer 206
-  nil
-  "web_colisiones"
-  'dired-mode
-  '(global-auto-revert-mode)
-  1560
-  '(nil nil)
-  t
-  '("../../web_colisiones/")
-  nil)
-
-(desktop-create-buffer 206
-  nil
-  "publi"
-  'dired-mode
-  '(global-auto-revert-mode)
-  186
-  '(nil nil)
-  t
-  '("../../web_colisiones/publi/")
-  nil)
-
-(desktop-create-buffer 206
   "yapbib/helper.py"
   "helper.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode ropemacs-mode)
   8953
   '(8519 nil)
   nil
@@ -372,21 +240,10 @@
   "yapbib/latex.py"
   "latex.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode ropemacs-mode)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode eldoc-mode auto-complete-mode ropemacs-mode)
   6169
   '(1 nil)
   nil
   nil
   '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix)))
-
-(desktop-create-buffer 206
-  "../../../texmf/bibtex/bib/bib.bib"
-  "bib.bib"
-  'bibtex-mode
-  '(global-auto-revert-mode)
-  1
-  '(1 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (TeX-master . t)))
 
