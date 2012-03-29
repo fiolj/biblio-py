@@ -1,3 +1,7 @@
+2012-03-29  Juan Fiol  <juanfiol@gmail.com>
+	* bibitem.py *: Added option to export to bibtex in different encodings
+	* scripts/bibextract.py *: Parsing of tex files with two or more bibtex input files has been corrected
+
 2011-04-28  Juan Fiol  <juanfiol@gmail.com>
 
 	* scripts/*: Fixed bugs to scripts and added option for version information output.

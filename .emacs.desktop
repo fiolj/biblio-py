@@ -2,7 +2,7 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Wed Mar 28 22:13:42 2012
+;; Created Thu Mar 29 10:33:52 2012
 ;; Desktop file format version 206
 ;; Emacs version 24.0.94.1
 
@@ -10,19 +10,19 @@
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name "/home/fiol/trabajo/programas/biblio-py/yapbib/TAGS")
 (setq tags-table-list '("/home/fiol/trabajo/programas/biblio-py/yapbib/TAGS"))
-(setq search-ring '("find_bibfile" "load" "version" "biblist" "main" "bibl" "Hansen2" "normalize" "import_bibtex" "i" "import_bi" "biblis" "url" "self.opt" "std_opt" "type"))
+(setq search-ring '("export_" "find_bibfile" "load" "version" "biblist" "main" "bibl" "Hansen2" "normalize" "import_bibtex" "i" "import_bi" "biblis" "url" "self.opt" "std_opt"))
 (setq regexp-search-ring nil)
-(setq register-alist (list (list 213465879 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk 1 (get-buffer "bibextract.py")))) mk))))
-(setq file-name-history '("~/trabajo/programas/python/scripts/" "~/trabajo/programas/python/scripts/bib_jabbrev.py" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/scripts/bibmanage.py" "~/trabajo/programas/biblio-py/yapbib/helper.py" "~/trabajo/programas/biblio-py/scripts/bibextract.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/data/tempo.bib" "~/trabajo/programas/biblio-py/yapbib/biblist.py" "~/trabajo/programas/biblio-py/data/test1.bib" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/data/test.bib" "~/trabajo/programas/biblio-py/data/test.tex" "~/trabajo/programas/biblio-py/data/test1.bib" "~/trabajo/programas/biblio-py/scripts/bibextract.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/setup.py" "~/trabajo/programas/biblio-py/query_ads/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/CHANGES.txt" "~/trabajo/programas/biblio-py/yapbib/version.py" "~/trabajo/programas/biblio-py/yapbib/" "~/trabajo/programas/biblio-py/README" "~/trabajo/programas/biblio-py/setup.py" "~/trabajo/programas/biblio-py/TODO"))
+(setq register-alist (list (list 213465879 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk 1 (get-buffer "biblist.py")))) mk))))
+(setq file-name-history '("~/trabajo/programas/biblio-py/yapbib/biblist.py" "~/trabajo/programas/python/scripts/" "~/trabajo/programas/python/scripts/bib_jabbrev.py" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/scripts/bibmanage.py" "~/trabajo/programas/biblio-py/yapbib/helper.py" "~/trabajo/programas/biblio-py/scripts/bibextract.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/data/tempo.bib" "~/trabajo/programas/biblio-py/yapbib/biblist.py" "~/trabajo/programas/biblio-py/data/test1.bib" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/data/test.bib" "~/trabajo/programas/biblio-py/data/test.tex" "~/trabajo/programas/biblio-py/data/test1.bib" "~/trabajo/programas/biblio-py/scripts/bibextract.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/setup.py" "~/trabajo/programas/biblio-py/query_ads/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/CHANGES.txt" "~/trabajo/programas/biblio-py/yapbib/version.py" "~/trabajo/programas/biblio-py/yapbib/" "~/trabajo/programas/biblio-py/README" "~/trabajo/programas/biblio-py/setup.py"))
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
 (desktop-create-buffer 206
-  "scripts/bibextract.py"
-  "bibextract.py"
+  "yapbib/biblist.py"
+  "biblist.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode doxymacs-mode auto-complete-mode eldoc-mode)
-  3106
-  '(5577 nil)
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode auto-complete-mode eldoc-mode outline-minor-mode)
+  10708
+  '(1 nil)
   nil
   nil
   '((tab-width . 2) (buffer-file-coding-system . undecided-unix)))
