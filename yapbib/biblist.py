@@ -325,7 +325,7 @@ class BibList(dict):
       s+='\n\n'
 
     for l in self.sortedList:
-      s+= '%s\n' %(self.get_item(l).to_bibtex(indent=indent, width=width, fields=fields, encoding))
+      s+= '%s\n' %(self.get_item(l).to_bibtex(indent=indent, width=width, fields=fields, encoding=encoding))
       
     if not self.keepAbbrevs:      return s 
     else:      return helper.reg_defstrng.sub(r'\1\2',s)
@@ -335,7 +335,7 @@ class BibList(dict):
     """
     Export a bibliography (set of items) to a file in bibtex format:
     """
-    fi= helper.openfile(fname,'w');  fi.write(self.to_bibtex(indent, width, fields, encoding));
+    fi= helper.openfile(fname,'w');  fi.write(self.to_bibtex(indent, width, fields, encoding=encoding));
     helper.closefile(fi)
 
   ##############################

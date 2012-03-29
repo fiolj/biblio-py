@@ -2,7 +2,7 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Thu Mar 29 10:33:52 2012
+;; Created Thu Mar 29 12:34:56 2012
 ;; Desktop file format version 206
 ;; Emacs version 24.0.94.1
 
@@ -16,6 +16,17 @@
 (setq file-name-history '("~/trabajo/programas/biblio-py/yapbib/biblist.py" "~/trabajo/programas/python/scripts/" "~/trabajo/programas/python/scripts/bib_jabbrev.py" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/scripts/bibmanage.py" "~/trabajo/programas/biblio-py/yapbib/helper.py" "~/trabajo/programas/biblio-py/scripts/bibextract.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/data/tempo.bib" "~/trabajo/programas/biblio-py/yapbib/biblist.py" "~/trabajo/programas/biblio-py/data/test1.bib" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/data/test.bib" "~/trabajo/programas/biblio-py/data/test.tex" "~/trabajo/programas/biblio-py/data/test1.bib" "~/trabajo/programas/biblio-py/scripts/bibextract.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/setup.py" "~/trabajo/programas/biblio-py/query_ads/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/CHANGES.txt" "~/trabajo/programas/biblio-py/yapbib/version.py" "~/trabajo/programas/biblio-py/yapbib/" "~/trabajo/programas/biblio-py/README" "~/trabajo/programas/biblio-py/setup.py"))
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "doc/intro.txt"
+  "intro.txt"
+  'text-mode
+  '(global-auto-revert-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
 (desktop-create-buffer 206
   "yapbib/biblist.py"
   "biblist.py"
