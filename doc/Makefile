@@ -131,4 +131,4 @@ doctest:
 
 zipdoc: html
 	rm -f $(BUILDDIR)/bibliopy.zip
-	zip -r ../bibliopy.zip *.* _static
+	cd $(BUILDDIR)/html && zip -r ../../bibliopy.zip *.* _static && cd -
