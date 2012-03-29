@@ -305,7 +305,7 @@ class BibList(dict):
     for item in self.get_items():
       item.set_default_styles()
       
-  def to_bibtex(self, indent=2, width=80, fields=None):
+  def to_bibtex(self, indent=2, width=80, fields=None, encoding='latex'):
     """
     Export all entries to a bibtex file. All strings are resolved.
     """
@@ -325,17 +325,17 @@ class BibList(dict):
       s+='\n\n'
 
     for l in self.sortedList:
-      s+= '%s\n' %(self.get_item(l).to_bibtex(indent=indent, width=width, fields=fields))
+      s+= '%s\n' %(self.get_item(l).to_bibtex(indent=indent, width=width, fields=fields, encoding))
       
     if not self.keepAbbrevs:      return s 
     else:      return helper.reg_defstrng.sub(r'\1\2',s)
 
 
-  def export_bibtex(self, fname=None,indent=2, width=80, fields=None):
+  def export_bibtex(self, fname=None,indent=2, width=80, fields=None, encoding='latex'):
     """
     Export a bibliography (set of items) to a file in bibtex format:
     """
-    fi= helper.openfile(fname,'w');  fi.write(self.to_bibtex(indent, width, fields));
+    fi= helper.openfile(fname,'w');  fi.write(self.to_bibtex(indent, width, fields, encoding));
     helper.closefile(fi)
 
   ##############################

@@ -325,19 +325,19 @@ class BibItem(dict):
           s+= '-%s' % (p)
     return s
 
-  def to_format(self, bullet, style = {}, formato = 'bibtex'):
-    """Convert to different formats:
-    bibtex, latex, html, xml,...  each item.
+  # def to_format(self, bullet, style = {}, formato = 'bibtex'):
+  #   """Convert to different formats:
+  #   bibtex, latex, html, xml,...  each item.
     
-    Arguments:
-    - `self`:
-    - `bullet`:
-    - `style`:
-    - `formato`:
-    """
+  #   Arguments:
+  #   - `self`:
+  #   - `bullet`:
+  #   - `style`:
+  #   - `formato`:
+  #   """
     
 
-  def to_bibtex(self, indent=2, width=80, fields = None):
+  def to_bibtex(self, indent=2, width=80, fields = None, encoding='latex'):
     """
     Format an entry as a bibtex item and returns it as a string, the argument wrap is the length of the lines in output
     """
@@ -386,7 +386,8 @@ class BibItem(dict):
       s+= '%spages = {%s},\n' %(initial_indent,p)
     # Close the bibitem       
     s+= '}\n'
-    s= s.encode('latex','ignore')  # Convert to latex some characters using encoding
+	if encoding != None:
+	  s= s.encode(encoding,'ignore')  # Convert to latex some characters using encoding
   #   s= handle_math(s,orden=1)      # Extra handling of math expressions (very simple)
     return s
 
