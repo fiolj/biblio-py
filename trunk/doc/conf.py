@@ -49,7 +49,6 @@ copyright = u'2011, Juan Fiol'
 #
 # The short X.Y version.
 
-# version = '0.5.9'
 version = VERSION
 # The full version, including alpha/beta/rc tags.
 release = VERSION
