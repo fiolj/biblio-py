@@ -87,13 +87,16 @@ def find_bibfile(fbib):
   Currently it searches first in the current directory.
   If it fails it uses kpsewhich
   Arguments:
-  - `fbib`: base of filename (with no path)
+  - `fbib`: list of base of filename (with no path)
   """
-  if fbib == None: return None
-  fobib= fbib+'.bib'
-  if os.path.exists(fobib): return fobib
-  fobib= sub.Popen(['kpsewhich',fbib+'.bib'], stdout=sub.PIPE).communicate()[0].strip()
-  return fobib
+  ffobib=[]
+  for filebib in fbib.split(','):
+    if filebib == None: return None
+    fobib= filebib+'.bib'
+    if not os.path.exists(fobib): 
+      fobib= sub.Popen(['kpsewhich',filebib+'.bib'], stdout=sub.PIPE).communicate()[0].strip()
+    ffobib.append(fobib)
+  return ffobib
 
 def main():
   import optparse
@@ -151,12 +154,14 @@ def main():
       parser.error('Incorrect argument "%s"'%(fname))
     dbf= find_bibfile(dbf)
 
+
+
   # Determine the database  
   dbfiles= []
   if op.database != None:               # command-line option overrides others options
     dbfiles= op.database
   elif dbf != None:                     # Then, bibliography from source file
-    dbfiles= [dbf]
+    dbfiles= dbf
   elif dumpfile != None:
     dbfiles += [dumpfile]
   else:
@@ -190,7 +195,6 @@ def main():
     rem= rem + op.remove_fields
 
 ########################################################################
-  
   if op.list:
     print '\n'.join(sorted(cit))
 
