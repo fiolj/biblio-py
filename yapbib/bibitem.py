@@ -178,11 +178,12 @@ class BibItem(dict):
     s= "%15s: %s\n" %("Type", self.get_field('_type'))
     s+="%15s: %s\n" %("citekey", self.get_field('_code'))
     s+="%15s: %s\n" %("internal key", self.get_key())
-
     for k in self.keys():
       if k.startswith('_'):
         continue;
-      s+= "%15s: %s\n" %(k, helper.reg_defstrng.sub(r'\1\2',self.get_field(k,'')))
+      s1= helper.reg_defstrng.sub(r'\1\2',self.get_field(k,''))
+      if k == 'doi': s1= 'http://dx.doi.org/{0}'.format(s1)
+      s+= "%15s: %s\n" %(k, s1)
     try: 
       return unicode(s,self.encoding,'ignore')
     except:
