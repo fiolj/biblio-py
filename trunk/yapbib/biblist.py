@@ -524,6 +524,7 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
               's': write_short,       'f': write_full
               }
     if verbose:  print '# %d items to output' %(len(self.ListItems))
+
     if formato != None: 
       fform = formato.lower()[0]
     else:

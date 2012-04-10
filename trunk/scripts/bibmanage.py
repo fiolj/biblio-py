@@ -4,7 +4,7 @@ Script to perform some simple management and get some information form bibtex fi
 
 '''
 import sys
-sys.path.insert(0, '..')
+sys.path.insert(0, '/home/fiol/trabajo/programas/biblio-py')
 import os
 import optparse
 from yapbib.version import VERSION
@@ -18,8 +18,6 @@ encoding='utf8'
   
 def main():
   # CONFIGURACION ############################################################
-
-
   def get_strng_field(k):
     l= unicode(k,encoding=encoding).split(':')
     if len(l) == 1:  # argument was on the form 'search_string. To search in all fields
