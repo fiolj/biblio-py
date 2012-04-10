@@ -152,7 +152,7 @@ def main():
       dbf, cit= parse_auxfile(fname)
     else:
       parser.error('Incorrect argument "%s"'%(fname))
-    dbf= find_bibfile(dbf)
+    if dbf != None: dbf= find_bibfile(dbf)
 
 
 
