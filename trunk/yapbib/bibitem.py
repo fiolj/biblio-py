@@ -469,7 +469,7 @@ class BibItem(dict):
       elif field == 'title':  value = title
       elif self.get_field(field,'') != '' and st.get(field,(' ',' ')) != None:
         value= helper.handle_math(self.get_field(field,'').strip())
-        value=bibparse.helper.removebraces(value).join(st.get(field,[' ',' ']))
+        value= helper.removebraces(value).join(st.get(field,[' ',' ']))
       else: value = ''
       s+= value
 
