@@ -57,7 +57,7 @@ def parsedata(page):
   """
   biblist={}
 
-  page= helper.handle_math(page,1)  
+  page= helper.handle_math(page,1) 
   s= reg_begin.split(page)[1:] # The first item is empty, we take it out
 
   for paper in s:

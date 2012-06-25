@@ -2,39 +2,182 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Thu Mar 29 12:34:56 2012
+;; Created Sun Jun 24 22:06:34 2012
 ;; Desktop file format version 206
-;; Emacs version 24.0.94.1
+;; Emacs version 24.1.1
 
 ;; Global section:
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name "/home/fiol/trabajo/programas/biblio-py/yapbib/TAGS")
 (setq tags-table-list '("/home/fiol/trabajo/programas/biblio-py/yapbib/TAGS"))
-(setq search-ring '("export_" "find_bibfile" "load" "version" "biblist" "main" "bibl" "Hansen2" "normalize" "import_bibtex" "i" "import_bi" "biblis" "url" "self.opt" "std_opt"))
+(setq search-ring '("convert_la" "py" "ubun" "tempo" "nicode(" "parse" "to_filehandle" "openfil" "parsefi" "b=" "codecs" "print" "bibparse" "conf" "c" "agenci"))
 (setq regexp-search-ring nil)
-(setq register-alist (list (list 213465879 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk 1 (get-buffer "biblist.py")))) mk))))
-(setq file-name-history '("~/trabajo/programas/biblio-py/yapbib/biblist.py" "~/trabajo/programas/python/scripts/" "~/trabajo/programas/python/scripts/bib_jabbrev.py" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/scripts/bibmanage.py" "~/trabajo/programas/biblio-py/yapbib/helper.py" "~/trabajo/programas/biblio-py/scripts/bibextract.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/data/tempo.bib" "~/trabajo/programas/biblio-py/yapbib/biblist.py" "~/trabajo/programas/biblio-py/data/test1.bib" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/data/test.bib" "~/trabajo/programas/biblio-py/data/test.tex" "~/trabajo/programas/biblio-py/data/test1.bib" "~/trabajo/programas/biblio-py/scripts/bibextract.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/setup.py" "~/trabajo/programas/biblio-py/query_ads/" "~/trabajo/programas/biblio-py/scripts/" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/" "~/trabajo/programas/biblio-py/CHANGES.txt" "~/trabajo/programas/biblio-py/yapbib/version.py" "~/trabajo/programas/biblio-py/yapbib/" "~/trabajo/programas/biblio-py/README" "~/trabajo/programas/biblio-py/setup.py"))
+(setq register-alist (list (list 213465879 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk 1 (get-buffer "convert.py")))) mk))))
+(setq file-name-history '("~/usr/share/emacs/mypython.el" "~/Downloads/ypsu-latex-to-unicode-a85a8f0/convert.py" "~/usr/share/emacs/dot_emacs" "~/usr/share/emacs/mypython.el" "~/Downloads/ypsu-latex-to-unicode-a85a8f0/convert.py" "~/Downloads/ypsu-latex-to-unicode-a85a8f0/data/subscripts" "~/usr/share/notas/" "~/usr/share/notas/gtd.org" "~/Downloads/ypsu-latex-to-unicode-a85a8f0/data/textit" "~/Downloads/ypsu-latex-to-unicode-a85a8f0/convert.py" "~/Downloads/ypsu-latex-to-unicode-a85a8f0/data/symbols" "~/trabajo/programas/biblio-py/yapbib/helper.py" "~/trabajo/programas/biblio-py/yapbib/bibparse.py" "~/trabajo/programas/biblio-py/yapbib/bibitem.py" "~/trabajo/cv/" "~/trabajo/cv/cv_actual.tex" "~/trabajo/cv/cv_actual.t" "~/trabajo/cv/update_publicaciones.py" "~/trabajo/cv/conferencias.tex" "~/trabajo/cv/conf.tex" "~/trabajo/programas/biblio-py/scripts/new_get_papers.py" "~/trabajo/programas/biblio-py/data/tempo.bib" "~/trabajo/programas/biblio-py/data/tempo.ads" "~/trabajo/programas/biblio-py/query_ads/query_ads.py" "~/trabajo/programas/biblio-py/yapbib/biblist.py" "~/trabajo/programas/biblio-py/query_ads/query_ads.py" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/yapbib/helper.py" "~/trabajo/programas/biblio-py/yapbib/adsparse.py" "~/trabajo/programas/biblio-py/yapbib/bibitem.py"))
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
 (desktop-create-buffer 206
-  "doc/intro.txt"
-  "intro.txt"
-  'text-mode
-  '(global-auto-revert-mode)
-  1
+  "../../../usr/share/emacs/mypython.el"
+  "mypython.el"
+  'emacs-lisp-mode
+  '(global-auto-revert-mode auto-complete-mode)
+  337
   '(nil nil)
   nil
   nil
   '((buffer-file-coding-system . undecided-unix)))
 
 (desktop-create-buffer 206
-  "yapbib/biblist.py"
-  "biblist.py"
+  "../../../Downloads/ypsu-latex-to-unicode-a85a8f0/convert.py"
+  "convert.py"
   'python-mode
-  '(abbrev-mode global-auto-revert-mode yas/minor-mode auto-complete-mode eldoc-mode outline-minor-mode)
-  10708
-  '(1 nil)
+  '(global-auto-revert-mode auto-complete-mode)
+  623
+  '(194 nil)
   nil
   nil
   '((tab-width . 2) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "../../../Downloads/ypsu-latex-to-unicode-a85a8f0/data/symbols"
+  "symbols"
+  'fundamental-mode
+  '(global-auto-revert-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "scripts/new_get_papers.py"
+  "new_get_papers.py"
+  'python-mode
+  '(global-auto-revert-mode auto-complete-mode outline-minor-mode)
+  5017
+  '(5000 nil)
+  nil
+  nil
+  '((tab-width . 2) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "../../../Downloads/ypsu-latex-to-unicode-a85a8f0/data/subscripts"
+  "subscripts"
+  'fundamental-mode
+  '(global-auto-revert-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/latex.py"
+  "latex.py"
+  'python-mode
+  '(global-auto-revert-mode auto-complete-mode outline-minor-mode)
+  13868
+  '(6821 nil)
+  nil
+  nil
+  '((tab-width . 4) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/bibparse.py"
+  "bibparse.py"
+  'python-mode
+  '(global-auto-revert-mode auto-complete-mode outline-minor-mode)
+  5220
+  '(4118 nil)
+  nil
+  nil
+  '((tab-width . 4) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/helper.py"
+  "helper.py"
+  'python-mode
+  '(global-auto-revert-mode auto-complete-mode outline-minor-mode)
+  1
+  '(8059 nil)
+  nil
+  nil
+  '((tab-width . 4) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/biblist.py"
+  "biblist.py"
+  'python-mode
+  '(abbrev-mode global-auto-revert-mode yas/minor-mode auto-complete-mode outline-minor-mode eldoc-mode)
+  8159
+  '(8114 nil)
+  nil
+  nil
+  '((tab-width . 2) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/bibitem.py"
+  "bibitem.py"
+  'python-mode
+  '(global-auto-revert-mode auto-complete-mode outline-minor-mode)
+  17203
+  '(17203 nil)
+  nil
+  nil
+  '((tab-width . 4) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "query_ads/query_ads.py"
+  "query_ads.py"
+  'python-mode
+  '(global-auto-revert-mode auto-complete-mode outline-minor-mode)
+  17540
+  '(17532 nil)
+  nil
+  nil
+  '((tab-width . 2) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/adsparse.py"
+  "adsparse.py"
+  'python-mode
+  '(global-auto-revert-mode auto-complete-mode outline-minor-mode)
+  1885
+  '(1864 nil)
+  nil
+  nil
+  '((tab-width . 2) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "data/tempo.bib"
+  "tempo.bib"
+  'bibtex-mode
+  '(global-auto-revert-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (TeX-master . t)))
+
+(desktop-create-buffer 206
+  "doc/intro.txt"
+  "intro.txt"
+  'text-mode
+  '(global-auto-revert-mode)
+  1594
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "../../cv/citations.png"
+  "citations.png"
+  'image-mode
+  '(global-auto-revert-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . no-conversion) (truncate-lines . t)))
 
