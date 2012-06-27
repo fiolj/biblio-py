@@ -64,7 +64,12 @@ def _registry(encoding):
         def decode(self,input,errors='strict'):
             """Convert latex source string to unicode."""
             if encoding:
-                input = unicode(input,encoding,errors)
+              if type(input) is unicode:
+                pass
+              elif type(input) is str or hasattr(s, '__unicode__'):
+                input= unicode(input, encoding, errors)
+              else:
+                input= unicode(str(input), encoding, errors)                
 
             # Note: we may get buffer objects here.
             # It is not permussable to call join on buffer objects
@@ -148,6 +153,8 @@ class _unlatex:
         if self.pos >= len(self.tex):
             raise StopIteration
         nextoutput = self.chunk()
+        if nextoutput == None:
+          return ''
         if self.lastoutput[0] == '\\' and self.lastoutput[-1].isalpha() and nextoutput[0].isalpha():
             nextoutput = ' ' + nextoutput   # add extra space to terminate csname
         self.lastoutput = nextoutput
@@ -169,7 +176,7 @@ class _unlatex:
         # nothing matches, just pass through token as-is
         self.pos += 1
         if self[-1] == '$':
-          return '\0'
+          return None
         return self[-1]
 
     def candidates(self,offset):
