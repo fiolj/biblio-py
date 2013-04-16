@@ -12,12 +12,17 @@ doc/index.txt
 doc/intro.txt
 doc/scripting.txt
 doc/tesis.py
+doc/_build/html/_sources/bibextract.txt
+doc/_build/html/_sources/bibmanage.txt
+doc/_build/html/_sources/get_papers.txt
+doc/_build/html/_sources/index.txt
+doc/_build/html/_sources/intro.txt
+doc/_build/html/_sources/scripting.txt
 query_ads/__init__.py
 query_ads/query_ads.py
 scripts/bibextract.py
 scripts/bibmanage.py
 scripts/get_papers.py
-scripts/new_get_papers.py
 yapbib/__init__.py
 yapbib/adsparse.py
 yapbib/bibitem.py
@@ -26,5 +31,4 @@ yapbib/bibparse.py
 yapbib/helper.py
 yapbib/latex.py
 yapbib/latex_equivalents.py
-yapbib/load_utf8.py
 yapbib/version.py
