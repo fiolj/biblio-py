@@ -222,7 +222,7 @@ class BibItem(dict):
 
   def _format_one_author(self,auth, format=0, Initial=False):
     """Returns the author as:
-    format= 0  =>   F[irst|.] M[iddle|.] von Last
+    format= 0  =>   F[irst|.] M[iddle|.] von Last[ Junior]
     format= 1  =>   von Last, F[irst|.] M[iddle|.]
     If Initial is True, only the initials of first names are printed
     """
@@ -249,6 +249,8 @@ class BibItem(dict):
           autor +=', %s' %(auth[A_JR])
     else: # Default format
       autor= ' '.join([first,auth[A_VON], auth[A_LAST]])
+      if auth[A_JR].strip() != '':
+        autor +=' %s' %(auth[A_JR])
     return autor.replace('  ',' ')
 
   def get_authorsList(self, format=0, Initial=False, who='author'):

@@ -251,9 +251,6 @@ def replace_abbrevs(strs,sourcestrng):
       v= v.replace('definitionofstring(%s)'%(abbrev).lower(),defin)
       v= v.replace('definitionofstring(%s)'%(abbrev).upper(),defin)
       d= ' '.join([x.strip().strip('"') for x in v.split('#')])
-#       if v.find('"') != -1 and 'Phys' in v:
-#         print 'v',v
-#         print 'd',d
     return  d
   return sourcestrng
 
@@ -268,8 +265,8 @@ def process_name(name):
     like in: von Hicks, III, Michael
     """
     full_last= a[0].strip()
-    full_first=a[1].strip()
-    junior= a[2]
+    full_first=a[2].strip()
+    junior= a[1].strip()
     von,last= get_vonlast(full_last)
     return [von.strip(),last.strip(),full_first.strip(),junior.strip()]
 
