@@ -199,13 +199,16 @@ def main():
     print '\n'.join(sorted(cit))
 
   bout=biblist.BibList()
+  # All keys from databases
   citekeys= dict([(b.get_item(k).get_field('_code'), k) for k in b.ListItems])
+
   for k in cit:
-    if citekeys[k] in b.ListItems:
-      item= b.get_item(citekeys[k])
-      if rem != []:
-        for cond in rem:  remove_fields(item, cond)
-      bout.add_item(item, k)
+    if k in citekeys.keys():
+      if citekeys[k] in b.ListItems:
+        item= b.get_item(citekeys[k])
+        if rem != []:
+          for cond in rem:  remove_fields(item, cond)
+        bout.add_item(item, k)
     else:
       print '# Warning: %s not found in database' %(k)
   mensaje='# created with:  %s\n'%(' '.join(sys.argv))
