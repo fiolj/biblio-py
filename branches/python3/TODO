@@ -1,0 +1,2 @@
+- *Regression*: When exporting to bibtex (with latex encoding) the "$" are missing
+- bibparse should be more informative if the bibtex file is not well formatted

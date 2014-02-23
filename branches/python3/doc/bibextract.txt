@@ -1,0 +1,16 @@
+.. _bibextract:
+
+=====================
+ bibextract examples
+=====================
+
+Simple Example:  
+  The simplest use of bibextract is to get the bibliography cited in document.tex (directly or from document.aux). Use one of the following::
+    
+  $ bibextract document.tex
+  $ bibextract document.aux
+    
+  Here the bibtex items are read from a default database `$BIBDB`. This will create a file: `document.bib` with only the cited items.
+
+
+

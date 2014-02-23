@@ -1,0 +1,4 @@
+recursive-include doc *.py *.txt
+include CHANGES
+include CHANGES.txt
+include TODO
