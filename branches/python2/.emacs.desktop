@@ -1,0 +1,150 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Wed Aug 21 10:44:37 2013
+;; Desktop file format version 206
+;; Emacs version 24.3.1
+
+;; Global section:
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name "/home/fiol/trabajo/programas/biblio-py/yapbib/TAGS")
+(setq tags-table-list '("/home/fiol/trabajo/programas/biblio-py/yapbib/TAGS"))
+(setq search-ring '("chunk" "\\0" "errors" "to_bibtex" "candi" "to_bi" "export" "entries={}" "print" "sys.p" "neq" "dag" "bull" "infty" "Delta" "gamma"))
+(setq regexp-search-ring nil)
+(setq register-alist (list (list 213465879 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk 1 (get-buffer "latex.py")))) mk))))
+(setq file-name-history '("~/trabajo/programas/biblio-py/yapbib/biblist.py" "~/trabajo/programas/biblio-py/yapbib/latex_equivalents.py" "~/trabajo/programas/biblio-py/yapbib/bibitem.py" "~/trabajo/programas/biblio-py/MANIFEST" "~/trabajo/programas/biblio-py/yapbib/latex.py" "~/trabajo/programas/biblio-py/yapbib/bibparse.py" "~/trabajo/programas/biblio-py/yapbib/bibitem.py" "~/trabajo/programas/biblio-py/yapbib/adsparse.py" "~/trabajo/programas/biblio-py/scripts/get_papers.py" "~/trabajo/programas/biblio-py/tex_data/symbols" "~/trabajo/programas/biblio-py/tex_data/textbf" "~/trabajo/programas/biblio-py/tex_data/textit" "~/trabajo/programas/biblio-py/tex_data/textcal" "~/trabajo/Proyectos/phys_notes/mainxs.tex" "~/trabajo/programas/biblio-py/tex_data/textbf" "~/trabajo/programas/biblio-py/tex_data/symbols" "~/trabajo/programas/biblio-py/tex_data/accents" "~/trabajo/programas/biblio-py/tex_data/symbols" "~/trabajo/programas/biblio-py/tex_data/accents" "~/trabajo/programas/biblio-py/tempo.bib" "~/trabajo/programas/biblio-py/tempo.ads" "~/trabajo/programas/biblio-py/tex_data/symbols" "~/trabajo/programas/biblio-py/tex_data/superscripts" "~/trabajo/programas/biblio-py/tex_data/subscripts" "~/trabajo/programas/biblio-py/latex_equivalents.py" "~/trabajo/programas/biblio-py/latex_data/symbols" "~/trabajo/programas/biblio-py/tex_data/symbols" "~/trabajo/programas/biblio-py/yapbib/load_utf8.py" "~/trabajo/programas/biblio-py/yapbib/latex.py" "~/Downloads/ypsu-latex-to-unicode-a85a8f0/data/symbols"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "scripts/bibextract.py"
+  "bibextract.py"
+  'python-mode
+  '(global-auto-revert-mode yas/minor-mode auto-complete-mode autopair-mode TeX-PDF-mode)
+  7376
+  '(7311 nil)
+  nil
+  nil
+  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/latex.py"
+  "latex.py"
+  'python-mode
+  '(global-auto-revert-mode yas/minor-mode auto-complete-mode autopair-mode outline-minor-mode TeX-PDF-mode)
+  1
+  '(5242 nil)
+  nil
+  nil
+  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/biblist.py"
+  "biblist.py"
+  'python-mode
+  '(global-auto-revert-mode yas/minor-mode auto-complete-mode autopair-mode outline-minor-mode TeX-PDF-mode)
+  11060
+  '(10574 nil)
+  nil
+  nil
+  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/bibitem.py"
+  "bibitem.py"
+  'python-mode
+  '(global-auto-revert-mode yas/minor-mode auto-complete-mode autopair-mode outline-minor-mode eldoc-mode TeX-PDF-mode)
+  10719
+  '(1 nil)
+  nil
+  nil
+  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "MANIFEST"
+  "MANIFEST"
+  'fundamental-mode
+  '(global-auto-revert-mode autopair-mode TeX-PDF-mode)
+  1
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "setup.py"
+  "setup.py"
+  'python-mode
+  '(global-auto-revert-mode yas/minor-mode auto-complete-mode autopair-mode outline-minor-mode TeX-PDF-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/bibparse.py"
+  "bibparse.py"
+  'python-mode
+  '(global-auto-revert-mode yas/minor-mode auto-complete-mode autopair-mode outline-minor-mode TeX-PDF-mode)
+  4683
+  '(1 nil)
+  nil
+  nil
+  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "../../Proyectos/phys_notes/mainxs.tex"
+  "mainxs.tex"
+  'latex-mode
+  '(visual-line-mode global-auto-revert-mode yas/minor-mode auto-complete-mode autopair-mode TeX-PDF-mode reftex-mode)
+  498
+  '(498 nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "../../../usr/share/emacs/mypython.el"
+  "mypython.el"
+  'emacs-lisp-mode
+  '(global-auto-revert-mode yas/minor-mode auto-complete-mode autopair-mode TeX-PDF-mode)
+  337
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "yapbib/helper.py"
+  "helper.py"
+  'python-mode
+  '(global-auto-revert-mode yas/minor-mode auto-complete-mode autopair-mode outline-minor-mode TeX-PDF-mode)
+  1
+  '(8059 nil)
+  nil
+  nil
+  '((tab-width . 4) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "query_ads/query_ads.py"
+  "query_ads.py"
+  'python-mode
+  '(global-auto-revert-mode yas/minor-mode auto-complete-mode autopair-mode outline-minor-mode TeX-PDF-mode)
+  17540
+  '(17532 nil)
+  nil
+  nil
+  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "doc/intro.txt"
+  "intro.txt"
+  'text-mode
+  '(global-auto-revert-mode yas/minor-mode autopair-mode TeX-PDF-mode)
+  1594
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+

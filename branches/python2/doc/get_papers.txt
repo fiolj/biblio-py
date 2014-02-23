@@ -1,0 +1,20 @@
+.. _get_papers:
+
+=====================
+ get_papers examples
+=====================
+
+*  Example:  Get all the papers in the database for one author in a given year::
+
+   $ get_papers.py --author=Einstein,A. --year=1905
+    
+  you will get BibTeX entries in the standard output. There are options that change the behavior.
+
+* Example: Use of other options::
+    
+  $ get_papers.py --author=Einstein,A. --year=1905 -f html -o biblio.html
+  $ get_papers.py --author=Einstein,A. --year=1905 -f latex --output=biblio.tex
+  $ get_papers.py --author=Einstein,A. --year=1905 -f latex --sort=date,reverse 
+    
+ 
+

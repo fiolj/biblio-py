@@ -1,0 +1,21 @@
+Last Changes
+************
+
+v. 0.6.1
+--------
+
+* Added option to export to bibtex in different encodings
+
+* Parsing of tex files with two or more bibtex input files has been corrected in bibextract.py
+
+v. 0.6.0
+--------
+
+* Fixed bugs to all scripts and added option for version information output
+
+* bibextract.py now determines the bibtex file from the source.
+
+
+
+
+
