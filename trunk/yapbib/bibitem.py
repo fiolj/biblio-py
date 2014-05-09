@@ -389,9 +389,12 @@ class BibItem(dict):
       s+= '%spages = {%s},\n' %(initial_indent,p)
     # Close the bibitem       
     s+= '}\n'
+
     if encoding != None:
       s= s.encode(encoding,'ignore')  # Convert to latex some characters using encoding
-  #   s= handle_math(s,orden=1)      # Extra handling of math expressions (very simple)
+
+    #   # Aca falla algo
+    # s= helper.handle_math(s,orden=1)      # Extra handling of math expressions (very simple)
     return s
 
   def to_xml(self,p='',indent=2):

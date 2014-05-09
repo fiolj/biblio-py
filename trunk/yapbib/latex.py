@@ -56,7 +56,10 @@ def _registry(encoding):
                     except:
                         pass
                 if ord(c) in latex_equivalents:
-                    output.append(latex_equivalents[ord(c)])
+                    if (c >= u'\u2080') and (c <= u'\u2090') :
+                        output.append('${0}$'.format(latex_equivalents[ord(c)]))
+                    else:
+                        output.append(latex_equivalents[ord(c)])
                 else:
                     output += ['{\\char', str(ord(c)), '}']
             return ''.join(output), len(input)
@@ -204,14 +207,6 @@ class _unlatex:
           yield 2, (t,q)
         yield 1, t
 
-from latex_equivalents import latex_equivalents
-
-for _i in range(0x0020):
-    if _i not in latex_equivalents:
-        latex_equivalents[_i] = ''
-for _i in range(0x0020,0x007f):
-    if _i not in latex_equivalents:
-        latex_equivalents[_i] = chr(_i)
 
 # Characters that should be ignored and not output in tokenization
 _ignore = set([chr(i) for i in range(32)+[127]]) - set('\t\n\r')
@@ -226,6 +221,15 @@ _blacklist.add(None)    # shortcut candidate generation at end of data
 _l2u = {
     '\ ':ord(' ')   # unexpanding space makes no sense in non-TeX contexts
 }
+
+from latex_equivalents import latex_equivalents
+
+for _i in range(0x0020):
+    if _i not in latex_equivalents:
+        latex_equivalents[_i] = ''
+for _i in range(0x0020,0x007f):
+    if _i not in latex_equivalents:
+        latex_equivalents[_i] = chr(_i)
 
 for _tex in latex_equivalents:
     if _tex <= 0x0020 or (_tex <= 0x007f and len(latex_equivalents[_tex]) <= 1):
