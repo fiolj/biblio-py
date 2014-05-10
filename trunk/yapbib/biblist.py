@@ -327,8 +327,8 @@ class BibList(dict):
     for l in self.sortedList:
       s+= '%s\n' %(self.get_item(l).to_bibtex(indent=indent, width=width, fields=fields, encoding=encoding))
       
-    if not self.keepAbbrevs:      return s 
-    else:      return helper.reg_defstrng.sub(r'\1\2',s)
+    if not self.keepAbbrevs:   return s 
+    else:                      return helper.reg_defstrng.sub(r'\1\2',s)
 
 
   def export_bibtex(self, fname=None,indent=2, width=80, fields=None, encoding='latex'):

@@ -351,17 +351,17 @@ class BibItem(dict):
     initial_indent= indent*' '
     # Indent the values of the fields
     wrap= textwrap.TextWrapper(width=width,subsequent_indent= 3*initial_indent,break_long_words=False)
-    s= '@%s{%s,\n' %(self['_type'].upper(),self['_code'])
+    s= u'@%s{%s,\n' %(self['_type'].upper(),self['_code'])
 
     # Add list of authors
     all_fields = fields
-    for f in ['author','editor']:
+    for f in [u'author', u'editor']:
       if f in fields: 
         all_fields.remove(f)
         if self.has_key(f):
-          autores= ' and '.join(self.get_authorsList(format=1,who=f))
+          autores= u' and '.join(self.get_authorsList(format=1,who=f))
           wrap.initial_indent=initial_indent
-          s+= wrap.fill(f + ' = {' + autores +'},') + '\n'
+          s += wrap.fill(f + ' = {' + autores + '},') + '\n'
 
     # put braces around upper case in titles
     braces_field = ['title']
@@ -374,7 +374,9 @@ class BibItem(dict):
           if c.isupper():
             f = f + '{' + c + '}'
           else: f = f + c
-        s += wrap.fill('%s = {%s},' % (kk , f))+'\n'
+        # f= helper.mathmode(f.encode(self.encoding, 'ignore'))
+        # print f.encode(self.encoding,'ignore')
+        s += wrap.fill('%s = {%s},' % (kk , f))+ '\n'
 
     # Some fields that are copied literally
     for kk in all_fields:
