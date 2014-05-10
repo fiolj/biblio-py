@@ -56,10 +56,11 @@ def _registry(encoding):
                     except:
                         pass
                 if ord(c) in latex_equivalents:
-                    if (c >= u'\u2080') and (c <= u'\u2090') :
-                        output.append('${0}$'.format(latex_equivalents[ord(c)]))
-                    else:
-                        output.append(latex_equivalents[ord(c)])
+                    # lt = latex_equivalents[ord(c)]
+                    # if lt[0] in ['_','^']:
+                    #     output.append('${0}$'.format(lt))
+                    # else:
+                    output.append(latex_equivalents[ord(c)])
                 else:
                     output += ['{\\char', str(ord(c)), '}']
             return ''.join(output), len(input)

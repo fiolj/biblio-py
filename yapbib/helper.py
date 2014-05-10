@@ -364,6 +364,18 @@ def identify_some_journals(bibitem,known_journals=journal_data):
     return '',''
 
 
+def mathmode(string):
+  """Agrega math mode a titulos y abstraces"""
+  mathexp= ( re.compile(r'\^([^{])',re.I)
+             ,re.compile(r'\^{([^{]+)}',re.I)
+             ,re.compile(r'_([^{]+){',re.I)  
+             ,re.compile(r'_{([^{]+)}',re.I) 
+             ,re.compile(r'\\mathrm{([^{]+)}',re.I)
+  )
+  for i in mathexp:
+    string= i.sub("$\1$",string)
+  return string
+
 def handle_math(str,orden=0):
   """
   Convierte entre tex <--> html. 
