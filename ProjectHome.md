@@ -1,0 +1,1 @@
+library to manage bibliography and convert to different formats including bibtex, latex, html, xml
