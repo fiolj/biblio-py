@@ -12,12 +12,6 @@ doc/index.txt
 doc/intro.txt
 doc/scripting.txt
 doc/tesis.py
-doc/_build/html/_sources/bibextract.txt
-doc/_build/html/_sources/bibmanage.txt
-doc/_build/html/_sources/get_papers.txt
-doc/_build/html/_sources/index.txt
-doc/_build/html/_sources/intro.txt
-doc/_build/html/_sources/scripting.txt
 query_ads/__init__.py
 query_ads/query_ads.py
 scripts/bibextract.py

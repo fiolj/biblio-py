@@ -4,18 +4,18 @@ import os
 
 try:
   from optparse import OptionParser
-  import StringIO
+  import io
   import datetime
-except ImportError, e:
-  print 'file', __file__ ,e
+except ImportError as e:
+  print('file', __file__ ,e)
   sys.exit(1)
 
 try:
   from yapbib.version import VERSION
   from yapbib import biblist
   import query_ads.query_ads as ads
-except ImportError, e:
-  print 'Import Error', __file__ ,e
+except ImportError as e:
+  print('Import Error', __file__ ,e)
   sys.exit(1)
 
 def main():
@@ -74,14 +74,14 @@ def main():
   
   if op.help_advanced_options != False:
     if op.verbose:
-      print 'Complete list of possible options supported by Harvard:'
-      for k,v in ads.all_param.iteritems():
-        print '  %18s : %s'%(k,v)
+      print('Complete list of possible options supported by Harvard:')
+      for k,v in ads.all_param.items():
+        print('  %18s : %s'%(k,v))
     else:
-      print 'The more important parameters are:'
-      for k,v in ads.param_relevantes.iteritems():
-        print '  %18s : %s'%(k,v)
-      print '** To get a complete list use also --verbose **'
+      print('The more important parameters are:')
+      for k,v in ads.param_relevantes.items():
+        print('  %18s : %s'%(k,v))
+      print('** To get a complete list use also --verbose **')
     return 1
   
   if op.proxy != None: conexion={'http_proxy': op.proxy}
@@ -121,15 +121,15 @@ def main():
   Query= ads.AdsQuery(connection=conexion,options=opciones)
   nabst, page= Query.query()
   if nabst < 0:
-    print 'Error (%d), %s' %(nabst,page)
+    print('Error (%d), %s' %(nabst,page))
     sys.exit()
   else:
-    if op.verbose:  print '%d items downloaded' %(nabst)
+    if op.verbose:  print('%d items downloaded' %(nabst))
     
   # Load the results into the biblist object
-  fi= StringIO.StringIO(page)
+  fi= io.StringIO(page)
   n= b.import_ads(fi)
-  if op.verbose:  print '# %d items downloaded, total number of items %d' %(n, len(b.ListItems))
+  if op.verbose:  print('# %d items downloaded, total number of items %d' %(n, len(b.ListItems)))
 
   sortorder= op.sort.lower().split(',')
   if 'reverse' in sortorder:      reverse=True
@@ -139,7 +139,7 @@ def main():
 
   if op.save_dump != None:
     if op.verbose:
-      print '# Saving database to %s...' %(op.save_dump)
+      print('# Saving database to %s...' %(op.save_dump))
     b.dump(op.save_dump)
 
   b.output(output_file, formato, op.verbose)

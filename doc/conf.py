@@ -40,8 +40,8 @@ source_suffix = '.txt'
 master_doc = 'index'
 
 # General information about the project.
-project = u'biblio-py'
-copyright = u'2011, Juan Fiol'
+project = 'biblio-py'
+copyright = '2011, Juan Fiol'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -179,8 +179,8 @@ htmlhelp_basename = 'biblio-pydoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'biblio-py.tex', u'biblio-py Documentation',
-   u'Juan Fiol', 'manual'),
+  ('index', 'biblio-py.tex', 'biblio-py Documentation',
+   'Juan Fiol', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -212,6 +212,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'biblio-py', u'biblio-py Documentation',
-     [u'Juan Fiol'], 1)
+    ('index', 'biblio-py', 'biblio-py Documentation',
+     ['Juan Fiol'], 1)
 ]
