@@ -70,7 +70,6 @@ def parse_auxfile(auxfile):
     # Find the bibdata (file)
     m = rex_bibdata.search(line)
     if m is not None: bib = m.group(1)
-  # print 'reflist', reflist
   return bib, make_unique(reflist)
 
 
@@ -200,8 +199,8 @@ def main():
     else: failed = True
 
     if failed:
-      mensaje = 'Database file %s not found or failed to load. Set the name as an option or set the environment variable BIBDB' % (
-          fname)
+      mensaje = 'Database file %s not found or failed to load.'
+      mensaje += ' Set the name as an option or set the environment variable BIBDB' % (fname)
       parser.error(mensaje)
 
   if op.output is None: output = os.path.splitext(args[0])[0] + '.bib'
@@ -238,7 +237,8 @@ def main():
   if op.verbose: print('Items saved to %s' % (output))
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+  main()
 
 
 # Local Variables:
