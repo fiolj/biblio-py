@@ -29,6 +29,9 @@ import os
 # import textwrap
 import pickle as pickle
 
+# import bibitem
+# import helper
+# import latex
 from . import bibitem
 from . import helper
 from . import latex
@@ -384,7 +387,9 @@ class BibList(dict):
     #                                           label=label).encode('latex').decode('utf-8'),
     #                       tail)
     # fi = helper.openfile(fname, 'w'); fi.write(s); helper.closefile(fi)
-    s = '%s\n%s\n%s\n' % (head, self.to_latex(style=style, label=label), tail)
+    # s = '%s\n%s\n%s\n' % (head, self.to_latex(style=style, label=label), tail)
+    s = '{}\n{}\n{}\n'.format(head, self.to_latex(style=style, label=label), tail)
+    # print('***S***', s)
     fi = helper.openfile(fname, 'w', encoding='latex'); fi.write(s); helper.closefile(fi)
 
   ##############################

@@ -245,7 +245,9 @@ def to_filehandle(fname, flag='r', return_opened=False, encoding=None):
       import bz2
       fh = bz2.BZ2File(fname, flag)
     else:
-      fh = open(fname, mode=flag, encoding=encoding)
+      # print(fname, flag)
+      # fh = open(fname, mode=flag, encoding=encoding)
+      fh = open(fname, mode=flag)
     opened = True
   elif hasattr(fname, 'seek'):
     fh = fname
@@ -289,7 +291,7 @@ def openfile(fname=None, intent='r', encoding=None):
     else: fi = sys.stdout
     return fi
 
-  return to_filehandle(fname, intent, encoding)
+  return to_filehandle(fname=fname, flag=intent, encoding=encoding)
 
 
 reg_simplify = re.compile('\W')

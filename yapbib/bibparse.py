@@ -15,8 +15,10 @@ import re
 import string
 import codecs
 from . import latex
+# import latex
 latex.register()
 
+# import helper
 from . import helper
 
 reg_pages = re.compile(r'\W+')
