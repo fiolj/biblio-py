@@ -55,7 +55,7 @@ def _registry(encoding):
       for c in input:
         if encoding:
           try:
-            output.append(c.encode(encoding))
+            output.append(c.encode(encoding).decode('utf-8'))
             continue
           except:
             pass

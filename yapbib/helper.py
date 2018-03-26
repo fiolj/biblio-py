@@ -231,7 +231,7 @@ def is_readable_file_like(obj):  # No se si funciona
   return hasattr(obj, 'read') and isinstance(obj.read, collections.Callable)
 
 
-def to_filehandle(fname, flag='r', return_opened=False):
+def to_filehandle(fname, flag='r', return_opened=False, encoding=None):
   """ from matplotlib
   *fname* can be a filename or a file handle.  Support for gzipped
   files is automatic, if the filename ends in .gz.  *flag* is a
@@ -245,7 +245,7 @@ def to_filehandle(fname, flag='r', return_opened=False):
       import bz2
       fh = bz2.BZ2File(fname, flag)
     else:
-      fh = open(fname, flag)
+      fh = open(fname, mode=flag, encoding=encoding)
     opened = True
   elif hasattr(fname, 'seek'):
     fh = fname
@@ -283,13 +283,13 @@ def tsplit(s, sep):
     return stack
 
 
-def openfile(fname=None, intent='r'):
+def openfile(fname=None, intent='r', encoding=None):
   if fname is None or fname == '-' or fname == '':
     if intent == 'r': fi = sys.stdin
     else: fi = sys.stdout
     return fi
 
-  return to_filehandle(fname, intent)
+  return to_filehandle(fname, intent, encoding)
 
 
 reg_simplify = re.compile('\W')
