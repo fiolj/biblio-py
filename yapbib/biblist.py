@@ -60,9 +60,9 @@ class BibList(dict):
     try:
       self.bib.update(blist.bib)  # blist es un objeto del tipo BibList
       self.set_properties_from(blist)
-    except:
+    except BaseException:
       try: self.bib.update(blist)  # blist es solo un diccionario
-      except: raise TypeError('Argument incorrect type, must be BibList object')
+      except BaseException: raise TypeError('Argument incorrect type, must be BibList object')
 
   def set_properties_from(self, blist):
     """
@@ -71,9 +71,9 @@ class BibList(dict):
     try:
       self.ListItems += blist.ListItems
       self.ListItems = list(set(self.ListItems))
-    except: pass
+    except BaseException: pass
     try: self.abbrevDict.update(blist.abbrevDict)
-    except: pass
+    except BaseException: pass
     if self.issorted: self.sort()
     else: self.sortedList = self.ListItems[:]
 
@@ -106,7 +106,7 @@ class BibList(dict):
     if not self.issorted:
       self.sort()
     for l in self.sortedList[:nn]:
-      s += '%s\n' % (self.get_item(l).preview())
+      s += '{}\n'.format(self.get_item(l).preview())
 
     # s = str(s, self.encoding, 'ignore')
     return s
@@ -246,10 +246,10 @@ class BibList(dict):
     '''
     try:
       fi = helper.openfile(fname, 'rb'); c = pickle.load(fi); helper.closefile(fi)
-    except:
+    except BaseException:
       raise ValueError('Error loading data')
     try: self.update(c)
-    except: raise ValueError('Error updating data')
+    except BaseException: raise ValueError('Error updating data')
 
   def dump(self, fname, protocol=pickle.HIGHEST_PROTOCOL):
     '''
@@ -260,7 +260,7 @@ class BibList(dict):
     try:
       fo = helper.openfile(fname, 'wb'); pickle.dump(self, fo, protocol=pickle.HIGHEST_PROTOCOL)
       helper.closefile(fo)
-    except:
+    except BaseException:
       raise ValueError('Error loading data')
 
   def import_bibtex(self, fname=None, normalize=True, ReplaceAbbrevs=True):
@@ -538,7 +538,9 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
       fi = helper.openfile(fout, 'w'); fi.write(str(self)); helper.closefile(fi)
 
     def write_short(fout):
-      fi = helper.openfile(fout, 'w'); fi.write(self.preview().encode(self.encoding))
+      # fi = helper.openfile(fout, 'w'); fi.write(self.preview().encode(self.encoding))
+      # print(type(self.preview()))
+      fi = helper.openfile(fout, 'w'); fi.write(self.preview())
       helper.closefile(fi)
 
     exp_meth = {'b': self.export_bibtex,

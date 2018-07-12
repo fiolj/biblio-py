@@ -72,7 +72,7 @@ class BibItem(dict):
         try:
           if b.get_key() is not None: self.key = b.get_key()  # b is a BibItem object but has not key
           else: self.key = self.create_entrycode()
-        except:  # b is a dictionary
+        except BaseException:  # b is a dictionary
           self.key = self.create_entrycode()
 
       if self.key == '':
@@ -81,7 +81,7 @@ class BibItem(dict):
         self.normalize()
       try:
         self.set_styles(html=b.html_style, latex=b.latex_style)
-      except:
+      except BaseException:
         self.set_default_styles()
     else:
       self.key = None
@@ -189,7 +189,7 @@ class BibItem(dict):
       s += "%15s: %s\n" % (k, s1)
     try:
       return str(s, self.encoding, 'ignore')
-    except:
+    except BaseException:
       return s
 
   def preview(self):
@@ -199,8 +199,8 @@ class BibItem(dict):
     s = "%22s: %s, " % (self.key, self.get_authors(Initial=True, smart=True))
     s += "%s %s, " % (self.get_field('journal_abbrev', ''), self.get_field('volume', ''))
     s += "%s (%s).\n" % (self.get_field('pages'), self.get_field('year', ''))
-
-    return s.encode(self.encoding, 'ignore')
+    return s
+    # return s.encode(self.encoding, 'ignore')
 
   def get_listnames_last(self, who='author', strict=False):
     """
@@ -233,7 +233,7 @@ class BibItem(dict):
     first = ''
     try:
       aa = auth[A_FIRST].split()
-    except:
+    except BaseException:
       print(auth)
       sys.exit()
     for d in aa:
@@ -563,7 +563,7 @@ class BibItem(dict):
     """
     try:
       source + ' '
-    except:
+    except BaseException:
       raise TypeError('source must be a string')
     st, entry = bibparse.parseentry(source)
     if entry is not None:
@@ -575,7 +575,7 @@ class BibItem(dict):
     """
     try:
       source + ' '
-    except:
+    except BaseException:
       raise TypeError('source must be a string')
     entry = adsparse.parseentry(source)
     if entry is not None:
@@ -599,7 +599,7 @@ class BibItem(dict):
       v = self.get_field(f)
       if not caseSens:
         try: v = v.lower()
-        except: pass
+        except BaseException: pass
       if s in v: return True
 
     # Search for string in key
@@ -818,6 +818,7 @@ in the cusp formation mechanism for TI within this energy range.
 
 def main():
   test()
+
 
 if __name__ == "__main__": main()
 

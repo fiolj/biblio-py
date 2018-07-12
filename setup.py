@@ -16,11 +16,12 @@ import os
 import glob
 from distutils.core import setup
 
-VERSION = '0.6.2'
+VERSION = '0.6.3'
 
 
 def read(*rnames):
   return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+
 
 long_description = (
     read('README')

@@ -4,7 +4,7 @@ Script to perform some simple management and get some information form bibtex fi
 
 '''
 import sys
-sys.path.insert(0, '/home/fiol/trabajo/programas/biblio-py')
+# sys.path.insert(0, '/home/fiol/trabajo/programas/biblio-py')
 import os
 import optparse
 from yapbib.version import VERSION
@@ -13,7 +13,7 @@ import yapbib.biblist as biblist
 ################################################################################
 # CUSTOMIZE THESE VARIABLES if needed
 dumpfile = os.getenv('BIBDB', os.path.join(os.environ['HOME'], 'texmf/bibtex/bib/bib.dmp'))
-#*******************************************************************************
+# *******************************************************************************
 encoding = 'utf8'
 
 
@@ -150,10 +150,10 @@ Note that two of the input files are compressed
     failed = False
     if '.dmp' in fname:
       try: b.load(fname)
-      except: failed = True
+      except BaseException: failed = True
     elif '.bib' in fname or fname == '-':
       try: b.import_bibtex(fname, normalize=modify_keys)
-      except: failed = True
+      except BaseException: failed = True
     else: failed = True
     if op.verbose: print('# %d new items read' % (len(b.ListItems)))
 
@@ -233,6 +233,7 @@ Note that two of the input files are compressed
   if op.save_dump is not None:
     if op.verbose: print('# Saving database to %s...' % (op.save_dump))
     bout.dump(op.save_dump)
+
 
 if __name__ == "__main__":
   main()
