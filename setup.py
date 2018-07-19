@@ -15,8 +15,7 @@
 import os
 import glob
 from distutils.core import setup
-
-VERSION = '0.6.3'
+from yapbib.version import VERSION
 
 
 def read(*rnames):

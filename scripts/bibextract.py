@@ -12,7 +12,7 @@ import subprocess as sub
 ################################################################################
 # CUSTOMIZE THESE VARIABLES if needed
 dumpfile = os.getenv('BIBDB')
-#*******************************************************************************
+# *******************************************************************************
 encoding = 'utf8'
 from yapbib.version import VERSION
 import yapbib.biblist as biblist
@@ -27,15 +27,15 @@ rex_auxinput = re.compile(r'\\@input{([^}]+)}')
 
 def get_strng_field(k):
   """Parse arguments of the form string:field"""
-  l = str(k, encoding=encoding).split(':')
-  if len(l) == 1:
+  valor = k.split(':')
+  if len(valor) == 1:
     ff = []
-    ss = l[0]
-  elif len(l) == 2:
-    if l[0] == '': ss = '*'  # Search all strings
-    else: ss = l[0]
-    if l[1] == '': ff = []  # Search in all fields
-    else: ff = l[1].split(':')
+    ss = valor[0]
+  elif len(valor) == 2:
+    if valor[0] == '': ss = '*'  # Search all strings
+    else: ss = valor[0]
+    if valor[1] == '': ff = []  # Search in all fields
+    else: ff = valor[1].split(':')
   return ss, ff
 
 
@@ -192,10 +192,10 @@ def main():
     failed = False
     if '.dmp' in fname:
       try: b.load(fname)
-      except: failed = True
+      except BaseException: failed = True
     elif '.bib' in fname:
       try: b.import_bibtex(fname, normalize=False)
-      except: failed = True
+      except BaseException: failed = True
     else: failed = True
 
     if failed:
