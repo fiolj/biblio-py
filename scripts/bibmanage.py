@@ -4,9 +4,10 @@ Script to perform some simple management and get some information form bibtex fi
 
 '''
 import sys
-# sys.path.insert(0, '/home/fiol/trabajo/programas/biblio-py')
+sys.path.insert(0, '/home/fiol/trabajo/programas/biblio-py')
 import os
 import optparse
+import yapbib
 from yapbib.version import VERSION
 import yapbib.biblist as biblist
 
@@ -145,7 +146,7 @@ Note that two of the input files are compressed
   #########################################################################################
   # Read the database(s)
   if op.verbose: print('# Loading database...')
-  b = biblist.BibList()
+  # b = biblist.BibList()
   for fname in dbfiles:
     failed = False
     if '.dmp' in fname:

@@ -24,6 +24,9 @@ rex_texcite = re.compile(
 rex_auxcite = re.compile(r'\\citation{([^}]*)}')
 rex_auxinput = re.compile(r'\\@input{([^}]+)}')
 
+# Para biber y biblatex
+rex_auxcite = re.compile(r'\\abx@aux@cite{([^}]*)}')
+
 
 def get_strng_field(k):
   """Parse arguments of the form string:field"""

@@ -168,7 +168,6 @@ def parsedata(data):
   while True:
     entry = {}
     m = pub_rex.search(ss)
-
     if m is None:
       break
 
@@ -185,7 +184,6 @@ def parsedata(data):
       if entry is not None and entry != {}:
         entries[entry['_code']] = entry
       ss = ss[d[1] + 1:].strip()
-
   return strings, entries
 
 
@@ -199,9 +197,11 @@ def parseentry(source):
     raise TypeError
   # Transform Latex symbols and strip newlines and multiple spaces
 
-  source = codecs.decode(source, 'latex+utf8', 'ignore')
+  # source = codecs.decode(source, 'latex+utf8', 'ignore')
+
   source.replace('\n', ' ')
   source = re.sub('\s+', ' ', source)
+
 
   entry = {}
   # st = None
@@ -225,7 +225,6 @@ def parseentry(source):
     p = re.match('([^,]+),', s[2])  # Look for the key followed by a comma
     entry['_type'] = arttype
     entry['_code'] = p.group()[:-1]
-
     ff = get_fields(s[2][p.end():])
     for n, d in ff:
       if n == 'author' or n == 'editor':

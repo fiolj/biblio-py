@@ -25,5 +25,4 @@ yapbib/bibparse.py
 yapbib/helper.py
 yapbib/latex.py
 yapbib/latex_equivalents.py
-yapbib/test.py
 yapbib/version.py

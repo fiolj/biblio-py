@@ -245,7 +245,9 @@ class BibList(dict):
     It can be used uncompressed or compressed with gzip or bzip
     '''
     try:
-      fi = helper.openfile(fname, 'rb'); c = pickle.load(fi); helper.closefile(fi)
+      fi = helper.openfile(fname, 'rb');
+      c = pickle.load(fi);
+      helper.closefile(fi)
     except BaseException:
       raise ValueError('Error loading data')
     try: self.update(c)
