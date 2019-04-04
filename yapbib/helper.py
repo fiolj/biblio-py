@@ -3,7 +3,7 @@ import string
 import sys
 import collections
 
-#        ################################ Variables  ################################
+#        ################################ Variables  #####################
 # List of all possible fields.
 allfields = ('_type', 'address', 'author', 'booktitle', 'chapter', 'edition', '_code',
              'editor', 'howpublished', 'institution', 'journal', 'month', 'number', 'organization',
@@ -109,9 +109,9 @@ accent_tags = [  # Accents and other latin symbols
 ]
 
 other_tags = [
-    ('([^\\\\])~', '\g<1> ')  # Remove tilde (used in LaTeX for spaces)
+    ('([^\\\\])~', r'\g<1> ')  # Remove tilde (used in LaTeX for spaces)
     # Remove other unknown commands
-    , (r'\\textbf{([^{]+)}', r'<b>\g<1></b>'), (r'\\\\emph{([^{]+)}', r'<em>\g<1></em>'), (r'\\textit{([^{]+)}', r'<i>\1</i>'), (r'\[^ {]+{(.+)}', '\g<1> ')
+    , (r'\\textbf{([^{]+)}', r'<b>\g<1></b>'), (r'\\\\emph{([^{]+)}', r'<em>\g<1></em>'), (r'\\textit{([^{]+)}', r'<i>\1</i>'), (r'\[^ {]+{(.+)}', r'\g<1> ')
 ]
 
 # Some journal data.
@@ -126,7 +126,7 @@ journal_data = [
         'doi': '10.1016/j.nimb',
         'issn': ['0168-583X']},
     {
-        'regexp': 'Int(ernational)?[\.]?\s*J(our(nal)?)?[\.]?\s*(of)?\s*Q(uantum)?[\.]?\s*Ch(em(istry)?)?[\.]?',
+        'regexp': r'Int(ernational)?[\.]?\s*J(our(nal)?)?[\.]?\s*(of)?\s*Q(uantum)?[\.]?\s*Ch(em(istry)?)?[\.]?',
         'nombre': 'International Journal of Quantum Chemistry',
         'abbrev': 'IJQC',
         'doi': '10.1002/qua',
@@ -209,15 +209,20 @@ journal_data = [
 
 def is_string_like(obj):
   'Return True if *obj* looks like a string (from matplotlib)'
-  if isinstance(obj, str): return True
-  try: obj + ''
-  except: return False
+  if isinstance(obj, str):
+    return True
+  try:
+    obj + ''
+  except BaseException:
+    return False
   return True
 
 
 def isIterable(obj):
-  try: iter(obj)
-  except: return False
+  try:
+    iter(obj)
+  except BaseException:
+    return False
   return True
 
 
@@ -287,14 +292,16 @@ def tsplit(s, sep):
 
 def openfile(fname=None, intent='r', encoding=None):
   if fname is None or fname == '-' or fname == '':
-    if intent == 'r': fi = sys.stdin
-    else: fi = sys.stdout
+    if intent == 'r':
+      fi = sys.stdin
+    else:
+      fi = sys.stdout
     return fi
 
   return to_filehandle(fname=fname, flag=intent, encoding=encoding)
 
 
-reg_simplify = re.compile('\W')
+reg_simplify = re.compile(r'\W')
 
 
 def oversimplify(strng):
@@ -423,17 +430,20 @@ def identify_some_journals(bibitem, known_journals=journal_data):
   if 'doi' in bibitem:
     for j in known_journals:
       if bibitem['doi'].find(j['doi']) != -1:
-        if j['issn'] != []: bibitem['issn'] = j['issn'][0]
+        if j['issn'] != []:
+          bibitem['issn'] = j['issn'][0]
         return j['nombre'], j['abbrev']
 
   # If DOI does not work, identify the journal with the regexp
   if 'journal' in bibitem:
     for j in known_journals:
       if re.search(j['regexp'], bibitem['journal']) is not None:
-        if j['issn'] != []: bibitem['issn'] = j['issn'][0]
+        if j['issn'] != []:
+          bibitem['issn'] = j['issn'][0]
         return j['nombre'], j['abbrev']
 
-    # If it is not a know journal, get the abbreviation from the first letters of each word
+    # If it is not a know journal, get the abbreviation from the first letters
+    # of each word
     abbrev = create_initials(bibitem['journal'])
     return bibitem['journal'], abbrev
   else:
@@ -442,11 +452,16 @@ def identify_some_journals(bibitem, known_journals=journal_data):
 
 
 def mathmode(string):
-  """Agrega math mode a titulos y abstraces"""
-  mathexp = (re.compile(r'\^([^{])', re.I), re.compile(r'\^{([^{]+)}', re.I), re.compile(r'_([^{]+){', re.I), re.compile(r'_{([^{]+)}', re.I), re.compile(r'\\mathrm{([^{]+)}', re.I)
-             )
+  """Agrega math mode a titulos y abstracts"""
+  mathexp = (  # forma: a^\beta
+      re.compile(r"(.)([\^])(\\[\w]+)"), re.compile(r"(.)([_])(\\[\w]+)"),
+      # forma: a^b
+      re.compile(r"(.)([\^])([^\\{])"), re.compile(r"(.)([_])([^\\{])"),
+      # forma: a^{b}
+      re.compile(r"(.)([\^]){([^}]+)}"), re.compile(r"(.)([_]){([^}]+)}")
+  )
   for i in mathexp:
-    string = i.sub("$\1$", string)
+    string = i.sub(r"\1$\2{\3}$", string)
   return string
 
 
@@ -486,6 +501,7 @@ def handle_math(str, orden=0):
 
   return linecontent
 
+
 # return the string parameter without braces
 #
 rembraces_rex = re.compile('[{}]')
@@ -498,7 +514,7 @@ def removebraces(str):
 # data = title string
 # @return the capitalized string (first letter is capitalized), rest are capitalized
 # only if capitalized inside braces
-capitalize_rex = re.compile('({\w*})')
+capitalize_rex = re.compile(r'({\w*})')
 cap_rex = re.compile('{([a-zA-Z]*)}')
 
 
@@ -576,7 +592,7 @@ def no_outer_parens(filecontents):
   # rebuild filecontents
   filecontents = ''
 
-  at_rex = re.compile('@\w*')
+  at_rex = re.compile(r'@\w*')
 
   for phrase in paren_split:
     if look_next:
