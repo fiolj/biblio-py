@@ -1,3 +1,4 @@
+from .latex_equivalents import latex_equivalents
 """latex.py
 
 Character translation utilities for LaTeX-formatted text.
@@ -22,7 +23,7 @@ import codecs
 import re
 try:
   set([1, 2, 2, 1])
-except:
+except BaseException:
   from sets import Set as set
 
 
@@ -57,7 +58,7 @@ def _registry(encoding):
           try:
             output.append(c.encode(encoding).decode('utf-8'))
             continue
-          except:
+          except BaseException:
             pass
         if ord(c) in latex_equivalents:
           # lt = latex_equivalents[ord(c)]
@@ -109,8 +110,10 @@ def _tokenize(tex):
   while True:
     if pos > start:
       yield tex[start:pos]
-      if tex[start] == '\\' and not (tex[pos - 1].isdigit() and tex[start + 1].isalpha()):
-        while pos < len(tex) and tex[pos].isspace():  # skip blanks after csname
+      if tex[start] == '\\' and not (
+              tex[pos - 1].isdigit() and tex[start + 1].isalpha()):
+        while pos < len(tex) and tex[pos].isspace():
+          # skip blanks after csname
           pos += 1
 
     while pos < len(tex) and tex[pos] in _ignore:
@@ -118,7 +121,8 @@ def _tokenize(tex):
     if pos >= len(tex):
       return
     start = pos
-    if tex[pos:pos + 2] in {'$$': None, '/~': None}:    # protect ~ in urls
+    # protect ~ in urls
+    if tex[pos:pos + 2] in {'$$': None, '/~': None}:
       pos += 2
     elif tex[pos].isdigit():
       while pos < len(tex) and tex[pos].isdigit():
@@ -226,10 +230,9 @@ _blacklist.add(None)    # shortcut candidate generation at end of data
 
 # Construction of inverse translation table
 _l2u = {
-    '\ ': ord(' ')   # unexpanding space makes no sense in non-TeX contexts
+    r'\ ': ord(' ')   # unexpanding space makes no sense in non-TeX contexts
 }
 
-from .latex_equivalents import latex_equivalents
 
 for _i in range(0x0020):
   if _i not in latex_equivalents:

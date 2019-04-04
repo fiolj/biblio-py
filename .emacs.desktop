@@ -2,12 +2,12 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Mon Jul 16 11:10:05 2018
+;; Created Thu Apr  4 08:06:29 2019
 ;; Desktop file format version 208
-;; Emacs version 25.3.1
+;; Emacs version 26.1
 
 ;; Global section:
-(setq desktop-saved-frameset [frameset 1 (23372 42813 954354 59000) (desktop . "208") "fiol@banjo.lasie" nil nil ((((font-backend xft x) (font . "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1") (font-parameter . "DejaVu Sans Mono 9") (border-width . 0) (internal-border-width . 0) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars) (horizontal-scroll-bars) (foreground-color . "#ffffff") (background-color . "#263238") (mouse-color . "black") (border-color . "#37474f") (screen-gamma) (line-spacing) (left-fringe . 8) (right-fringe . 8) (scroll-bar-foreground) (scroll-bar-background) (menu-bar-lines . 1) (tool-bar-lines . 0) (title) (wait-for-wm . t) (tool-bar-position . top) (icon-type . t) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 0) (scroll-bar-height . 0) (alpha) (fullscreen . maximized) (display-type . color) (background-mode . dark) (cursor-color . "#ff9800") (sticky) (environment) (frameset--id . "F10D-BFC0-E698-FD51") (frameset--mini t . t) (modeline . t) (minibuffer . t) (unsplittable) (icon-name) (display . ":1") (explicit-name) (visibility . t) (height . 67) (width . 272) (left . 1365) (top + -1)) ((min-height . 4) (min-width . 10) (min-height-ignore . 2) (min-width-ignore . 5) (min-height-safe . 1) (min-width-safe . 2) (min-pixel-height . 60) (min-pixel-width . 70) (min-pixel-height-ignore . 30) (min-pixel-width-ignore . 35) (min-pixel-height-safe . 15) (min-pixel-width-safe . 14)) leaf (pixel-width . 1920) (pixel-height . 1004) (total-width . 274) (total-height . 66) (normal-height . 1.0) (normal-width . 1.0) (buffer "bibmanage.py" (selected . t) (hscroll . 0) (fringes 8 8 nil) (margins nil) (scroll-bars nil 0 t nil 0 nil) (vscroll . 0) (dedicated) (point . 758) (start . 1))))])
+(setq desktop-saved-frameset [frameset 1 (23717 58677 228361 44000) (desktop . "208") "fiol@sanson.lasie" nil nil ((((minibuffer . t) (undecorated) (override-redirect) (font-backend xft x) (font . "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1") (font-parameter . "DejaVu Sans Mono 9") (border-width . 0) (internal-border-width . 0) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars) (horizontal-scroll-bars) (foreground-color . "#ffffff") (background-color . "#263238") (mouse-color . "black") (border-color . "#37474f") (screen-gamma) (line-spacing) (left-fringe . 8) (right-fringe . 8) (no-special-glyphs) (scroll-bar-foreground) (scroll-bar-background) (menu-bar-lines . 1) (tool-bar-lines . 0) (title) (wait-for-wm . t) (tool-bar-position . top) (inhibit-double-buffering) (icon-type . t) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 0) (scroll-bar-height . 0) (alpha) (no-focus-on-map) (no-accept-focus) (fullscreen . maximized) (visibility . t) (skip-taskbar) (z-group) (display-type . color) (background-mode . dark) (cursor-color . "#ff9800") (sticky) (environment) (frameset--id . "F10D-BFC0-E698-FD51") (frameset--mini t . t) (modeline . t) (unsplittable) (icon-name) (display . ":0") (explicit-name) (fullscreen-restore . maximized) (height . 59) (width . 238) (left . 1919) (top + -1)) ((min-height . 4) (min-width . 10) (min-height-ignore . 2) (min-width-ignore . 4) (min-height-safe . 1) (min-width-safe . 2) (min-pixel-height . 68) (min-pixel-width . 80) (min-pixel-height-ignore . 34) (min-pixel-width-ignore . 32) (min-pixel-height-safe . 17) (min-pixel-width-safe . 16)) leaf (pixel-width . 1920) (pixel-height . 1002) (total-width . 240) (total-height . 58) (normal-height . 1.0) (normal-width . 1.0) (buffer "bibmanage.py" (selected . t) (hscroll . 0) (fringes 8 8 nil) (margins nil) (scroll-bars nil 0 t nil 0 nil) (vscroll . 0) (dedicated) (point . 758) (start . 1))))])
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name nil)
 (setq tags-table-list nil)
@@ -21,12 +21,12 @@
   "~/trabajo/programas/biblio-py/scripts/bibmanage.py"
   "bibmanage.py"
   'python-mode
-  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode auto-revert-mode)
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode auto-revert-mode hi-lock-mode)
   758
   '(758 nil)
   nil
   nil
-  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix))
+  '((tab-width . 2) (indent-tabs-mode) (buffer-display-time 23717 58677 212508 999000) (buffer-file-coding-system . undecided-unix))
   '((mark-ring (1))))
 
 (desktop-create-buffer 208
@@ -38,7 +38,7 @@
   '(nil nil)
   nil
   nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (case-fold-search . t) (truncate-lines))
+  '((indent-tabs-mode) (buffer-display-time 23717 58662 78607 594000) (buffer-file-coding-system . utf-8-unix) (case-fold-search . t) (truncate-lines))
   '((mark-ring nil)))
 
 (desktop-create-buffer 208
@@ -50,67 +50,67 @@
   '(4713 nil)
   nil
   nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines . t))
+  '((buffer-display-time 23749 6064 788694 887000) (buffer-file-coding-system . utf-8-unix) (truncate-lines . t))
   '((mark-ring (1))))
 
 (desktop-create-buffer 208
   "~/trabajo/programas/biblio-py/yapbib/latex.py"
   "latex.py"
   'python-mode
-  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode auto-revert-mode)
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode auto-revert-mode hi-lock-mode)
   1731
   '(1731 nil)
   nil
   nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix))
+  '((tab-width . 8) (indent-tabs-mode) (buffer-display-time 23749 6064 952874 838000) (buffer-file-coding-system . undecided-unix))
   '((mark-ring (1702 1731 1731 1731 1731 1663 1731 1731 1548 1572 1731 1731 1731 1731 1731 1731))))
 
 (desktop-create-buffer 208
   "~/trabajo/programas/biblio-py/yapbib/helper.py"
   "helper.py"
   'python-mode
-  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode auto-revert-mode)
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode auto-revert-mode hi-lock-mode)
   10807
   '(1 nil)
   nil
   nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix))
+  '((tab-width . 8) (indent-tabs-mode) (buffer-display-time 23749 6065 275964 638000) (buffer-file-coding-system . undecided-unix))
   '((mark-ring (10621 10621 10807))))
 
 (desktop-create-buffer 208
   "~/trabajo/programas/biblio-py/yapbib/bibitem.py"
   "bibitem.py"
   'python-mode
-  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode auto-revert-mode)
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode auto-revert-mode hi-lock-mode)
   12146
   '(13137 nil)
   nil
   nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix))
+  '((tab-width . 8) (indent-tabs-mode) (buffer-display-time 23749 6065 497090 891000) (buffer-file-coding-system . undecided-unix))
   '((mark-ring (13012 12882 11397 12365 18143 16499 16471 11390 871 12984 1 12913 12984 12984 11390 16485))))
 
 (desktop-create-buffer 208
   "~/trabajo/programas/biblio-py/query_ads/query_ads.py"
   "query_ads.py"
   'python-mode
-  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode auto-revert-mode)
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode auto-revert-mode hi-lock-mode)
   20034
   '(20069 nil)
   nil
   nil
-  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix))
+  '((tab-width . 2) (indent-tabs-mode) (buffer-display-time 23749 6065 806668 849000) (buffer-file-coding-system . undecided-unix))
   '((mark-ring (20018 20017 20204 20204 20204 1 20204 20204 20204 20204 20204 20204 20204 20204 20164 20034))))
 
 (desktop-create-buffer 208
   "~/trabajo/programas/biblio-py/scripts/get_papers.py"
   "get_papers.py"
   'python-mode
-  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode auto-revert-mode)
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode auto-revert-mode hi-lock-mode)
   5597
   '(1 nil)
   nil
   nil
-  '((tab-width . 2) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix))
+  '((tab-width . 2) (indent-tabs-mode) (buffer-display-time 23749 6065 958294 634000) (buffer-file-coding-system . undecided-unix))
   '((mark-ring nil)))
 
 (desktop-create-buffer 208
@@ -122,6 +122,6 @@
   '(nil nil)
   t
   nil
-  '((buffer-file-coding-system . no-conversion))
+  '((buffer-display-time 23717 58671 109326 806000) (buffer-file-coding-system . no-conversion))
   '((mark-ring nil)))
 

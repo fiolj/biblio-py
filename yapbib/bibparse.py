@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from . import helper
 """
 Set of routines to parse bibtex data and return each entry as a dictionary
 It is mainly intended as a helper file to the Class BibItem (see bibitem.py)
@@ -19,7 +20,6 @@ from . import latex
 latex.register()
 
 # import helper
-from . import helper
 
 reg_pages = re.compile(r'\W+')
 
@@ -28,8 +28,10 @@ def process_pages(pages):
   """ Returns a 2-tuple (firstpage,lastpage) from a string"""
   pp = reg_pages.split(pages)
   firstpage = pp[0]
-  if len(pp) == 2: lastpage = pp[1]
-  else: lastpage = ''
+  if len(pp) == 2:
+    lastpage = pp[1]
+  else:
+    lastpage = ''
   return firstpage, lastpage
 
 
@@ -60,7 +62,8 @@ def get_fields(strng, strict=False):
     if len(name.split()) > 1:   # Help recover from errors. name should be only one word anyway
       name = name.split()[-1]
     ss = ss.strip()
-    if sep == '': break  # We reached the end of the string
+    if sep == '':
+      break  # We reached the end of the string
 
     if ss[0] == '{':    # The value is surrounded by '{}'
       s, e = helper.match_pair(ss)
@@ -102,8 +105,9 @@ def create_entrycode(b={}):
   """
   len_aut = 7  # Length of the author surname used
   try:
-    aut = helper.capitalizestring('%s%s' % (b['author'][0][0], b['author'][0][1]))
-  except:
+    aut = helper.capitalizestring('%s%s' %
+                                  (b['author'][0][0], b['author'][0][1]))
+  except BaseException:
     print((b['author']))
     print((b['_code']))
   aut = helper.oversimplify(aut)
@@ -115,8 +119,10 @@ def create_entrycode(b={}):
   bibid += b.get('year', '')
   bibid += b.get('journal_abbrev', '')
 
-  if b['_type'] == 'mastersthesis': bibid += 'MT'
-  elif b['_type'] == 'phdthesis': bibid += 'PHD'
+  if b['_type'] == 'mastersthesis':
+    bibid += 'MT'
+  elif b['_type'] == 'phdthesis':
+    bibid += 'PHD'
   elif b['_type'] in ['book', 'incollection', 'proceedings', 'conference', 'misc', 'techreport']:
     if 'booktitle' in b:
       bibid += helper.create_initials(b['booktitle'])
@@ -127,8 +133,10 @@ def create_entrycode(b={}):
       bibid += '_' + helper.create_initials(b.get('title', '').upper())[:3]
 
   if 'thesis' not in b['_type']:
-    if 'firstpage' in b: bibid += 'p' + b['firstpage'].strip()
-    elif 'volume' in b: bibid += 'v' + b['volume'].strip()
+    if 'firstpage' in b:
+      bibid += 'p' + b['firstpage'].strip()
+    elif 'volume' in b:
+      bibid += 'v' + b['volume'].strip()
   return helper.oversimplify(bibid)
 
 
@@ -136,7 +144,8 @@ def replace_abbrevs(strs, bitem):
   """ Resolve all abbreviations found in the value fields of one entry"""
   b = bitem
   for f, v in list(b.items()):
-    if helper.is_string_like(v): b[f] = helper.replace_abbrevs(strs, v)
+    if helper.is_string_like(v):
+      b[f] = helper.replace_abbrevs(strs, v)
   return b
 
 
@@ -152,11 +161,12 @@ def parsedata(data):
   Parses a string with a bibtex database
   """
   # Regular expressions to use
-  pub_rex = re.compile('\s?@(\w*)\s*[{\(]')  # A '@' followed by any word and an opening
+  # A '@' followed by any word and an opening
+  pub_rex = re.compile(r'\s?@(\w*)\s*[{\(]')
   # brace or parenthesis
-  ########################################################################################
+  ##########################################################################
   #################### Reformat the string ####################
-  ss = re.sub('\s+', ' ', data).strip()
+  ss = re.sub(r'\s+', ' ', data).strip()
 
   # Find entries
   strings = {}
@@ -185,7 +195,11 @@ def parsedata(data):
       if entry is not None and entry != {}:
         entries[entry['_code']] = entry
       ss = ss[d[1] + 1:].strip()
-
+    else:
+      # Algo falló en el archivo bibtex. Esto debería mejorarse
+      print('El archivo bibtex tiene un error en la zona:' +
+            ss[m.end():m.end() + 20])
+      break
   return strings, entries
 
 
@@ -195,13 +209,11 @@ def parseentry(source):
   """
   try:
     source + ' '
-  except:
+  except BaseException:
     raise TypeError
   # Transform Latex symbols and strip newlines and multiple spaces
-
-  source = codecs.decode(source, 'latex+utf8', 'ignore')
   source.replace('\n', ' ')
-  source = re.sub('\s+', ' ', source)
+  source = re.sub(r'\s+', ' ', source)
 
   entry = {}
   # st = None
@@ -213,7 +225,8 @@ def parseentry(source):
   arttype = s[0].strip()[1:].lower()
 
   if arttype == 'string':
-    # Split string name and definition, removing outer "comillas" and put them in a list
+    # Split string name and definition, removing outer "comillas" and put them
+    # in a list
     name, defin = s[2].strip().split("=")
     defin = defin.replace('"', '').strip()
     if defin.startswith('{'):
@@ -231,7 +244,8 @@ def parseentry(source):
       if n == 'author' or n == 'editor':
         entry[n] = bibtexauthor(d)
       elif n == 'title' or n == 'abstract':
-        entry[n] = helper.capitalizestring(d)
+        t = helper.capitalizestring(d)
+        entry[n] = codecs.decode(t, 'latex+utf8', 'ignore')
       elif n == 'pages':
         entry['firstpage'], entry['lastpage'] = process_pages(d)
       elif n == 'year':
@@ -252,7 +266,9 @@ def test():
     filepath = sys.argv[1]
   else:
     print("No input file")
-    print(("USAGE:  " + sys.argv[0] + " FILE.bib\n\n  It will output the XML file: FILE.xml"))
+    print(("USAGE:  " +
+           sys.argv[0] +
+           " FILE.bib\n\n  It will output the XML file: FILE.xml"))
     sys.exit(2)
 
   strings, db = parsefile(filepath)
@@ -262,4 +278,6 @@ def test():
 def main():
   test()
 
-if __name__ == "__main__": main()
+
+if __name__ == "__main__":
+  main()
