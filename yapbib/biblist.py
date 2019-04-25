@@ -61,8 +61,10 @@ class BibList(dict):
       self.bib.update(blist.bib)  # blist es un objeto del tipo BibList
       self.set_properties_from(blist)
     except BaseException:
-      try: self.bib.update(blist)  # blist es solo un diccionario
-      except BaseException: raise TypeError('Argument incorrect type, must be BibList object')
+      try:
+        self.bib.update(blist)  # blist es solo un diccionario
+      except BaseException:
+        raise TypeError('Argument incorrect type, must be BibList object')
 
   def set_properties_from(self, blist):
     """
@@ -71,15 +73,21 @@ class BibList(dict):
     try:
       self.ListItems += blist.ListItems
       self.ListItems = list(set(self.ListItems))
-    except BaseException: pass
-    try: self.abbrevDict.update(blist.abbrevDict)
-    except BaseException: pass
-    if self.issorted: self.sort()
-    else: self.sortedList = self.ListItems[:]
+    except BaseException:
+      pass
+    try:
+      self.abbrevDict.update(blist.abbrevDict)
+    except BaseException:
+      pass
+    if self.issorted:
+      self.sort()
+    else:
+      self.sortedList = self.ListItems[:]
 
   def __str__(self):
     s = ''
-    if not self.issorted: self.sortedList = self.sort()
+    if not self.issorted:
+      self.sortedList = self.sort()
     for l in self.sortedList:
       s += '%s\n' % (self.get_item(l).__str__())
     # return s.encode(self.encoding, 'ignore')
@@ -121,7 +129,9 @@ class BibList(dict):
 
     if key in self.ListItems:
       if key == self.get_item(key).get_field('_code'):
-        sys.stderr.write('W: ENTRY ALREADY PRESENT: %s (%s)\n' % (key, bib['_code']))
+        sys.stderr.write(
+            'W: ENTRY ALREADY PRESENT: %s (%s)\n' %
+            (key, bib['_code']))
         return False
       else:
         key = be.get_field('_code')
@@ -198,7 +208,8 @@ class BibList(dict):
           oo.append(self.get_item(k).get_field('year', '').zfill(10))
           oo.append(self.get_item(k).get_field('month', ''))
         else:
-          oo.append(self.get_item(k).get_field(o, 'ZZZZ'))  # At the end if they have not field o
+          # At the end if they have not field o
+          oo.append(self.get_item(k).get_field(o, 'ZZZZ'))
       s.append(oo)
 
     s.sort(reverse=reverse)
@@ -216,8 +227,10 @@ class BibList(dict):
     result = []
     for f in self.sortedList:
       if types == 'all' or self.get_item(f).get('_type') in types:
-        if findstr == '*': found = True
-        else: found = self.get_item(f).search(findstr, fields, caseSens)
+        if findstr == '*':
+          found = True
+        else:
+          found = self.get_item(f).search(findstr, fields, caseSens)
         if found:
           result.append(f)
     return result
@@ -245,13 +258,15 @@ class BibList(dict):
     It can be used uncompressed or compressed with gzip or bzip
     '''
     try:
-      fi = helper.openfile(fname, 'rb');
-      c = pickle.load(fi);
+      fi = helper.openfile(fname, 'rb')
+      c = pickle.load(fi)
       helper.closefile(fi)
     except BaseException:
       raise ValueError('Error loading data')
-    try: self.update(c)
-    except BaseException: raise ValueError('Error updating data')
+    try:
+      self.update(c)
+    except BaseException:
+      raise ValueError('Error updating data')
 
   def dump(self, fname, protocol=pickle.HIGHEST_PROTOCOL):
     '''
@@ -260,7 +275,8 @@ class BibList(dict):
     '''
     # if not '.dmp' in fname: fname='%s.dmp' %(fname)
     try:
-      fo = helper.openfile(fname, 'wb'); pickle.dump(self, fo, protocol=pickle.HIGHEST_PROTOCOL)
+      fo = helper.openfile(fname, 'wb')
+      pickle.dump(self, fo, protocol=pickle.HIGHEST_PROTOCOL)
       helper.closefile(fo)
     except BaseException:
       raise ValueError('Error loading data')
@@ -285,11 +301,14 @@ class BibList(dict):
                 dict(v)),
             normalize=normalize)
         key = b1.get_key()               # The key is generated
-        if self.keepAbbrevs: status = self.add_item(v, key)
-        else: status = self.add_item(b1, key)
+        if self.keepAbbrevs:
+          status = self.add_item(v, key)
+        else:
+          status = self.add_item(b1, key)
         if status:
           ncount += 1
-          if normalize: self.get_item(key).normalize()  # _code is put equal to key
+          if normalize:
+            self.get_item(key).normalize()  # _code is put equal to key
     self.sort()
     return ncount
 
@@ -310,9 +329,9 @@ class BibList(dict):
     self.sort()
     return ncount
 
-##########################################################################################
+##########################################################################
     # export methods
-##########################################################################################
+##########################################################################
   def set_default_styles(self):
     for item in self.get_items():
       item.set_default_styles()
@@ -321,7 +340,8 @@ class BibList(dict):
     """
     Export all entries to a bibtex file. All strings are resolved.
     """
-    if not self.issorted: self.sort()
+    if not self.issorted:
+      self.sort()
 
     s = ''
     if self.keepAbbrevs:
@@ -340,31 +360,31 @@ class BibList(dict):
       s += '%s\n' % (self.get_item(l).to_bibtex(indent=indent,
                                                 width=width, fields=fields, encoding=encoding))
 
-    if not self.keepAbbrevs: return s
-    else: return helper.reg_defstrng.sub(r'\1\2', s)
+    if not self.keepAbbrevs:
+      return s
+    else:
+      return helper.reg_defstrng.sub(r'\1\2', s)
 
-  def export_bibtex(self, fname=None, indent=2, width=80, fields=None, encoding='latex'):
+  def export_bibtex(self, fname=None, indent=2, width=80,
+                    fields=None, encoding='latex'):
     """
     Export a bibliography (set of items) to a file in bibtex format:
     """
-    fi = helper.openfile(
-        fname,
-        'w'); fi.write(
-        self.to_bibtex(
-            indent,
-            width,
-            fields,
-            encoding=encoding))
+    fi = helper.openfile(fname, 'w')
+    s = self.to_bibtex(indent, width, fields, encoding=encoding)
+    fi.write(s)
     helper.closefile(fi)
 
   ##############################
   def to_latex(self, style={}, label=r'\item'):
-    if not self.issorted: self.sort()
+    if not self.issorted:
+      self.sort()
 
     s = ''
     for l in self.sortedList:
       if self.keepAbbrevs:
-        bib = bibitem.BibItem(self.get_item(l))  # copy the item to resolve_abbrevs
+        # copy the item to resolve_abbrevs
+        bib = bibitem.BibItem(self.get_item(l))
         bib.resolve_abbrevs(self.abbrevDict)
         ss = bib.to_latex(style)
       else:
@@ -372,7 +392,8 @@ class BibList(dict):
       s += '{} {}\n'.format(label, ss)
     return s
 
-  def export_latex(self, fname=None, style={}, label=r'\item', head=None, tail=None):
+  def export_latex(self, fname=None, style={},
+                   label=r'\item', head=None, tail=None):
     """
     Export a bibliography (set of items) to a file in latex format:
     """
@@ -390,9 +411,13 @@ class BibList(dict):
     #                       tail)
     # fi = helper.openfile(fname, 'w'); fi.write(s); helper.closefile(fi)
     # s = '%s\n%s\n%s\n' % (head, self.to_latex(style=style, label=label), tail)
-    s = '{}\n{}\n{}\n'.format(head, self.to_latex(style=style, label=label), tail)
+    s = '{}\n{}\n{}\n'.format(
+        head, self.to_latex(
+            style=style, label=label), tail)
     # print('***S***', s)
-    fi = helper.openfile(fname, 'w', encoding='latex'); fi.write(s); helper.closefile(fi)
+    fi = helper.openfile(fname, 'w', encoding='latex')
+    fi.write(s)
+    helper.closefile(fi)
 
   ##############################
   def to_html(self, style={}):
@@ -404,7 +429,8 @@ class BibList(dict):
       tipo = self.get_item(l).get_field('_type', 'article')
 
       if self.keepAbbrevs:
-        bib = bibitem.BibItem(self.get_item(l))  # copy the item to resolve_abbrevs
+        # copy the item to resolve_abbrevs
+        bib = bibitem.BibItem(self.get_item(l))
         bib.resolve_abbrevs(self.abbrevDict)
         ss = bib.to_html(style)
       else:
@@ -446,15 +472,19 @@ li.article .publisher {display:none;}
 div.abstracts {display: inline; font-weight: bold; text-decoration : none;  border: 3px ridge;}
 div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,100,110); text-align: justify;}
     """
-    if css_style is None: css_style = def_css_style
+    if css_style is None:
+      css_style = def_css_style
 
     if helper.is_string_like(separate_css):
       the_path, fname_css = os.path.split(separate_css)
       fpath = os.path.dirname(fname)
       the_path = os.path.normpath(os.path.join(fpath, the_path))
       fname_css = os.path.join(the_path, fname_css)
-      css = '  <link title="new" rel="stylesheet" href="' + separate_css + '" type="text/css">'
-      fi = helper.openfile(fname_css, 'w'); fi.write(css_style); helper.closefile(fi)
+      css = '  <link title="new" rel="stylesheet" href="' + \
+          separate_css + '" type="text/css">'
+      fi = helper.openfile(fname_css, 'w')
+      fi.write(css_style)
+      helper.closefile(fi)
     else:
       css = '<style type="text/css">' + css_style + '</style>'
 
@@ -489,17 +519,20 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
       """
 
     s = head + self.to_html(style=style) + tail
-    fi = helper.openfile(fname, 'w'); fi.write(s.encode(encoding, 'xmlcharrefreplace'))
+    fi = helper.openfile(fname, 'w')
+    fi.write(s.encode(encoding, 'xmlcharrefreplace'))
     helper.closefile(fi)
 
   ##############################
   def to_xml(self, prefix='', indent=2):
-    if not self.issorted: self.sort()
+    if not self.issorted:
+      self.sort()
 
     s = ''
     for l in self.sortedList:
       if self.keepAbbrevs:
-        bib = bibitem.BibItem(self.get_item(l))  # copy the item to resolve_abbrevs
+        # copy the item to resolve_abbrevs
+        bib = bibitem.BibItem(self.get_item(l))
         bib.resolve_abbrevs(self.abbrevDict)
         ss = bib.to_xml(p=prefix, indent=indent)
       else:
@@ -522,7 +555,8 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
       tail = "\n</" + prefix + "bibliography>"
 
     s = head + self.to_xml(prefix=prefix) + tail
-    fi = helper.openfile(fname, 'w'); fi.write(s.encode('utf-8', 'xmlcharrefreplace'))
+    fi = helper.openfile(fname, 'w')
+    fi.write(s.encode('utf-8', 'xmlcharrefreplace'))
     helper.closefile(fi)
 
   def output(self, fout=None, formato=None, verbose=True):
@@ -537,12 +571,14 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
     xml
     """
     def write_full(fout):
-      fi = helper.openfile(fout, 'w'); fi.write(str(self)); helper.closefile(fi)
+      fi = helper.openfile(fout, 'w')
+      fi.write(str(self))
+      helper.closefile(fi)
 
     def write_short(fout):
       # fi = helper.openfile(fout, 'w'); fi.write(self.preview().encode(self.encoding))
-      # print(type(self.preview()))
-      fi = helper.openfile(fout, 'w'); fi.write(self.preview())
+      fi = helper.openfile(fout, 'w')
+      fi.write(self.preview())
       helper.closefile(fi)
 
     exp_meth = {'b': self.export_bibtex,
@@ -550,25 +586,30 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
                 'h': self.export_html, 'x': self.export_xml,
                 's': write_short, 'f': write_full
                 }
-    if verbose: print(('# %d items to output' % (len(self.ListItems))))
+    if verbose:
+      print(('# %d items to output' % (len(self.ListItems))))
 
     if formato is not None:
-      fform = formato.lower()[0]
+      fform = formato[0].lower()
     else:
-      if (fout is not None) and (fout != '-'): fform = os.path.splitext(fout)[1][1].lower()
-      else: fform = 's'
+      if (fout is not None) and (fout != '-'):
+        fform = os.path.splitext(fout)[1][1].lower()
+      else:
+        fform = 's'
     exp_meth[fform](fout)
 
 
-##########################################################################################
-##########################################################################################
+##########################################################################
+##########################################################################
 
 def test():
   if sys.argv[1:]:
     filepath = sys.argv[1]
   else:
     print("No input file")
-    print(("USAGE:  " + sys.argv[0] + " FILE.bib\n\n  It will output the XML file: FILE.xml"))
+    print(("USAGE:  " +
+           sys.argv[0] +
+           " FILE.bib\n\n  It will output the XML file: FILE.xml"))
     sys.exit(2)
 
   biblio = BibList()
@@ -583,7 +624,8 @@ def test():
   print((20 * '='))
   print(('Items Ordenados por cite: %s' % (biblio.sort(['key']))))
   print((20 * '*'))
-  print(('Items Ordenados por Apellido de Autores: %s' % (biblio.sort(['author']))))
+  print(('Items Ordenados por Apellido de Autores: %s' %
+         (biblio.sort(['author']))))
   print((20 * '*'))
   print(('Items Ordenados por Fecha: %s' % (biblio.sort(['date']))))
   print((20 * '*'))
@@ -603,4 +645,5 @@ def main():
   test()
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+  main()

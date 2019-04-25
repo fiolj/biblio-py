@@ -30,9 +30,12 @@ latex.register()
 
 
 # Index used for internally for each part of a name
-A_VON = 0; A_LAST = 1; A_FIRST = 2; A_JR = 3
+A_VON = 0
+A_LAST = 1
+A_FIRST = 2
+A_JR = 3
 
-##########################################################################################
+##########################################################################
 
 
 class BibItem(dict):
@@ -53,7 +56,8 @@ class BibItem(dict):
       self.set_default_styles()
     else:
       self.set(bib, key)
-      if normalize: self.normalize()
+      if normalize:
+        self.normalize()
     self.encoding = 'utf8'
 
   def set(self, b, key=None):
@@ -70,8 +74,10 @@ class BibItem(dict):
         self.key = key
       else:
         try:
-          if b.get_key() is not None: self.key = b.get_key()  # b is a BibItem object but has not key
-          else: self.key = self.create_entrycode()
+          if b.get_key() is not None:
+            self.key = b.get_key()  # b is a BibItem object but has not key
+          else:
+            self.key = self.create_entrycode()
         except BaseException:  # b is a dictionary
           self.key = self.create_entrycode()
 
@@ -185,7 +191,8 @@ class BibItem(dict):
       if k.startswith('_'):
         continue
       s1 = helper.reg_defstrng.sub(r'\1\2', self.get_field(k, ''))
-      if k == 'doi': s1 = 'http://dx.doi.org/{0}'.format(s1)
+      if k == 'doi':
+        s1 = 'http://dx.doi.org/{0}'.format(s1)
       s += "%15s: %s\n" % (k, s1)
     try:
       return str(s, self.encoding, 'ignore')
@@ -197,7 +204,8 @@ class BibItem(dict):
     Preview some information on the item. It does not print correctly when missing fields
     """
     s = "%22s: %s, " % (self.key, self.get_authors(Initial=True, smart=True))
-    s += "%s %s, " % (self.get_field('journal_abbrev', ''), self.get_field('volume', ''))
+    s += "%s %s, " % (self.get_field('journal_abbrev', ''),
+                      self.get_field('volume', ''))
     s += "%s (%s).\n" % (self.get_field('pages'), self.get_field('year', ''))
     return s
     # return s.encode(self.encoding, 'ignore')
@@ -209,7 +217,7 @@ class BibItem(dict):
     """
     who = who.lower()
     if who not in ['author', 'editor']:
-      raise AttributeError("who must be author or editor, not %s" % (who))
+      raise AttributeError("who must be author or editor, not {}".format(who))
 
     if who in list(self.keys()):
       if strict:  # Return Last names
@@ -331,25 +339,14 @@ class BibItem(dict):
           s += '-%s' % (p)
     return s
 
-  # def to_format(self, bullet, style = {}, formato = 'bibtex'):
-  #   """Convert to different formats:
-  #   bibtex, latex, html, xml,...  each item.
-
-  #   Arguments:
-  #   - `self`:
-  #   - `bullet`:
-  #   - `style`:
-  #   - `formato`:
-  #   """
-
   def to_bibtex(self, indent=2, width=80, fields=None, encoding='latex'):
     """
     Format an entry as a bibtex item and returns it as a string,
     the argument wrap is the length of lines in output
     """
-
+    namefields = ['author', 'editor']
     if fields is None:
-      fields = ['author', 'editor'] + helper.textualfields[:]
+      fields = namefields + helper.textualfields[:]
 
     initial_indent = indent * ' '
     # Indent the values of the fields
@@ -362,7 +359,7 @@ class BibItem(dict):
 
     # Add list of authors
     all_fields = fields
-    for f in ['author', 'editor']:
+    for f in namefields:
       if f in fields:
         all_fields.remove(f)
         if f in self:
@@ -371,25 +368,28 @@ class BibItem(dict):
           s += wrap.fill(f + ' = {' + autores + '},') + '\n'
 
     # put braces around upper case in titles
-    braces_field = ['title']
+    braces_field = ['title', 'abstract']
     for kk in braces_field:
-      if kk in all_fields: all_fields.remove(kk)
+      if kk in all_fields:
+        all_fields.remove(kk)
       if kk in self:
         tit = helper.cap_rex.sub(r'\1', self[kk])
-        if len(tit) < 1:
+        if len(tit) < 1:        # No debería ser!
           print((self.key, self[kk]))
         f = tit[0]
         for c in tit[1:]:
           if c.isupper():
             f = f + '{' + c + '}'
-          else: f = f + c
-        # f= helper.mathmode(f.encode(self.encoding, 'ignore'))
-        # print f.encode(self.encoding,'ignore')
+          else:
+            f = f + c
+
+        f = f.encode(encoding).decode('utf-8')
+        f = helper.add_math(f)
         s += wrap.fill('%s = {%s},' % (kk, f)) + u'\n'
 
     # Some fields that are copied literally
     for kk in all_fields:
-      if kk in self and not kk.startswith('_') and (kk not in ['author', 'editor']):
+      if kk in self and not kk.startswith('_') and (kk not in namefields):
         if kk in helper.nowrapfields:  # Not wrap
           s += '%s%s = {%s}, \n' % (initial_indent, kk, self[kk])
         else:
@@ -401,12 +401,10 @@ class BibItem(dict):
     # Close the bibitem
     s += '}\n'
 
-    # if encoding is not None:
-    #   # Convert to latex some characters using encoding
-    #   s = s.encode(encoding, 'ignore')
-
-    # #   # Aca falla algo
-    # # s= helper.handle_math(s,orden=1)      # Extra handling of math expressions (very simple)
+    # JF: Esto estaba comentado porque no sabía como resolverlo
+    if encoding is not None:
+      # Convert to latex some characters using encoding
+      s = s.encode(encoding, 'ignore').decode('utf-8')
     return s
 
   def to_xml(self, p='', indent=2):
@@ -428,7 +426,8 @@ class BibItem(dict):
         v = helper.removebraces(v)
         v = helper.replace_tags(v, 'other')
         sp -= 1
-        s += '%s<%s%s>\n%s\n%s</%s%s>\n' % (sp * spc, p, 'authors', v, sp * spc, p, 'authors')
+        s += '%s<%s%s>\n%s\n%s</%s%s>\n' % (sp * spc,
+                                            p, 'authors', v, sp * spc, p, 'authors')
       else:
         if helper.is_string_like(e):
           v = helper.replace_tags(e, 'xml')
@@ -457,7 +456,8 @@ class BibItem(dict):
 
     st = dict(self.html_style)
     st.update(style)
-    if 'fields' not in st: st['fields'] = fields
+    if 'fields' not in st:
+      st['fields'] = fields
 
     # Format the title
     title = self.get_field('title', '')
@@ -483,19 +483,24 @@ class BibItem(dict):
     # Put all fields together
     s = ''
     for field in st['fields']:
-      if field == 'author': value = autores
-      elif field == 'title': value = title
+      if field == 'author':
+        value = autores
+      elif field == 'title':
+        value = title
       elif self.get_field(field, '') != '' and st.get(field, (' ', ' ')) is not None:
         value = helper.handle_math(self.get_field(field, '').strip())
         value = helper.removebraces(value).join(st.get(field, [' ', ' ']))
-      else: value = ''
+      else:
+        value = ''
       s += value
 
-    # Aca agrego algo al principio y al final del item completo (por ejemplo '<li>' )
+    # Aca agrego algo al principio y al final del item completo (por ejemplo
+    # '<li>' )
     if st.get('_type', ['', '']) is not None:
       s = s.strip().join(st.get('_type', ['', '']))
 
-    s = s.decode('latex', 'replace')  # Convert from latex some characters using encoding
+    # Convert from latex some characters using encoding
+    s = s.decode('latex', 'replace')
     return str(s)
     # return s
 
@@ -522,7 +527,8 @@ class BibItem(dict):
 
     st = dict(self.latex_style)
     st.update(style)
-    if 'fields' not in st: st['fields'] = fields
+    if 'fields' not in st:
+      st['fields'] = fields
 
     # if st.get('_code') !=  None:
     #   code= self.get('_code').join(st['_code'])
@@ -535,12 +541,16 @@ class BibItem(dict):
 
     s = ''
     for field in st['fields']:
-      if field == 'author': value = autores
-      elif field == 'title': value = title
+      if field == 'author':
+        value = autores
+      elif field == 'title':
+        value = title
       elif self.get_field(field, '') != '' and st.get(field, (' ', ' ')) is not None:
         value = helper.handle_math(self.get_field(field, '').strip())
-        value = bibparse.helper.removebraces(value).join(st.get(field, [' ', ' ']))
-      else: value = ''
+        value = bibparse.helper.removebraces(
+            value).join(st.get(field, [' ', ' ']))
+      else:
+        value = ''
       s += value
       # if self.get_field(field,'') != '' and st.get(field) != None:
       #   s+= self.get_field(field,'').strip().join(st[field])
@@ -586,26 +596,34 @@ class BibItem(dict):
   # 3
 
   def search(self, findstr, fields=[], caseSens=False):
-    if findstr == '*': return True
+    if findstr == '*':
+      return True
     if fields == []:   # Busca en todos los campos
       fields = self.get_fields()
 
-    if caseSens: s = findstr
-    else: s = findstr.lower()
+    if caseSens:
+      s = findstr
+    else:
+      s = findstr.lower()
 
     for f in fields:
       if f not in self.get_fields():
         continue
       v = self.get_field(f)
       if not caseSens:
-        try: v = v.lower()
-        except BaseException: pass
-      if s in v: return True
+        try:
+          v = v.lower()
+        except BaseException:
+          pass
+      if s in v:
+        return True
 
     # Search for string in key
     if 'key' in fields:
-      if caseSens: return s in self.key
-      else: return s in self.key.lower()
+      if caseSens:
+        return s in self.key
+      else:
+        return s in self.key.lower()
     else:
       return False
 
@@ -640,14 +658,16 @@ class BibItem(dict):
 
     # Check Journal and page, that should be enough (almost always)
     if self('journal_abbrev', '0') == it.get('journal_abbrev', '1'):
-      # Same journal AND either first page or volume coincide we assume is the same
+      # Same journal AND either first page or volume coincide we assume is the
+      # same
       if self.get('firstpage', '-1') == it.get('firstpage', '-2'):
         return True
       if self.get('volume', '-1') == it.get('volume', '-2'):
         return True
 
     if self.matchAuthorList(it):
-      # If authors AND either title or first page coincide we assume is the same
+      # If authors AND either title or first page coincide we assume is the
+      # same
       if self.get('title', '0') == it.get('title', '1'):
         return True
       elif self.get('firstpage', '-1') == it.get('firstpage', '-2'):
@@ -758,19 +778,27 @@ in the cusp formation mechanism for TI within this energy range.
   f = codecs.open(
       'bibit.html',
       'w',
-      encoding='utf8'); f.write(
+      encoding='utf8')
+  f.write(
       hhead +
       b.to_html() +
-      hfoot); f.close()
-  f = codecs.open('bibit.bib', 'w'); f.write(b.to_bibtex(width=80)); f.close()
+      hfoot)
+  f.close()
+  f = codecs.open('bibit.bib', 'w')
+  f.write(b.to_bibtex(width=80))
+  f.close()
   f = codecs.open(
-      'bibit.tex', 'w'); f.write(
+      'bibit.tex', 'w')
+  f.write(
       textwrap.fill(
           b.to_latex(
               style={
                   '_code': (
-                      r'[', r'] ')}), width=120)); f.close()
-  f = codecs.open('bibit.xml', 'w'); f.write(b.to_xml()); f.close()
+                      r'[', r'] ')}), width=120))
+  f.close()
+  f = codecs.open('bibit.xml', 'w')
+  f.write(b.to_xml())
+  f.close()
 
   # Other item copied from b
   print((80 * '*'))
@@ -793,7 +821,8 @@ in the cusp formation mechanism for TI within this energy range.
   print(("c.search('collisions'): ", c.search('collisions')))
   print(("c.search('Fiol'): ", c.search('Fiol')))
   print(("c.search('Nuclear'): ", c.search('Nuclear')))
-  print(("c.search('Nuclear',['author','year']): ", c.search('Nuclear', ['author', 'year'])))
+  print(("c.search('Nuclear',['author','year']): ",
+         c.search('Nuclear', ['author', 'year'])))
   print(("c.search('Nuclear',['author','year','journal']): ",
          c.search('Nuclear', ['author', 'year', 'journal'])))
 
@@ -820,11 +849,12 @@ def main():
   test()
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+  main()
 
 
 # ##########################################################################################
-#        ################################ Variables  ################################
+#        ################################ Variables  #####################
 # # list of additional fields, ignored by the standard BibTeX styles
 # ign = ('crossref', 'code', 'url', 'annote', 'abstract');
 
