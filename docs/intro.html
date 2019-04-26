@@ -1,0 +1,171 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Quick-start with Biblio-py &#8212; biblio-py 0.6.5 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="bibmanage examples" href="bibmanage.html" />
+    <link rel="prev" title="Documentation on biblio-py" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="bibmanage.html" title="bibmanage examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Documentation on biblio-py"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">biblio-py 0.6.5 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="quick-start-with-biblio-py">
+<h1>Quick-start with Biblio-py<a class="headerlink" href="#quick-start-with-biblio-py" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Installation</p>
+<p>The current version is 0.6.5</p>
+<p>Use Easy Install (or pip) to get the last version from <a class="reference external" href="http://pypi.python.org/pypi/biblio-py">pypi</a></p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span>$ easy_install -U biblio-py
+</pre></div>
+</div>
+</div>
+<p>Biblio-py is a package  written in python used to manage bibliography. Currently it contains two subpackages:</p>
+<ul class="simple">
+<li>yapbib: Yet Another Python BIBliography  manager tool, mainly for <a class="reference external" href="http://en.wikipedia.org/wiki/Bibtex">BibTeX</a> files but able to export to <cite>html</cite>, <cite>latex</cite> lists and <cite>xml</cite> and print to <em>ad-hoc</em> formats.</li>
+<li>query_ads: A simple python tool that permits to query <a class="reference external" href="http://adsabs.harvard.edu/physics_service.html">Harvard’s Database</a></li>
+</ul>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<p>The most important features are</p>
+<ul class="simple">
+<li>It is <strong>Open source</strong> Software (<a class="reference external" href="http://www.gnu.org/licenses">GNU General Public License</a>)</li>
+<li>Parsing of BibTeX and ADS portable format</li>
+<li>Built in conversion to BibTex, LaTeX, HTML and XML formats.</li>
+<li>Native Format for store uses <em>standard</em> python <a class="reference external" href="http://docs.python.org/library/pickle.html#module-pickle">pickle</a> format</li>
+<li>Convert accents and <em>some</em> non-english characters to XML entities.</li>
+<li>Handles correctly <em>some</em> math constructs, currently superscripts and subscripts. It should not be very difficult to add more.</li>
+<li>Include scripts to manipulate databases, get bibliography from ADS online database and extract citations from a LaTeX paper</li>
+<li>You can import the module from your script and perform Python-powered manipulation on the data.</li>
+<li>Object oriented model</li>
+</ul>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The package currently includes three scripts:</p>
+<dl class="docutils">
+<dt>bibmanage.py</dt>
+<dd>script used to search, extract, sort and export bibliography items from databases</dd>
+<dt>get_papers.py</dt>
+<dd>Query Harvard’s database</dd>
+<dt>bibextract.py</dt>
+<dd>Generates a restricted bibliography including only the items cited in a LaTeX article. Also allows to clean-up the entries.</dd>
+</dl>
+<p>To get help with any of the scripts just type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ &lt;scriptname&gt; -h
+$ &lt;scriptname&gt; --help
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>Create your own scripts</p>
+<p>It is easy to use the package for your own custom scripts. The scripts that are shipped with the package are good examples to learn to work with it. They are small, but full-fledged examples.</p>
+<hr class="docutils" />
+<p>Some examples of use:</p>
+<ul class="simple">
+<li><a class="reference internal" href="bibmanage.html#bibmanage"><span class="std std-ref">bibmanage examples</span></a>.</li>
+<li><a class="reference internal" href="get_papers.html#get-papers"><span class="std std-ref">get_papers examples</span></a>.</li>
+<li><a class="reference internal" href="bibextract.html#bibextract"><span class="std std-ref">bibextract examples</span></a>.</li>
+<li><a class="reference internal" href="scripting.html#scripting"><span class="std std-ref">Scripting using the library</span></a>.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Quick-start with Biblio-py</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Documentation on biblio-py</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="bibmanage.html"
+                        title="next chapter">bibmanage examples</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/intro.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="bibmanage.html" title="bibmanage examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Documentation on biblio-py"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">biblio-py 0.6.5 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Juan Fiol.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

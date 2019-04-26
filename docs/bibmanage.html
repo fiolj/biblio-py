@@ -1,0 +1,160 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>bibmanage examples &#8212; biblio-py 0.6.5 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="get_papers examples" href="get_papers.html" />
+    <link rel="prev" title="Quick-start with Biblio-py" href="intro.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="get_papers.html" title="get_papers examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Quick-start with Biblio-py"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">biblio-py 0.6.5 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="bibmanage-examples">
+<span id="bibmanage"></span><h1>bibmanage examples<a class="headerlink" href="#bibmanage-examples" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">Example:  Import the BibTeX file myrefs.bib and save them to the database myrefs.dmp:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bibmanage.py myrefs.bib -d myrefs.dmp
+</pre></div>
+</div>
+</li>
+<li><p class="first">Example:  Merge two bibtex files, create a new bibtex file and also dump to <cite>database.dmp</cite></p>
+<ul>
+<li><p class="first">If we want to keep the original keys on the BibTeX files we have to explicitly use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bibmanage.py myrefs1.bib  myrefs1.bib -f bib -o bib allrefs.bib -o database.dump  --keep-keys
+</pre></div>
+</div>
+</li>
+<li><p class="first">The following line will uniformize the keys from the data in the items:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bibmanage.py myrefs1.bib  myrefs1.bib -f bib -o allrefs.bib -o database.dump
+</pre></div>
+</div>
+<p>Observe that this is the default behaviour and will create a (hopefully) unique key using a simple algorithm. For articles it uses:</p>
+<p><em>First seven characters of name + year + journal abbreviation + p + page</em></p>
+</li>
+</ul>
+</li>
+<li><p class="first">Example: Select only those items with some substring in the key (output to stdout) from a bz2-comprised database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bibmanage.py myrefs.bib.bz2 -s substring:key -o -
+</pre></div>
+</div>
+</li>
+<li><p class="first">Example:  Select only those items whose author is (among others) autor1,B. and print them in HTML format to file autor1.html use one of the (short or long options are equivalent):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bibmanage.py myrefs.dmp -s autor1,B:author -o autor1.html -f html
+$ bibmanage.py myrefs.dmp --search=autor1,B:author --output=autor1.html --format=html
+</pre></div>
+</div>
+</li>
+<li><p class="first">The last example may be repeated using as source the original BibTeX file, but the parsing is slower:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bibmanage.py myrefs.bib -s autor1,B:author -o autor1.html
+</pre></div>
+</div>
+<p>Note that the <cite>–format</cite> option is redundant if the output is to a file with the <em>right</em> extension</p>
+</li>
+<li><p class="first">Example:  Select only those items whose author is (among others) autor1,B. but not autor2,C and print them in LaTeX format to file ejemplo.tex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bibmanage.py myrefs.dmp -s autor1,B:author -x autor2,C:author -o ejemplo.tex
+</pre></div>
+</div>
+</li>
+<li><p class="first">Restrict the last example to publications between years 2004 and 2006:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bibmanage.py myrefs.dmp -x autor1,B:author -x autor2,C:author --start-year=2004 \
+  --end-year=2006 -o ejemplo.tex
+</pre></div>
+</div>
+</li>
+<li><p class="first">Working with pipes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bibmanage -s LastName1:author biblio1.bib -f bib -o - | bibmanage \
+  -s LastName2:author biblio2.dmp - -o biblio.html
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Will get the items with LastName1 as author from biblio1.bib and the results are taken as input to merge with items by LastName2 from database biblio2.dmp. The output is in html format to the file biblio.html</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="intro.html"
+                        title="previous chapter">Quick-start with Biblio-py</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="get_papers.html"
+                        title="next chapter">get_papers examples</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/bibmanage.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="get_papers.html" title="get_papers examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Quick-start with Biblio-py"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">biblio-py 0.6.5 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Juan Fiol.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>
