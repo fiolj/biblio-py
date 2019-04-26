@@ -21,4 +21,4 @@ help:
 
 docs:
 	make html
-	mv  build/html/* ../docs
+	mv build/html/* ../docs
