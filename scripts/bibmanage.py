@@ -1,19 +1,23 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 '''
 Script to perform some simple management and get some information form bibtex files.
 
 '''
-import sys
-sys.path.insert(0, '/home/fiol/trabajo/programas/biblio-py')
-import os
-import optparse
-import yapbib
-from yapbib.version import VERSION
 import yapbib.biblist as biblist
+from yapbib.version import VERSION
+import yapbib
+import optparse
+import os
+# import sys
+# sys.path.insert(0, '/home/fiol/trabajo/programas/biblio-py')
 
-################################################################################
+##########################################################################
 # CUSTOMIZE THESE VARIABLES if needed
-dumpfile = os.getenv('BIBDB', os.path.join(os.environ['HOME'], 'texmf/bibtex/bib/bib.dmp'))
+dumpfile = os.getenv(
+    'BIBDB',
+    os.path.join(
+        os.environ['HOME'],
+        'texmf/bibtex/bib/bib.dmp'))
 # *******************************************************************************
 encoding = 'utf8'
 
@@ -27,15 +31,19 @@ def main():
       ff = []
       ss = l[0]
     elif len(l) == 2:
-      if l[0] == '': ss = '*'  # Search all strings
-      else: ss = l[0]
-      if l[1] == '': ff = []  # Search in all fields
-      else: ff = l[1].split(':')
+      if l[0] == '':
+        ss = '*'  # Search all strings
+      else:
+        ss = l[0]
+      if l[1] == '':
+        ff = []  # Search in all fields
+      else:
+        ff = l[1].split(':')
     return ss, ff
 
-  #########################################################################################
+  ##########################################################################
   # Command line options
-  #########################################################################################
+  ##########################################################################
   usage = """usage: %prog [options] [datafile1] [datafile2 ...]
   Ejemplo de uso:
 
@@ -53,9 +61,11 @@ Will get the items with LastName1 as author from biblio1.bib and the results are
 
 Note that two of the input files are compressed
   """
-  parser = optparse.OptionParser(usage, version=" %prog with biblio-py-{0}".format(VERSION))
+  parser = optparse.OptionParser(
+      usage, version=" %prog with biblio-py-{0}".format(VERSION))
 
-  parser.add_option("", "--list", action="store_true", help="List the database contents")
+  parser.add_option("", "--list", action="store_true",
+                    help="List the database contents")
 
   parser.add_option("", "--sort", help="Sort the items according to the following fields, for instance to sort them accoding to year and then author we would use --sort=year,author. In the same example, to sort in reverse order we would use: --sort=year,author,reverse. DEFAULT: key.")
 
@@ -65,9 +75,19 @@ Note that two of the input files are compressed
   parser.add_option("--year", default=None,
                     help="--year=y is a shortcut to '--start-year=y --end-year=y'")
 
-  parser.add_option("-b", "--startyear", type='int', default=0, help='Start Year')
+  parser.add_option(
+      "-b",
+      "--startyear",
+      type='int',
+      default=0,
+      help='Start Year')
 
-  parser.add_option("-e", "--endyear", type='int', default=9999, help='End Year')
+  parser.add_option(
+      "-e",
+      "--endyear",
+      type='int',
+      default=9999,
+      help='End Year')
 
   parser.add_option(
       "-i",
@@ -119,8 +139,10 @@ Note that two of the input files are compressed
 
   (op, args) = parser.parse_args()
 
-  if args == []: dbfiles = [dumpfile]
-  else: dbfiles = args
+  if args == []:
+    dbfiles = [dumpfile]
+  else:
+    dbfiles = args
   modify_keys = not op.keep_keys
   available_formats = {
       's': 'short',
@@ -140,23 +162,30 @@ Note that two of the input files are compressed
   else:
     formato = available_formats.get(op.format[0].lower(), 'short')
 
-  #########################################################################################
+  ##########################################################################
   # Create the List object
   b = biblist.BibList()
-  #########################################################################################
+  ##########################################################################
   # Read the database(s)
-  if op.verbose: print('# Loading database...')
+  if op.verbose:
+    print('# Loading database...')
   # b = biblist.BibList()
   for fname in dbfiles:
     failed = False
     if '.dmp' in fname:
-      try: b.load(fname)
-      except BaseException: failed = True
+      try:
+        b.load(fname)
+      except BaseException:
+        failed = True
     elif '.bib' in fname or fname == '-':
-      try: b.import_bibtex(fname, normalize=modify_keys)
-      except BaseException: failed = True
-    else: failed = True
-    if op.verbose: print('# %d new items read' % (len(b.ListItems)))
+      try:
+        b.import_bibtex(fname, normalize=modify_keys)
+      except BaseException:
+        failed = True
+    else:
+      failed = True
+    if op.verbose:
+      print('# %d new items read' % (len(b.ListItems)))
 
     if failed:
       mensaje = 'Database file %s not found or failed to load. Set the name as an option or set the environment variable BIBDB\n' % (
@@ -165,14 +194,17 @@ Note that two of the input files are compressed
 
   if op.sort is not None:
     sortorder = op.sort.lower().split(',')
-    if 'reverse' in sortorder: reverse = True
-    else: reverse = False
-    if reverse: sortorder.remove('reverse')
+    if 'reverse' in sortorder:
+      reverse = True
+    else:
+      reverse = False
+    if reverse:
+      sortorder.remove('reverse')
   else:
     sortorder = []
     reverse = False
 
-  #######################################################################################
+  ##########################################################################
   # Do the required action(s)
   bout = biblist.BibList()
   items = b.sortedList[:]  # All items
@@ -193,7 +225,11 @@ Note that two of the input files are compressed
     for cond in op.search:
       ss, ff = get_strng_field(cond)
       # search and append the results.
-      items.extend(bout.search(findstr=ss, fields=ff, caseSens=op.case_sensitive))
+      items.extend(
+          bout.search(
+              findstr=ss,
+              fields=ff,
+              caseSens=op.case_sensitive))
     for it in bout.sortedList[:]:  # purge not found items
       if it not in items:
         bout.remove_item(it)
@@ -232,7 +268,8 @@ Note that two of the input files are compressed
     print('# %d items processed' % (len(bout.ListItems)))
 
   if op.save_dump is not None:
-    if op.verbose: print('# Saving database to %s...' % (op.save_dump))
+    if op.verbose:
+      print('# Saving database to %s...' % (op.save_dump))
     bout.dump(op.save_dump)
 
 
