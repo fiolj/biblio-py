@@ -23,7 +23,7 @@ def read(*rnames):
 
 
 long_description = (
-    read('README')
+    read('README.md')
     + '\n' +
     read('CHANGES.txt')
 )
@@ -47,6 +47,7 @@ def setup_package():
         version=VERSION,
         description="Package to manage bibliography files",
         long_description=long_description,
+        long_description_content_type="text/markdown",
         license="GPLv2",
         url="https://github.com/fiolj/biblio-py",
         project_urls={'Documentation': 'http://fiolj.github.io/biblio-py/'},
