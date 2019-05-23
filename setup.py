@@ -34,7 +34,8 @@ scripts = glob.glob('scripts/*.py')
 
 def setup_package():
   # Rewrite the version file everytime
-  if os.path.exists('yapbib/version.py'): os.remove('yapbib/version.py')
+  if os.path.exists('yapbib/version.py'):
+    os.remove('yapbib/version.py')
   fo = open('yapbib/version.py', 'w')
   try:
     fo.write('VERSION= "{0}"'.format(VERSION))
@@ -47,7 +48,8 @@ def setup_package():
         description="Package to manage bibliography files",
         long_description=long_description,
         license="GPLv2",
-        url="http://fisica.cab.cnea.gov.ar/colisiones/staff/fiol/biblio-py.html",
+        url="https://github.com/fiolj/biblio-py",
+        project_urls={'Documentation': 'http://fiolj.github.io/biblio-py/'},
         keywords="bibliography, bibtex, converter, html, xml, latex, parser",
         author="Juan Fiol",
         author_email="juanfiol@gmail.com",
