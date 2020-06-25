@@ -2,54 +2,102 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Fri Apr 26 00:12:42 2019
+;; Created Thu May 23 08:33:21 2019
 ;; Desktop file format version 208
-;; Emacs version 26.1
+;; Emacs version 26.2
 
 ;; Global section:
-(setq desktop-saved-frameset [frameset 1 (23746 30506 721303 957000) (desktop . "208") "fiol@ultras" nil nil ((((minibuffer . t) (undecorated) (override-redirect) (font-backend xft x) (font . "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1") (font-parameter . "DejaVu Sans Mono 10") (border-width . 0) (internal-border-width . 0) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars) (horizontal-scroll-bars) (foreground-color . "#ffffff") (background-color . "#263238") (mouse-color . "black") (border-color . "#37474f") (screen-gamma) (line-spacing) (left-fringe . 8) (right-fringe . 8) (no-special-glyphs) (scroll-bar-foreground) (scroll-bar-background) (menu-bar-lines . 1) (tool-bar-lines . 0) (title) (wait-for-wm . t) (tool-bar-position . top) (inhibit-double-buffering) (icon-type . t) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 0) (scroll-bar-height . 0) (alpha) (no-focus-on-map) (no-accept-focus) (fullscreen . maximized) (visibility . t) (skip-taskbar) (z-group) (display-type . color) (background-mode . dark) (cursor-color . "#ff9800") (sticky) (environment) (frameset--id . "A2FE-1BC9-7DEB-EC5B") (frameset--mini t . t) (modeline . t) (unsplittable) (icon-name) (display . ":0") (explicit-name) (height . 40) (width . 168) (left + -1) (top . 26)) ((min-height . 4) (min-width . 10) (min-height-ignore . 2) (min-width-ignore . 4) (min-height-safe . 1) (min-width-safe . 2) (min-pixel-height . 68) (min-pixel-width . 80) (min-pixel-height-ignore . 34) (min-pixel-width-ignore . 32) (min-pixel-height-safe . 17) (min-pixel-width-safe . 16)) leaf (pixel-width . 1366) (pixel-height . 663) (total-width . 170) (total-height . 39) (normal-height . 1.0) (normal-width . 1.0) (buffer "COMMIT_EDITMSG" (selected . t) (hscroll . 0) (fringes 8 8 nil) (margins nil) (scroll-bars nil 0 t nil 0 t) (vscroll . 0) (dedicated) (point . 20) (start . 1))))])
+(setq desktop-saved-frameset [frameset 1 (23782 34049 172962 418000) (desktop . "208") "fiol@sanson.lasie" nil nil ((((minibuffer . t) (undecorated) (override-redirect) (font-backend xft x) (font . "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1") (font-parameter . "DejaVu Sans Mono 10") (border-width . 0) (internal-border-width . 0) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars) (horizontal-scroll-bars) (foreground-color . "#ffffff") (background-color . "#263238") (mouse-color . "black") (border-color . "#37474f") (screen-gamma) (line-spacing) (left-fringe . 8) (right-fringe . 8) (no-special-glyphs) (scroll-bar-foreground) (scroll-bar-background) (menu-bar-lines . 1) (tool-bar-lines . 0) (title) (wait-for-wm . t) (tool-bar-position . top) (inhibit-double-buffering) (icon-type . t) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 0) (scroll-bar-height . 0) (alpha) (no-focus-on-map) (no-accept-focus) (fullscreen . maximized) (visibility . t) (skip-taskbar) (z-group) (display-type . color) (background-mode . dark) (cursor-color . "#ff9800") (sticky) (environment) (frameset--id . "A2FE-1BC9-7DEB-EC5B") (frameset--mini t . t) (modeline . t) (unsplittable) (icon-name) (display . ":0") (explicit-name) (height . 58) (width . 238) (left + -1) (top . 26)) ((min-height . 4) (min-width . 20) (min-height-ignore . 2) (min-width-ignore . 8) (min-height-safe . 1) (min-width-safe . 4) (min-pixel-height . 68) (min-pixel-width . 160) (min-pixel-height-ignore . 34) (min-pixel-width-ignore . 64) (min-pixel-height-safe . 17) (min-pixel-width-safe . 32)) hc (pixel-width . 1920) (pixel-height . 982) (total-width . 240) (total-height . 57) (normal-height . 1.0) (normal-width . 1.0) (combination-limit) (leaf (pixel-width . 960) (pixel-height . 982) (total-width . 120) (total-height . 57) (normal-height . 1.0) (normal-width . 0.5) (buffer "*grep*" (selected) (hscroll . 0) (fringes 8 8 nil) (margins nil) (scroll-bars nil 0 t nil 0 t) (vscroll . 0) (dedicated) (point . 511) (start . 1))) (leaf (last . t) (pixel-width . 960) (pixel-height . 982) (total-width . 120) (total-height . 57) (normal-height . 1.0) (normal-width . 0.5) (buffer "magit: biblio-py" (selected . t) (hscroll . 0) (fringes 8 8 nil) (margins nil) (scroll-bars nil 0 t nil 0 t) (vscroll . 0) (dedicated) (point . 12611) (start . 1)))))])
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name nil)
 (setq tags-table-list nil)
-(setq search-ring nil)
+(setq search-ring '("pypi" "gitlab" "aut" "to_latex" "auth" "to_bibte" "to_la"))
 (setq regexp-search-ring nil)
 (setq register-alist nil)
-(setq file-name-history '("~/trabajo/clases/pythons/clases-python/workbench/sonido.py" "~/trabajo/clases/pythons/clases-python/TODO.rst" "~/trabajo/clases/pythons/clases-python/#TODO.rst#" "~/trabajo/clases/pythons/clases-python/clases/scripts/animaciones/ejemplo_quiver.py" "~/trabajo/clases/pythons/clases-python/clases/scripts/animaciones/animate_decay.py" "~/trabajo/clases/pythons/clases-python/clases/scripts/animaciones/ejemplo_animation_1.py" "~/trabajo/clases/pythons/clases-python/clases/scripts/animaciones/ejemplo_varios.py" "~/trabajo/clases/pythons/clases-python/notas.org" "~/trabajo/clases/pythons/clases-python/clases/scripts/13_sounds_1.py" "~/personal/datos/private.org.gpg" "~/trabajo/clases/pythons/clases-python/workbench/fig_bsplines.py" "~/trabajo/clases/pythons/clases-python/solved/prog1-pi.py" "~/trabajo/clases/pythons/clases-python/solved/estima_pi.py" "~/trabajo/clases/pythons/clases-python/scripts/tempo.py" "~/Documents/futbol/notas/nota_politico.txt" "~/Dropbox/autos.txt" "~/trabajo/clases/pythons/clases-python/clases/array_atr.org" "~/trabajo/clases/pythons/clases-python/clases/scripts/07_ejemplo_oop_2.py" "~/trabajo/clases/pythons/clases-python/clases/scripts/07_ejemplo_oop_1.py" "~/trabajo/clases/pythons/clases-python/clases/scripts/07_ejemplo_oop.py"))
+(setq file-name-history '("~/trabajo/programas/biblio-py/scripts/bibmanage.py" "~/trabajo/programas/biblio-py/yapbib/version.py" "~/trabajo/programas/biblio-py/yapbib/bibitem.py" "~/trabajo/clases/pythons/clases-python/workbench/sonido.py" "~/trabajo/clases/pythons/clases-python/TODO.rst" "~/trabajo/clases/pythons/clases-python/#TODO.rst#" "~/trabajo/clases/pythons/clases-python/clases/scripts/animaciones/ejemplo_quiver.py" "~/trabajo/clases/pythons/clases-python/clases/scripts/animaciones/animate_decay.py" "~/trabajo/clases/pythons/clases-python/clases/scripts/animaciones/ejemplo_animation_1.py" "~/trabajo/clases/pythons/clases-python/clases/scripts/animaciones/ejemplo_varios.py" "~/trabajo/clases/pythons/clases-python/notas.org" "~/trabajo/clases/pythons/clases-python/clases/scripts/13_sounds_1.py" "~/personal/datos/private.org.gpg" "~/trabajo/clases/pythons/clases-python/workbench/fig_bsplines.py" "~/trabajo/clases/pythons/clases-python/solved/prog1-pi.py" "~/trabajo/clases/pythons/clases-python/solved/estima_pi.py" "~/trabajo/clases/pythons/clases-python/scripts/tempo.py" "~/Documents/futbol/notas/nota_politico.txt" "~/Dropbox/autos.txt" "~/trabajo/clases/pythons/clases-python/clases/array_atr.org" "~/trabajo/clases/pythons/clases-python/clases/scripts/07_ejemplo_oop_2.py" "~/trabajo/clases/pythons/clases-python/clases/scripts/07_ejemplo_oop_1.py" "~/trabajo/clases/pythons/clases-python/clases/scripts/07_ejemplo_oop.py"))
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
 (desktop-create-buffer 208
-  "~/trabajo/programas/biblio-py/.git/COMMIT_EDITMSG"
-  "COMMIT_EDITMSG"
-  'fundamental-mode
-  '(autopair-mode yas-minor-mode helm-mode TeX-PDF-mode)
-  20
-  '(nil nil)
+  nil
+  "*grep*"
+  'grep-mode
+  '(yas-minor-mode helm-mode TeX-PDF-mode)
+  511
+  '(249 nil)
+  t
+  '(:command ("find . -type f -exec grep --color -nH --null -e JF: \\{\\} +" grep-mode nil nil) :dir "/home/fiol/trabajo/programas/biblio-py/yapbib/")
+  '((buffer-display-time 23782 34045 840396 772000))
+  '((mark-ring (183 183 328 378 511))))
+
+(desktop-create-buffer 208
+  "~/trabajo/programas/biblio-py/yapbib/helper.py"
+  "helper.py"
+  'python-mode
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode auto-revert-mode magit-file-mode)
+  18509
+  '(18512 nil)
   nil
   nil
-  '((buffer-display-time 23746 30498 319207 693000) (buffer-file-coding-system . utf-8-unix))
+  '((tab-width . 8) (indent-tabs-mode) (buffer-display-time 23782 34043 802595 946000) (buffer-file-coding-system . utf-8-unix))
   '((mark-ring nil)))
 
 (desktop-create-buffer 208
   "~/trabajo/programas/biblio-py/yapbib/bibparse.py"
   "bibparse.py"
   'python-mode
-  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode smerge-mode)
-  5762
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode smerge-mode auto-revert-mode magit-file-mode)
+  2471
+  '(2474 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-display-time 23781 39906 336110 618000) (buffer-file-coding-system . utf-8-unix))
+  '((mark-ring (2469 2474 815 806 806 806 5741))))
+
+(desktop-create-buffer 208
+  "~/trabajo/programas/biblio-py/scripts/bibmanage.py"
+  "bibmanage.py"
+  'python-mode
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode auto-revert-mode magit-file-mode)
+  302
+  '(226 nil)
+  nil
+  nil
+  '((tab-width . 2) (indent-tabs-mode) (buffer-display-time 23781 39139 798773 450000) (buffer-file-coding-system . undecided-unix))
+  '((mark-ring (239))))
+
+(desktop-create-buffer 208
+  "~/trabajo/programas/biblio-py/yapbib/version.py"
+  "version.py"
+  'python-mode
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode auto-revert-mode magit-file-mode)
+  1
   '(nil nil)
   nil
   nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-display-time 23746 30498 67061 341000) (buffer-file-coding-system . utf-8-unix))
+  '((tab-width . 8) (indent-tabs-mode) (buffer-display-time 23781 38530 580664 983000) (buffer-file-coding-system . utf-8-unix))
   '((mark-ring nil)))
 
 (desktop-create-buffer 208
   "~/trabajo/programas/biblio-py/yapbib/biblist.py"
   "biblist.py"
   'python-mode
-  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode smerge-mode)
+  '(eldoc-mode auto-complete-mode autopair-mode elpy-mode company-mode yas-minor-mode flycheck-mode helm-mode TeX-PDF-mode hi-lock-mode smerge-mode auto-revert-mode magit-file-mode)
   7504
   '(nil nil)
   nil
   nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-display-time 23746 30498 64736 100000) (buffer-file-coding-system . undecided-unix))
+  '((tab-width . 8) (indent-tabs-mode) (buffer-display-time 23781 37111 866981 75000) (buffer-file-coding-system . undecided-unix))
+  '((mark-ring nil)))
+
+(desktop-create-buffer 208
+  "~/trabajo/programas/biblio-py/.git/COMMIT_EDITMSG"
+  "COMMIT_EDITMSG"
+  'text-mode
+  '(auto-fill-mode autopair-mode yas-minor-mode helm-mode TeX-PDF-mode with-editor-mode git-commit-mode bug-reference-mode)
+  57
+  '(748 nil)
+  nil
+  nil
+  '((buffer-display-time 23781 40216 401235 798000) (buffer-file-coding-system . utf-8-unix))
   '((mark-ring nil)))
 

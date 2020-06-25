@@ -350,11 +350,8 @@ class BibItem(dict):
 
     initial_indent = indent * ' '
     # Indent the values of the fields
-    wrap = textwrap.TextWrapper(
-        width=width,
-        subsequent_indent=3 *
-        initial_indent,
-        break_long_words=False)
+    wrap = textwrap.TextWrapper(width=width, subsequent_indent=3 * initial_indent,
+                                break_long_words=False)
     s = '@{0}{{{1},\n'.format(self['_type'].upper(), self['_code'])
 
     # Add list of authors
@@ -401,7 +398,6 @@ class BibItem(dict):
     # Close the bibitem
     s += '}\n'
 
-    # JF: Esto estaba comentado porque no sabía como resolverlo
     if encoding is not None:
       # Convert to latex some characters using encoding
       s = s.encode(encoding, 'ignore').decode('utf-8')
@@ -547,13 +543,16 @@ class BibItem(dict):
         value = title
       elif self.get_field(field, '') != '' and st.get(field, (' ', ' ')) is not None:
         value = helper.handle_math(self.get_field(field, '').strip())
-        value = bibparse.helper.removebraces(
-            value).join(st.get(field, [' ', ' ']))
+        value = value.join(st.get(field, [' ', ' ']))
       else:
         value = ''
       s += value
-      # if self.get_field(field,'') != '' and st.get(field) != None:
-      #   s+= self.get_field(field,'').strip().join(st[field])
+
+    s = s.encode('latex').decode('utf-8')
+    s = helper.add_math(s)
+
+    # if self.get_field(field,'') != '' and st.get(field) != None:
+    #   s+= self.get_field(field,'').strip().join(st[field])
     return s
 
   def display(self, fpp=sys.stdout):

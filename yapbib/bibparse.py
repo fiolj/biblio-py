@@ -39,7 +39,7 @@ def bibtexauthor(data):
   """ Returns a list of authors where each author is a list of the form:
   [von, Last, First, Jr]
   """
-  return list(map(helper.process_name, helper.removebraces(data).split(' and ')))
+  return list(map(helper.process_name, data.split(' and ')))
 
 
 def get_fields(strng, strict=False):
@@ -213,7 +213,6 @@ def parseentry(source):
   # Strip newlines and multiple spaces
   source.replace('\n', ' ')
   source = re.sub(r'\s+', ' ', source)
-
 
   entry = {}
   # st = None
