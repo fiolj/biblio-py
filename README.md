@@ -26,8 +26,8 @@ Scripts:
 
 There are three available ready-to-use scripts that serve as examples of use:
 
-
+|---------------|----------------------------------------------------|
 | bibmanage.py: | Manage bibliography                                |
 | bibextract.py | Extract citations from tex source                  |
 | get_papers.py | Retrieve bibliography information from Harvard ADS |
-
+|---------------|----------------------------------------------------|
