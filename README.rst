@@ -20,7 +20,7 @@ Features:
    online database and extract citations from a LaTeX document.
 -  Easy to use in your own scripts
 
-Documentación
+Documentation
 -------------
 
 http://fiolj.github.io/biblio-py/
