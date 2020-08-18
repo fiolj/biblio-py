@@ -4,10 +4,11 @@
  bibmanage examples
 ====================
 
-* Example:  Import the BibTeX file myrefs.bib and save them to the database myrefs.dmp::
+* Import the BibTeX file myrefs.bib and save them to the database myrefs.dmp::
   
   $ bibmanage.py myrefs.bib -d myrefs.dmp 
-* Example:  Merge two bibtex files, create a new bibtex file and also dump to `database.dmp`
+
+* Merge two bibtex files, create a new bibtex file and also dump to `database.dmp`
 
   - If we want to keep the original keys on the BibTeX files we have to explicitly use::
 
@@ -21,11 +22,11 @@
 
     *First seven characters of name + year + journal abbreviation + p + page*
 
-* Example: Select only those items with some substring in the key (output to stdout) from a bz2-comprised database::
+* Select only those items with some substring in the key (output to stdout) from a bz2-comprised database::
 
     $ bibmanage.py myrefs.bib.bz2 -s substring:key -o -
 
-* Example:  Select only those items whose author is (among others) autor1,B. and print them in HTML format to file autor1.html use one of the (short or long options are equivalent)::
+* Select only those items whose author is (among others) autor1,B. and print them in HTML format to file autor1.html use one of the (short or long options are equivalent)::
 
   $ bibmanage.py myrefs.dmp -s autor1,B:author -o autor1.html -f html
   $ bibmanage.py myrefs.dmp --search=autor1,B:author --output=autor1.html --format=html
@@ -36,7 +37,7 @@
 
   Note that the `--format` option is redundant if the output is to a file with the *right* extension
 
-* Example:  Select only those items whose author is (among others) autor1,B. but not autor2,C and print them in LaTeX format to file ejemplo.tex::
+* Select only those items whose author is (among others) autor1,B. but not autor2,C and print them in LaTeX format to file ejemplo.tex::
 
    $ bibmanage.py myrefs.dmp -s autor1,B:author -x autor2,C:author -o ejemplo.tex
 

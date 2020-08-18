@@ -23,7 +23,7 @@ Features:
 Documentation
 -------------
 
-http://fiolj.github.io/biblio-py/
+http://fiolj.gitlab.io/biblio-py/
 
 Scripts:
 --------
