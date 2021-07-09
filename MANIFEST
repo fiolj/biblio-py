@@ -4,12 +4,6 @@ CHANGES.txt
 README.rst
 TODO
 setup.py
-doc/build/html/_sources/bibextract.txt
-doc/build/html/_sources/bibmanage.txt
-doc/build/html/_sources/get_papers.txt
-doc/build/html/_sources/index.txt
-doc/build/html/_sources/intro.txt
-doc/build/html/_sources/scripting.txt
 doc/source/bibextract.txt
 doc/source/bibmanage.txt
 doc/source/conf.py

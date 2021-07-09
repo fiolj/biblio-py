@@ -243,7 +243,9 @@ def parseentry(source):
         entry[n] = bibtexauthor(d)
       elif n == 'title' or n == 'abstract':
         t = helper.capitalizestring(d)
-        entry[n] = codecs.decode(t, 'latex+utf8', 'ignore')
+        # JF: Algo no está bien. Porque no estoy convertiendo latex a strings
+        # entry[n] = codecs.decode(t, 'latex+utf8', 'ignore')
+        entry[n] = t
       elif n == 'pages':
         entry['firstpage'], entry['lastpage'] = process_pages(d)
       elif n == 'year':

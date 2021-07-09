@@ -1,5 +1,9 @@
 # Last Changes
 
+## v. 0.7.0
+
+  - Fixed bugs related to string and unicode objects
+
 ## v. 0.6.7
 
   - Working python 3 version

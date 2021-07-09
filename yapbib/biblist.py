@@ -19,8 +19,8 @@ it.preview()    # Show a preview (brief info)
 bib= it.to_bibtex() # get item in BibTeX form
 tex= it.to_latex() # get item in LaTeX form
 html= it.to_html() # get item in html form
-print it  # print full information on the item
-print unicode(it) # Use this if it has non-ascii characters
+print(it)  # print full information on the item
+print(unicode(it)) # Use this if it has non-ascii characters
 
 '''
 import sys
@@ -88,19 +88,19 @@ class BibList(dict):
     s = ''
     if not self.issorted:
       self.sortedList = self.sort()
-    for l in self.sortedList:
-      s += '%s\n' % (self.get_item(l).__str__())
+    for l0 in self.sortedList:
+      s += '%s\n' % (self.get_item(l0).__str__())
     # return s.encode(self.encoding, 'ignore')
     return s
 
   def __repr__(self):
-    s = 'bib= %s\n' % (str(self.bib).decode(self.encoding, 'ignore'))
+    s = f"bib= {str(self.bib)}\n"
     s += 'abbrevDict= %s\n' % (self.abbrevDict)
     s += 'ListItems= %s\n' % (self.ListItems)
     s += 'sortedList= %s\n' % (self.sortedList)
     s += 'issorted= %s\n' % (self.issorted)
     s += 'encoding= %s\n' % (self.encoding)
-    return s.decode(self.encoding, 'ignore')
+    return s
 
   def preview(self, n=None):
     """
@@ -124,7 +124,7 @@ class BibList(dict):
     key = be.get_key()
     if key is None:
       sys.stderr.write('%s\nENTRY FAILED TO IMPORT: %s\n%s%s\n' %
-                       (80 * '*', bib.get_field('_code', ''), bib, 80 * '*'))
+                       (80 * '*', be.get_field('_code', ''), bib, 80 * '*'))
       return False
 
     if key in self.ListItems:
@@ -356,9 +356,9 @@ class BibList(dict):
         s += '@STRING{%s = "%s"}\n' % (k, self.abbrevDict[k])
       s += '\n\n'
 
-    for l in self.sortedList:
-      s += '%s\n' % (self.get_item(l).to_bibtex(indent=indent,
-                                                width=width, fields=fields, encoding=encoding))
+    for l0 in self.sortedList:
+      s += '%s\n' % (self.get_item(l0).to_bibtex(indent=indent,
+                                                 width=width, fields=fields, encoding=encoding))
 
     if not self.keepAbbrevs:
       return s
@@ -372,6 +372,7 @@ class BibList(dict):
     """
     fi = helper.openfile(fname, 'w')
     s = self.to_bibtex(indent, width, fields, encoding=encoding)
+    # fi.write(s.encode("utf8"))
     fi.write(s)
     helper.closefile(fi)
 
@@ -381,15 +382,15 @@ class BibList(dict):
       self.sort()
 
     s = ''
-    for l in self.sortedList:
+    for l0 in self.sortedList:
       if self.keepAbbrevs:
         # copy the item to resolve_abbrevs
-        bib = bibitem.BibItem(self.get_item(l))
+        bib = bibitem.BibItem(self.get_item(l0))
         bib.resolve_abbrevs(self.abbrevDict)
         ss = bib.to_latex(style)
       else:
-        ss = self.get_item(l).to_latex(style)
-      s += '{} {}\n'.format(label, ss)
+        ss = self.get_item(l0).to_latex(style)
+      s += f'{label} {ss}\n'
     return s
 
   def export_latex(self, fname=None, style={},
@@ -441,7 +442,7 @@ class BibList(dict):
   def export_html(self, fname=None, style={}, head='', tail='',
                   separate_css='biblio.css', css_style=None, encoding='utf-8'):
     """
-    Export a bibliography (set of items) to a file in bibtex format: style is a dictionary
+    Export a bibliography (set of items) to a file in html format: style is a dictionary
     (like in bibitem objects) where the values is a pair (open,close) to insert around the
     data.
     head and tail are html code to insert before and after the list of publications
@@ -520,7 +521,8 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
 
     s = head + self.to_html(style=style) + tail
     fi = helper.openfile(fname, 'w')
-    fi.write(s.encode(encoding, 'xmlcharrefreplace'))
+    # fi.write(s.encode(encoding, 'xmlcharrefreplace'))
+    fi.write(s)
     helper.closefile(fi)
 
   ##############################
@@ -556,7 +558,8 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
 
     s = head + self.to_xml(prefix=prefix) + tail
     fi = helper.openfile(fname, 'w')
-    fi.write(s.encode('utf-8', 'xmlcharrefreplace'))
+    # fi.write(s.encode('utf-8', 'xmlcharrefreplace'))
+    fi.write(s)
     helper.closefile(fi)
 
   def output(self, fout=None, formato=None, verbose=True):
@@ -564,7 +567,7 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
     Export all entries to a fout file with default options. All strings are resolved.
     following formats are defined:
     short (default)
-    long
+    full
     bibtex
     latex
     html

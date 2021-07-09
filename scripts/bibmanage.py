@@ -5,8 +5,9 @@ Script to perform some simple management and get some information form bibtex fi
 '''
 import yapbib.biblist as biblist
 from yapbib.version import VERSION
-import yapbib
+# import yapbib
 import optparse
+# from pathlib import Path
 import os
 # import sys
 # sys.path.insert(0, '/home/fiol/trabajo/programas/biblio-py')
@@ -185,7 +186,7 @@ Note that two of the input files are compressed
     else:
       failed = True
     if op.verbose:
-      print('# %d new items read' % (len(b.ListItems)))
+      print(f'# {len(b.ListItems)} new items read')
 
     if failed:
       mensaje = 'Database file %s not found or failed to load. Set the name as an option or set the environment variable BIBDB\n' % (

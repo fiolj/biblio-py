@@ -2,7 +2,7 @@ import re
 import string
 import sys
 import collections
-
+from pathlib import Path
 #        ################################ Variables  #####################
 # List of all possible fields.
 allfields = ('_type', 'address', 'author', 'booktitle', 'chapter', 'edition', '_code',
@@ -109,9 +109,10 @@ accent_tags = [  # Accents and other latin symbols
 ]
 
 other_tags = [
-    ('([^\\\\])~', r'\g<1> ')  # Remove tilde (used in LaTeX for spaces)
+    ('([^\\\\])~', r'\g<1> '),  # Remove tilde (used in LaTeX for spaces)
     # Remove other unknown commands
-    , (r'\\textbf{([^{]+)}', r'<b>\g<1></b>'), (r'\\\\emph{([^{]+)}', r'<em>\g<1></em>'), (r'\\textit{([^{]+)}', r'<i>\1</i>'), (r'\[^ {]+{(.+)}', r'\g<1> ')
+    (r'\\textbf{([^{]+)}', r'<b>\g<1></b>'), (r'\\\\emph{([^{]+)}',
+                                              r'<em>\g<1></em>'), (r'\\textit{([^{]+)}', r'<i>\1</i>'), (r'\[^ {]+{(.+)}', r'\g<1> ')
 ]
 
 # Some journal data.
@@ -243,17 +244,18 @@ def to_filehandle(fname, flag='r', return_opened=False, encoding=None):
   read/write flag for :func:`file`
   """
   if is_string_like(fname):
-    if fname.endswith('.gz'):
-      import gzip
-      fh = gzip.open(fname, flag)
-    elif fname.endswith('.bz2'):
-      import bz2
-      fh = bz2.BZ2File(fname, flag)
-    else:
-      # print(fname, flag)
-      # fh = open(fname, mode=flag, encoding=encoding)
-      fh = open(fname, mode=flag)
+    fh = Path(fname).open(mode=flag)
+    # if fname.endswith('.gz'):
+    #   import gzip
+    #   fh = gzip.open(fname, flag)
+    # elif fname.endswith('.bz2'):
+    #   import bz2
+    #   fh = bz2.BZ2File(fname, flag)
+    # else:
+    #   fh = open(fname, mode=flag)
     opened = True
+  elif isinstance(fname, Path):
+    fh = fname.open(mode=flag)
   elif hasattr(fname, 'seek'):
     fh = fname
     opened = False

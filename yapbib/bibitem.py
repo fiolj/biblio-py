@@ -496,7 +496,7 @@ class BibItem(dict):
       s = s.strip().join(st.get('_type', ['', '']))
 
     # Convert from latex some characters using encoding
-    s = s.decode('latex', 'replace')
+    # s = s.decode('latex', 'replace')
     return str(s)
     # return s
 
