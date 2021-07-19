@@ -56,6 +56,9 @@ class BibList(dict):
     self.encoding = 'utf-8'
     self.bib = {}
 
+  def __len__(self):
+    return len(self.ListItems)
+
   def update(self, blist):
     try:
       self.bib.update(blist.bib)  # blist es un objeto del tipo BibList
@@ -296,10 +299,8 @@ class BibList(dict):
     if db is not None:
       for k, v in list(db.items()):
         b1 = bibitem.BibItem(
-            bibitem.bibparse.replace_abbrevs(
-                self.abbrevDict,
-                dict(v)),
-            normalize=normalize)
+            bibitem.bibparse.replace_abbrevs(self.abbrevDict, dict(v)),
+            key=k, normalize=normalize)
         key = b1.get_key()               # The key is generated
         if self.keepAbbrevs:
           status = self.add_item(v, key)

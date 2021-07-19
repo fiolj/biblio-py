@@ -1,5 +1,9 @@
 # Last Changes
 
+## v. 0.7.1
+
+  - Fixed bugs in bibmanage searching. Added option to bibtex output.
+
 ## v. 0.7.0
 
   - Fixed bugs related to string and unicode objects

@@ -28,6 +28,8 @@ from . import helper
 from . import latex
 latex.register()
 
+namefields = ['author', 'editor']
+
 
 # Index used for internally for each part of a name
 A_VON = 0
@@ -52,7 +54,8 @@ class BibItem(dict):
     self.latex_style = {}
     if bib == {}:
       self.update({})
-      self.key = None
+      # JF: Modified 21/07/14 because already set at beginning of function
+      # self.key = None
       self.set_default_styles()
     else:
       self.set(bib, key)
@@ -344,7 +347,6 @@ class BibItem(dict):
     Format an entry as a bibtex item and returns it as a string,
     the argument wrap is the length of lines in output
     """
-    namefields = ['author', 'editor']
     if fields is None:
       fields = namefields + helper.textualfields[:]
 
@@ -354,8 +356,9 @@ class BibItem(dict):
                                 break_long_words=False)
     s = '@{0}{{{1},\n'.format(self['_type'].upper(), self['_code'])
 
+    fields = helper.make_unique(fields)
     # Add list of authors
-    all_fields = fields
+    all_fields = fields.copy()
     for f in namefields:
       if f in fields:
         all_fields.remove(f)

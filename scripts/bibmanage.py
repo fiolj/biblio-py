@@ -27,19 +27,19 @@ def main():
   # CONFIGURACION ############################################################
   def get_strng_field(k):
     # l= str(k,encoding=encoding).split(':')
-    l = k.split(':')
-    if len(l) == 1:  # argument was on the form 'search_string. To search in all fields
+    line = k.split(':')
+    if len(line) == 1:  # argument was on the form 'search_string. To search in all fields
       ff = []
-      ss = l[0]
-    elif len(l) == 2:
-      if l[0] == '':
+      ss = line[0]
+    elif len(line) == 2:
+      if line[0] == '':
         ss = '*'  # Search all strings
       else:
-        ss = l[0]
-      if l[1] == '':
+        ss = line[0]
+      if line[1] == '':
         ff = []  # Search in all fields
       else:
-        ff = l[1].split(':')
+        ff = line[1].split(',')
     return ss, ff
 
   ##########################################################################
@@ -76,19 +76,11 @@ Note that two of the input files are compressed
   parser.add_option("--year", default=None,
                     help="--year=y is a shortcut to '--start-year=y --end-year=y'")
 
-  parser.add_option(
-      "-b",
-      "--startyear",
-      type='int',
-      default=0,
-      help='Start Year')
+  parser.add_option("-b", "--startyear", type='int',
+                    default=0, help='Start Year')
 
-  parser.add_option(
-      "-e",
-      "--endyear",
-      type='int',
-      default=9999,
-      help='End Year')
+  parser.add_option("-e", "--endyear", type='int',
+                    default=9999, help='End Year')
 
   parser.add_option(
       "-i",
@@ -111,18 +103,16 @@ Note that two of the input files are compressed
       default=False,
       help="Keep the original cite key")
 
-  parser.add_option(
-      "-I",
-      "--case-sensitive",
-      action="store_true",
-      default=False,
-      help="Make the search case sensitive")
+  parser.add_option("-I", "--case-sensitive",
+                    action="store_true", default=False,
+                    help="Make the search case sensitive")
 
-  parser.add_option(
-      "-o",
-      "--output",
-      default=None,
-      help="Output file. Use '-' for stdout (screen). DEFAULT: No output")
+  parser.add_option("-o", "--output",
+                    default=None,
+                    help="Output file. Use '-' for stdout (screen). DEFAULT: No output")
+
+  parser.add_option("--all-fields", action="store_false", default=True,
+                    help='Export to bibtex all fields')
 
   parser.add_option(
       "-f",
@@ -225,13 +215,15 @@ Note that two of the input files are compressed
     items = []  # overwrite items from sort
     for cond in op.search:
       ss, ff = get_strng_field(cond)
+      print(ff)
       # search and append the results.
       items.extend(
-          bout.search(
-              findstr=ss,
-              fields=ff,
-              caseSens=op.case_sensitive))
-    for it in bout.sortedList[:]:  # purge not found items
+          bout.search(findstr=ss, fields=ff,
+                      caseSens=op.case_sensitive))
+    #
+    allitems = bout.sortedList.copy()
+    # JF: Debug
+    for it in allitems:  # purge not found items
       if it not in items:
         bout.remove_item(it)
 
@@ -264,13 +256,22 @@ Note that two of the input files are compressed
     bout.sort(sortorder, reverse=reverse)
 
   if op.output is not None:
-    bout.output(op.output, formato, op.verbose)
+    if formato == "bibtex":
+      if op.all_fields:
+        fields = set()
+        for k in b.ListItems:
+          fields = fields | set(b.bib[k].keys())
+      else:
+        fields = None
+      bout.export_bibtex(op.output, fields=fields)
+    else:
+      bout.output(op.output, formato, op.verbose)
   else:
-    print('# %d items processed' % (len(bout.ListItems)))
+    print(f'# {len(bout)} items processed')
 
   if op.save_dump is not None:
     if op.verbose:
-      print('# Saving database to %s...' % (op.save_dump))
+      print('# Saving database to {op.save_dump}...')
     bout.dump(op.save_dump)
 
 

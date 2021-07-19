@@ -7,10 +7,10 @@ from pathlib import Path
 # List of all possible fields.
 allfields = ('_type', 'address', 'author', 'booktitle', 'chapter', 'edition', '_code',
              'editor', 'howpublished', 'institution', 'journal', 'month', 'number', 'organization',
-             'pages', 'publisher', 'school', 'series', 'title', 'volume', 'year', 'note', 'code',
+             'pages', 'publisher', 'school', 'series', 'title', 'volume', 'year', 'day' 'note', 'code',
              'url', 'crossref', 'annote', 'abstract', 'doi', 'journal_abbrev', 'date-added', 'date-modified', 'file')
 
-bibtexfields = ('author', 'title', 'journal', 'year', 'volume', 'number', 'pages', 'month',
+bibtexfields = ('author', 'title', 'journal', 'year', 'volume', 'number', 'pages', 'month', 'day',
                 'booktitle', 'chapter', 'address', 'edition', 'abstract', 'doi', 'url', 'editor',
                 'howpublished', 'school', 'institution', 'organization', 'publisher', 'series',
                 'note', 'crossref', 'annote', 'file')
@@ -206,6 +206,16 @@ journal_data = [
         'issn': ['0021-9606',
                  '1089-7690']}
 ]
+
+
+def make_unique(lista):
+  """Keep only unique elements of list
+  """
+  f = []
+  for it in lista:
+    if it not in f:
+      f.append(it)
+  return f
 
 
 def is_string_like(obj):
