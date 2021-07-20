@@ -215,14 +215,11 @@ Note that two of the input files are compressed
     items = []  # overwrite items from sort
     for cond in op.search:
       ss, ff = get_strng_field(cond)
-      print(ff)
       # search and append the results.
-      items.extend(
-          bout.search(findstr=ss, fields=ff,
-                      caseSens=op.case_sensitive))
+      items.extend(bout.search(findstr=ss, fields=ff,
+                               caseSens=op.case_sensitive))
     #
     allitems = bout.sortedList.copy()
-    # JF: Debug
     for it in allitems:  # purge not found items
       if it not in items:
         bout.remove_item(it)
