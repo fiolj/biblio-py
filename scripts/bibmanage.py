@@ -23,7 +23,8 @@ dumpfile = os.getenv(
 encoding = 'utf8'
 
 
-def main():
+if __name__ == "__main__":
+  # def main():
   # CONFIGURACION ############################################################
   def get_strng_field(k):
     # l= str(k,encoding=encoding).split(':')
@@ -204,7 +205,7 @@ Note that two of the input files are compressed
   if op.list:
     b.sort(sortorder, reverse)
     print('\n'.join(b.sortedList))
-    return
+    optparse.exit()
 
   for k in items:
     year = int(b.get_item(k).get_field('year', str(op.startyear)))
@@ -272,8 +273,8 @@ Note that two of the input files are compressed
     bout.dump(op.save_dump)
 
 
-if __name__ == "__main__":
-  main()
+# if __name__ == "__main__":
+  # main()
 
 
 # Local Variables:

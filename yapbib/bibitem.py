@@ -220,7 +220,7 @@ class BibItem(dict):
     """
     who = who.lower()
     if who not in ['author', 'editor']:
-      raise AttributeError("who must be author or editor, not {}".format(who))
+      raise AttributeError(f"who must be author or editor, not {who}.")
 
     if who in list(self.keys()):
       if strict:  # Return Last names
@@ -283,7 +283,7 @@ class BibItem(dict):
     return self.get_authorsList(format=1, Initial=True)[0]
 
   def get_editors(self):
-    aa = self.get_authorsList(format=0, Initial=False)
+    aa = self.get_authorsList(format=0, Initial=False, who='editor')
     if len(aa) == 1:
       return aa[0]
     else:
@@ -405,6 +405,28 @@ class BibItem(dict):
       # Convert to latex some characters using encoding
       s = s.encode(encoding, 'ignore').decode('utf-8')
     return s
+
+# allfields = ('_type', 'address', 'author', 'booktitle', 'chapter', 'edition', '_code',
+#              'editor', 'howpublished', 'institution', 'journal', 'month', 'number', 'organization',
+#              'pages', 'publisher', 'school', 'series', 'title', 'volume', 'year', 'day' 'note', 'code',
+#              'url', 'crossref', 'annote', 'abstract', 'doi', 'journal_abbrev', 'date-added', 'date-modified', 'file')
+
+  def to_dbformat(self, fields=helper.allfields):
+    """Return a tuple in appropriate format to insert in a sqlite database
+
+    Parameters
+    ----------
+    fields: iterable. Columns to use for output to a database
+    """
+    return [self.get_field(f, f"No {f}") for f in fields]
+    # columns = []
+    # for f in fields:
+    #   if f in helper.textualfields:
+    #     columns.append(self.get_field(f, f"No {f}"))
+    #   elif f in ['author', 'editor']:
+    #     s = self.get_field(f, f"No {f}")
+    #     columns.append(s)
+    # return columns
 
   def to_xml(self, p='', indent=2):
     """
@@ -580,6 +602,15 @@ class BibItem(dict):
     st, entry = bibparse.parseentry(source)
     if entry is not None:
       self.set(entry)
+
+  def from_dbformat(self, source, fields=helper.allfields):
+    """Return an item from a string from a sqlite database
+
+    Parameters
+    ----------
+    fields: iterable. Columns from the database
+    """
+    return {}
 
   def from_ads(self, source):
     """

@@ -4,24 +4,26 @@ import sys
 import collections
 from pathlib import Path
 #        ################################ Variables  #####################
-# List of all possible fields.
-allfields = ('_type', 'address', 'author', 'booktitle', 'chapter', 'edition', '_code',
-             'editor', 'howpublished', 'institution', 'journal', 'month', 'number', 'organization',
-             'pages', 'publisher', 'school', 'series', 'title', 'volume', 'year', 'day' 'note', 'code',
-             'url', 'crossref', 'annote', 'abstract', 'doi', 'journal_abbrev', 'date-added', 'date-modified', 'file')
+bibtexfields = ['abstract', 'address', 'affiliation', 'annote', 'author', 'booktitle', 'chapter',
+                'crossref', 'day', 'doi', 'edition', 'editor', 'file', 'howpublished',
+                'institution', 'isbn', 'issn', 'journal', 'keywords', 'month', 'note',
+                'number', 'organization', 'pages', 'publisher', 'school', 'series', 'title',
+                'url', 'volume', 'year']
 
-bibtexfields = ('author', 'title', 'journal', 'year', 'volume', 'number', 'pages', 'month', 'day',
-                'booktitle', 'chapter', 'address', 'edition', 'abstract', 'doi', 'url', 'editor',
-                'howpublished', 'school', 'institution', 'organization', 'publisher', 'series',
-                'note', 'crossref', 'annote', 'file')
+# Fields that are output literally in bibtex form
+textualfields = ('_code', 'abstract', 'address', 'annote', 'booktitle', 'chapter', 'crossref', 'doi', 'edition',
+                 'file', 'howpublished', 'institution', 'isbn', 'issn', 'journal', 'keywords', 'month',
+                 'note', 'number', 'organization', 'publisher', 'school', 'series', 'title', 'url', 'volume', 'year')
+
+# Some fields that MAY appear + "_code" and "_type"
+otherfields = ['_code', '_type', 'code', 'date-added', 'date-modified', 'daynote', 'journal_abbrev']
+
+# List of all possible fields.
+allfields = sorted(bibtexfields + otherfields)
 
 # Fields that MUST be present
 minimalfields = ('_type', 'author')
 
-# Fields that are output literally in bibtex form
-textualfields = ['title', 'journal', 'year', 'volume', 'number', 'month', 'booktitle', 'chapter',
-                 'address', 'edition', 'howpublished', 'school', 'institution', 'organization', 'publisher', 'series',
-                 'note', 'crossref', 'issn', 'isbn', 'keywords', 'annote', '_code', 'doi', 'url', 'abstract', 'file']
 
 # Fields that should not be wrapped (must go complete in the same line)
 nowrapfields = ['url', 'doi', 'isbn', 'issn', 'crossref']
@@ -255,14 +257,6 @@ def to_filehandle(fname, flag='r', return_opened=False, encoding=None):
   """
   if is_string_like(fname):
     fh = Path(fname).open(mode=flag)
-    # if fname.endswith('.gz'):
-    #   import gzip
-    #   fh = gzip.open(fname, flag)
-    # elif fname.endswith('.bz2'):
-    #   import bz2
-    #   fh = bz2.BZ2File(fname, flag)
-    # else:
-    #   fh = open(fname, mode=flag)
     opened = True
   elif isinstance(fname, Path):
     fh = fname.open(mode=flag)
@@ -270,36 +264,35 @@ def to_filehandle(fname, flag='r', return_opened=False, encoding=None):
     fh = fname
     opened = False
   else:
-    raise ValueError('fname must be a string or file handle')
+    raise ValueError('fname must be a pathlib Path, string or file handle')
   if return_opened:
     return fh, opened
   return fh
 
 
 def tsplit(s, sep):
-  def tsplit(s, sep):
-    """Splits a string like split but allows for several char delimiters
-    Example:
-    >>> tsplit("hello,my|name+is-bob", (",", "|", "+", "-"))
-    ['hello', 'my', 'name', 'is', 'bob']
-    >>> tsplit("hello,my|name+is-bob", ",|+-")
-    ['hello', 'my', 'name', 'is', 'bob']
-    >>> tsplit("hello,my|name+is-bob", list(",|+-"))
-    ['hello', 'my', 'name', 'is', 'bob']
-    >>> tsplit("hello,my|name+is-bob", "+")
-    ['hello,my|name', 'is-bob']
+  """Splits a string like split but allows for several char delimiters
+  Example:
+  >>> tsplit("hello,my|name+is-bob", (",", "|", "+", "-"))
+  ['hello', 'my', 'name', 'is', 'bob']
+  >>> tsplit("hello,my|name+is-bob", ",|+-")
+  ['hello', 'my', 'name', 'is', 'bob']
+  >>> tsplit("hello,my|name+is-bob", list(",|+-"))
+  ['hello', 'my', 'name', 'is', 'bob']
+  >>> tsplit("hello,my|name+is-bob", "+")
+  ['hello,my|name', 'is-bob']
 
-    Arguments:
-    - `s`: string to separate
-    - `sep`: separators
-    """
-    stack = [s]
-    for char in sep:
-      pieces = []
-      for substr in stack:
-        pieces.extend(substr.split(char))
-      stack = pieces
-    return stack
+  Arguments:
+  - `s`: string to separate
+  - `sep`: separators
+  """
+  stack = [s]
+  for char in sep:
+    pieces = []
+    for substr in stack:
+      pieces.extend(substr.split(char))
+    stack = pieces
+  return stack
 
 
 def openfile(fname=None, intent='r', encoding=None):
@@ -331,7 +324,7 @@ def closefile(fi):
 
 
 reg_defstrng = re.compile(
-    '[{]*DEFINITIONOFSTRING[(](\w+)[)][{]*(\s*[#]*\s*["]*\s*\w*\s*["]*\s*)[}]*', re.I)
+    '[{]*DEFINITIONOFSTRING[(](\\w+)[)][{]*(\\s*[#]*\\s*["]*\\s*\\w*\\s*["]*\\s*)[}]*', re.I)
 # reg_defstrng= re.compile('[{]*DEFINITIONOFSTRING[(](\w+)[)][}]*',re.I)
 
 
