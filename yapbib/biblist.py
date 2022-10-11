@@ -35,6 +35,7 @@ import pickle as pickle
 from . import bibitem
 from . import helper
 from . import latex
+from . import bibdb
 latex.register()
 
 
@@ -149,7 +150,7 @@ class BibList(dict):
     if key in self.ListItems[:]:
       self.ListItems.remove(key)
       self.sortedList.remove(key)
-      del(self.bib[key])
+      del (self.bib[key])
       return True
     else:
       return False
@@ -372,6 +373,40 @@ class BibList(dict):
     Export a bibliography (set of items) to a file in bibtex format:
     """
     fi = helper.openfile(fname, 'w')
+    s = self.to_bibtex(indent, width, fields, encoding=encoding)
+    # fi.write(s.encode("utf8"))
+    fi.write(s)
+    helper.closefile(fi)
+
+  ##############################
+  def to_latex(self, style={}, label=r'\item'):
+    if not self.issorted:
+      self.sort()
+
+    s = ''
+    for l0 in self.sortedList:
+      if self.keepAbbrevs:
+        # copy the item to resolve_abbrevs
+        bib = bibitem.BibItem(self.get_item(l0))
+        bib.resolve_abbrevs(self.abbrevDict)
+        ss = bib.to_latex(style)
+      else:
+        ss = self.get_item(l0).to_latex(style)
+      s += f'{label} {ss}\n'
+    return s
+
+  def export_database(self, fname="biblio.db", fields=helper.allfields):
+    """
+    Export a bibliography (set of items) to a file in bibtex format:
+    """
+    fi = path(fname)
+    con = bibdb.opendb(dbname)
+    if fi.exists():
+      # Query columns
+      pass
+    else:
+      pass
+
     s = self.to_bibtex(indent, width, fields, encoding=encoding)
     # fi.write(s.encode("utf8"))
     fi.write(s)

@@ -418,15 +418,21 @@ class BibItem(dict):
     ----------
     fields: iterable. Columns to use for output to a database
     """
-    return [self.get_field(f, f"No {f}") for f in fields]
-    # columns = []
-    # for f in fields:
-    #   if f in helper.textualfields:
-    #     columns.append(self.get_field(f, f"No {f}"))
-    #   elif f in ['author', 'editor']:
-    #     s = self.get_field(f, f"No {f}")
-    #     columns.append(s)
-    # return columns
+    # return [self.get_field(f, f"No {f}") for f in fields]
+    # return [self.get_field(f, "") for f in fields]
+    
+    columns = []
+    for f in fields:
+      if f in ['author', 'editor']:
+        # columns.append(self.get_authorsList(f, who=f))
+        # columns.append(str(self.get_field(f,'')))
+        s = [",".join(k) for k in self.get(f,'')]
+        columns.append("|".join(s))
+        # columns.append(str(self.get(f,''))[1:-2].replace("],","|").replace("[","").replace("'",""))
+      else:
+        columns.append(self.get_field(f, ""))
+    return columns
+
 
   def to_xml(self, p='', indent=2):
     """
@@ -603,6 +609,8 @@ class BibItem(dict):
     if entry is not None:
       self.set(entry)
 
+
+
   def from_dbformat(self, source, fields=helper.allfields):
     """Return an item from a string from a sqlite database
 
@@ -610,7 +618,15 @@ class BibItem(dict):
     ----------
     fields: iterable. Columns from the database
     """
-    return {}
+    d = {}
+    for i,f in enumerate(fields):
+      if source[i] != '':
+        if f in ['author', 'editor']:
+          d[f] = [k.split(',') for k in source[i].split("|")]
+        else:
+          d[f] = source[i]
+    if d is not {}:
+      self.set(d)
 
   def from_ads(self, source):
     """

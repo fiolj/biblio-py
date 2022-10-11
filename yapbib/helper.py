@@ -16,7 +16,7 @@ textualfields = ('_code', 'abstract', 'address', 'annote', 'booktitle', 'chapter
                  'note', 'number', 'organization', 'publisher', 'school', 'series', 'title', 'url', 'volume', 'year')
 
 # Some fields that MAY appear + "_code" and "_type"
-otherfields = ['_code', '_type', 'code', 'date-added', 'date-modified', 'daynote', 'journal_abbrev']
+otherfields = ['_code', '_type', 'code', 'date-added', 'date-modified', 'daynote', 'firstpage', 'journal_abbrev', 'lastpage']
 
 # List of all possible fields.
 allfields = sorted(bibtexfields + otherfields)
