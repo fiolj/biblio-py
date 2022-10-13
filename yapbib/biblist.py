@@ -25,7 +25,7 @@ print(unicode(it)) # Use this if it has non-ascii characters
 '''
 import sys
 import os
-
+from pathlib import Path
 # import textwrap
 import pickle as pickle
 
@@ -39,8 +39,8 @@ from . import bibdb
 latex.register()
 
 
-# Index used for internally for each part of a name
-# (A_VON, A_LAST, A_JR, A_FIRST)= range(4)
+# Index used internally for each part of a name
+# (A_VON, A_LAST, A_FIRST, A_JR)= range(4)
 
 
 class BibList(dict):
@@ -99,11 +99,11 @@ class BibList(dict):
 
   def __repr__(self):
     s = f"bib= {str(self.bib)}\n"
-    s += 'abbrevDict= %s\n' % (self.abbrevDict)
-    s += 'ListItems= %s\n' % (self.ListItems)
-    s += 'sortedList= %s\n' % (self.sortedList)
-    s += 'issorted= %s\n' % (self.issorted)
-    s += 'encoding= %s\n' % (self.encoding)
+    s += f'abbrevDict= {self.abbrevDict}\n'
+    s += f'ListItems= {self.ListItems}\n'
+    s += f'sortedList= {self.sortedList}\n'
+    s += f'issorted= {self.issorted}\n'
+    s += f'encoding= {self.encoding}\n'
     return s
 
   def preview(self, n=None):
@@ -117,8 +117,8 @@ class BibList(dict):
       nn = min(n, nn)
     if not self.issorted:
       self.sort()
-    for l in self.sortedList[:nn]:
-      s += '{}\n'.format(self.get_item(l).preview())
+    for li in self.sortedList[:nn]:
+      s += '{}\n'.format(self.get_item(li).preview())
 
     # s = str(s, self.encoding, 'ignore')
     return s
@@ -379,40 +379,28 @@ class BibList(dict):
     helper.closefile(fi)
 
   ##############################
-  def to_latex(self, style={}, label=r'\item'):
-    if not self.issorted:
-      self.sort()
-
-    s = ''
-    for l0 in self.sortedList:
-      if self.keepAbbrevs:
-        # copy the item to resolve_abbrevs
-        bib = bibitem.BibItem(self.get_item(l0))
-        bib.resolve_abbrevs(self.abbrevDict)
-        ss = bib.to_latex(style)
-      else:
-        ss = self.get_item(l0).to_latex(style)
-      s += f'{label} {ss}\n'
-    return s
 
   def export_database(self, fname="biblio.db", fields=helper.allfields):
     """
     Export a bibliography (set of items) to a file in bibtex format:
     """
-    fi = path(fname)
-    con = bibdb.opendb(dbname)
-    if fi.exists():
-      # Query columns
-      pass
+    fi = Path(fname)
+    con = bibdb.create_dbconnection(fi)
+    if con is None:
+      return
+
+    tblnm, cols = bibdb.get_dbcolnames(con)
+    if tblnm == '':             # Empty database -> Create the table
+      cols = helper.allfields
+      bibdb.create_dbbib(con, fields=cols)
     else:
       pass
 
-    s = self.to_bibtex(indent, width, fields, encoding=encoding)
-    # fi.write(s.encode("utf8"))
-    fi.write(s)
-    helper.closefile(fi)
+    for it in self.get_items():
+      it.to_db(con, tblnm, cols)
 
   ##############################
+
   def to_latex(self, style={}, label=r'\item'):
     if not self.issorted:
       self.sort()
@@ -462,16 +450,16 @@ class BibList(dict):
       self.sort()
 
     s = ''
-    for l in self.sortedList:
-      tipo = self.get_item(l).get_field('_type', 'article')
+    for li in self.sortedList:
+      tipo = self.get_item(li).get_field('_type', 'article')
 
       if self.keepAbbrevs:
         # copy the item to resolve_abbrevs
-        bib = bibitem.BibItem(self.get_item(l))
+        bib = bibitem.BibItem(self.get_item(li))
         bib.resolve_abbrevs(self.abbrevDict)
         ss = bib.to_html(style)
       else:
-        ss = self.get_item(l).to_html(style)
+        ss = self.get_item(li).to_html(style)
       s += '<li class="%s"> %s </li>\n' % (tipo, ss)
     return s
 
@@ -567,14 +555,14 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
       self.sort()
 
     s = ''
-    for l in self.sortedList:
+    for li in self.sortedList:
       if self.keepAbbrevs:
         # copy the item to resolve_abbrevs
-        bib = bibitem.BibItem(self.get_item(l))
+        bib = bibitem.BibItem(self.get_item(li))
         bib.resolve_abbrevs(self.abbrevDict)
         ss = bib.to_xml(p=prefix, indent=indent)
       else:
-        ss = self.get_item(l).to_xml(p=prefix, indent=indent)
+        ss = self.get_item(li).to_xml(p=prefix, indent=indent)
 
       s += '%s' % (ss)
     return s

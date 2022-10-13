@@ -14,7 +14,6 @@ There are two field related to the journal: journal and journal_abbrev
 
 '''
 import sys
-import os
 import textwrap
 import codecs
 
@@ -26,12 +25,13 @@ from . import bibparse
 from . import adsparse
 from . import helper
 from . import latex
+from . import bibdb
 latex.register()
 
 namefields = ['author', 'editor']
 
 
-# Index used for internally for each part of a name
+# Index used internally for each part of a name
 A_VON = 0
 A_LAST = 1
 A_FIRST = 2
@@ -420,19 +420,35 @@ class BibItem(dict):
     """
     # return [self.get_field(f, f"No {f}") for f in fields]
     # return [self.get_field(f, "") for f in fields]
-    
+
     columns = []
     for f in fields:
       if f in ['author', 'editor']:
         # columns.append(self.get_authorsList(f, who=f))
         # columns.append(str(self.get_field(f,'')))
-        s = [",".join(k) for k in self.get(f,'')]
+        s = [",".join(k) for k in self.get(f, '')]
         columns.append("|".join(s))
         # columns.append(str(self.get(f,''))[1:-2].replace("],","|").replace("[","").replace("'",""))
       else:
         columns.append(self.get_field(f, ""))
     return columns
 
+  def to_db(self, con, tblnm=bibdb.DB_TBLNM, cols=helper.allfields):
+    """Send item to database
+
+    Parameters
+    ----------
+    con : sqlite3 connection or file-like
+      connection or filename or handle
+
+    cols : list-like
+      columns to add to database
+    """
+    colvals = self.to_dbformat(fields=cols)
+
+    cur = con.cursor()
+    cur.execute(f"INSERT INTO {tblnm} VALUES(?, ?, ?, ?);", tuple(colvals))
+    con.commit()
 
   def to_xml(self, p='', indent=2):
     """
@@ -609,8 +625,6 @@ class BibItem(dict):
     if entry is not None:
       self.set(entry)
 
-
-
   def from_dbformat(self, source, fields=helper.allfields):
     """Return an item from a string from a sqlite database
 
@@ -619,7 +633,7 @@ class BibItem(dict):
     fields: iterable. Columns from the database
     """
     d = {}
-    for i,f in enumerate(fields):
+    for i, f in enumerate(fields):
       if source[i] != '':
         if f in ['author', 'editor']:
           d[f] = [k.split(',') for k in source[i].split("|")]
