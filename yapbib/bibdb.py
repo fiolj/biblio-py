@@ -3,37 +3,6 @@ import sqlite3 as sq
 DB_TBLNM = 'biblio'
 
 
-# class BibDb(object):
-#   """Object to manage the connection to a database"""
-
-#   def __init__(self, fname):
-#     super(BibDb, self).__init__()
-#     self.fname = fname
-#     con = create_dbconnection(fname)
-#     if con is not None:
-#       self.con = con
-#       self.cur = con.cursor()
-
-#       self.fields = get_dbcolnames(self.cur)
-#       # if fields ==
-
-# def opendb(db_file):
-#   """
-#   Open a connection to a database
-
-#   Parameters
-#   ----------
-#   db_file : file-like (string or handle or Path)
-#     Filename of the database
-
-#   Returns
-#   -------
-#   Sqlite3 connection to file
-#   """
-#   con = create_connection(db_file)
-#   return con
-
-
 def create_dbconnection(db_file):
   """create a database connection to the SQLite database
       specified by the db_file
@@ -117,9 +86,10 @@ def create_dbbib(conn, fields, tablename=DB_TBLNM):
       Columns to use
   """
 
-  # strcols = "id integer PRIMARY KEY, \n  "
-  strcols = ""
-  strcols += ",\n  ".join([f"{f.replace('-','_')} text" for f in fields])
+  cols = fields[:].pop('_code')
+  strcols = "_code integer PRIMARY KEY, \n  "
+  # strcols = ""
+  strcols += ",\n  ".join([f"{f.replace('-','_')} text" for f in cols])
   try:
     # print(f"CREATE TABLE IF NOT EXISTS {tablename} (\n  {strcols}\n);")
     c = conn.cursor()
