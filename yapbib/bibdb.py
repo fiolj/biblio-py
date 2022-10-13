@@ -117,7 +117,8 @@ def create_dbbib(conn, fields, tablename=DB_TBLNM):
       Columns to use
   """
 
-  strcols = "id integer PRIMARY KEY, \n  "
+  # strcols = "id integer PRIMARY KEY, \n  "
+  strcols = ""
   strcols += ",\n  ".join([f"{f.replace('-','_')} text" for f in fields])
   try:
     # print(f"CREATE TABLE IF NOT EXISTS {tablename} (\n  {strcols}\n);")

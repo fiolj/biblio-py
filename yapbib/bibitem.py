@@ -424,11 +424,8 @@ class BibItem(dict):
     columns = []
     for f in fields:
       if f in ['author', 'editor']:
-        # columns.append(self.get_authorsList(f, who=f))
-        # columns.append(str(self.get_field(f,'')))
         s = [",".join(k) for k in self.get(f, '')]
-        columns.append("|".join(s))
-        # columns.append(str(self.get(f,''))[1:-2].replace("],","|").replace("[","").replace("'",""))
+        columns.append(";".join(s))
       else:
         columns.append(self.get_field(f, ""))
     return columns

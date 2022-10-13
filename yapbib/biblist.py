@@ -387,7 +387,7 @@ class BibList(dict):
     fi = Path(fname)
     con = bibdb.create_dbconnection(fi)
     if con is None:
-      return
+      return None
 
     tblnm, cols = bibdb.get_dbcolnames(con)
     if tblnm == '':             # Empty database -> Create the table
@@ -396,9 +396,15 @@ class BibList(dict):
     else:
       pass
 
+    # Agregamos los items
+    cur = con.cursor()
+    form = f"{','.join(len(cols)*'?')}"  # Formato
     for it in self.get_items():
-      it.to_db(con, tblnm, cols)
-
+      v = it.to_dbformat(fields=cols)
+      cur.execute(f"INSERT INTO {tblnm} VALUES({form});", tuple(v))
+    con.commit()
+    con.close()
+    # return cur.lastrowid
   ##############################
 
   def to_latex(self, style={}, label=r'\item'):

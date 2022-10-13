@@ -9,8 +9,6 @@ from yapbib.version import VERSION
 import optparse
 # from pathlib import Path
 import os
-# import sys
-# sys.path.insert(0, '/home/fiol/trabajo/programas/biblio-py')
 
 ##########################################################################
 # CUSTOMIZE THESE VARIABLES if needed
