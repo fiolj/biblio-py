@@ -94,5 +94,7 @@ def create_dbbib(conn, fields, tablename=DB_TBLNM):
   try:
     c = conn.cursor()
     c.execute(f"CREATE TABLE IF NOT EXISTS {tablename} (\n  {strcols}\n);")
+    print(f"2. {get_dbtablename(conn) = }")
+    con.commit()
   except sq.Error as e:
     print(e)

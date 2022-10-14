@@ -402,10 +402,10 @@ class BibList(dict):
       return None
 
     tblnm, cols = bibdb.get_dbcolnames(con)
-    if not tblnm:             # Empty database -> Create the table
+    if tblnm == '':             # Empty database -> Create the table
       tblnm = bibdb.DB_TBLNM
       cols = fields
-      bibdb.create_dbbib(con, fields=cols)
+      bibdb.create_dbbib(con, fields=cols, tablename=tblnm)
     else:
       try:
         assert (tblnm == bibdb.DB_TBLNM and cols ==
@@ -414,6 +414,7 @@ class BibList(dict):
         print(e)
 
     # Agregamos los items
+    print(f"1: {bibdb.get_dbtablename(con)=}")
     cur = con.cursor()
     form = f"{','.join(len(cols)*'?')}"  # Formato
     for it in self.get_items():
@@ -619,6 +620,7 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
     latex
     html
     xml
+    database
     """
     def write_full(fout):
       fi = helper.openfile(fout, 'w')
@@ -631,7 +633,7 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
       fi.write(self.preview())
       helper.closefile(fi)
 
-    exp_meth = {'b': self.export_bibtex,
+    exp_meth = {'b': self.export_bibtex, 'd': self.export_database,
                 'l': self.export_latex, 't': self.export_latex,
                 'h': self.export_html, 'x': self.export_xml,
                 's': write_short, 'f': write_full

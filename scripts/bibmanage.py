@@ -5,46 +5,41 @@ Script to perform some simple management and get some information form bibtex fi
 '''
 import yapbib.biblist as biblist
 from yapbib.version import VERSION
-# import yapbib
-import optparse
-# from pathlib import Path
-import os
+from pathlib import Path
+from os import getenv
+import argparse
 
 ##########################################################################
 # CUSTOMIZE THESE VARIABLES if needed
-dumpfile = os.getenv(
-    'BIBDB',
-    os.path.join(
-        os.environ['HOME'],
-        'texmf/bibtex/bib/bib.dmp'))
+dumpfile = getenv('BIBDB', Path().home() / 'texmf/bibtex/bib/bib.dmp')
+
 # *******************************************************************************
 encoding = 'utf8'
 
 
-if __name__ == "__main__":
-  # def main():
+def main():
   # CONFIGURACION ############################################################
   def get_strng_field(k):
     # l= str(k,encoding=encoding).split(':')
-    line = k.split(':')
-    if len(line) == 1:  # argument was on the form 'search_string. To search in all fields
+    l = k.split(':')
+    if len(l) == 1:  # argument was on the form 'search_string. To search in all fields
       ff = []
-      ss = line[0]
-    elif len(line) == 2:
-      if line[0] == '':
+      ss = l[0]
+    elif len(l) == 2:
+      if l[0] == '':
         ss = '*'  # Search all strings
       else:
-        ss = line[0]
-      if line[1] == '':
+        ss = l[0]
+      if l[1] == '':
         ff = []  # Search in all fields
       else:
-        ff = line[1].split(',')
+        ff = l[1].split(':')
     return ss, ff
 
   ##########################################################################
   # Command line options
   ##########################################################################
-  usage = """usage: %prog [options] [datafile1] [datafile2 ...]
+  ejemplos = """
   Ejemplo de uso:
 
   $> %prog --search=LastName1:author --search=LastName2:author --search=LastName3:author --startyear=2000 --endyear=2008 --filter-exclude=2006:year --filter-exclude=LastName4:author --sort=year,month,author --format=tex --output=salida.tex biblio1.bib biblio2.bib.bz2 biblio1.dmp biblio2.dmp.gz
@@ -61,78 +56,67 @@ Will get the items with LastName1 as author from biblio1.bib and the results are
 
 Note that two of the input files are compressed
   """
-  parser = optparse.OptionParser(
-      usage, version=" %prog with biblio-py-{0}".format(VERSION))
 
-  parser.add_option("", "--list", action="store_true",
-                    help="List the database contents")
+  parser = argparse.ArgumentParser(
+      description="Manage bibliography lists",
+      formatter_class=argparse.RawDescriptionHelpFormatter,
+      epilog=ejemplos)
 
-  parser.add_option("", "--sort", help="Sort the items according to the following fields, for instance to sort them accoding to year and then author we would use --sort=year,author. In the same example, to sort in reverse order we would use: --sort=year,author,reverse. DEFAULT: key.")
+  parser.add_argument("--version", action='version',
+                      version=f"%(prog)s with biblio-py-{VERSION}",
+                      )
+  parser.add_argument("--list", action="store_true", default=False,
+                      help="List the database unique keys and exit")
+  parser.add_argument('files', metavar='File', nargs='+',
+                      help='Files to process (data accumulates)')
+  parser.add_argument("-o", "--output", default=None, metavar="Output",
+                      help="Output file. Use '-' for stdout (screen)")
 
-  parser.add_option("-s", "--search", action='append', type='string',
-                    help='SEARCH is a (COLON separated) pair "string_to_search:fields". If the field is empty defaults to ALL. Fields may be more than one. In that case it can be written as "field1,field2,...". This option may be used more than once')
+  parser.add_argument("--sort",
+                      help="Sort the items according to the following fields, for instance to sort them accoding to year and then author we would use --sort=year,author. In the same example, to sort in reverse order we would use: --sort=year,author,reverse. (default: key).")
 
-  parser.add_option("--year", default=None,
-                    help="--year=y is a shortcut to '--start-year=y --end-year=y'")
+  parser.add_argument("-s", "--search", action='append',
+                      help='SEARCH is a (COLON separated) pair "string_to_search:fields". If the field is empty defaults to ALL. Fields may be more than one. In that case it can be written as "field1,field2,...". This option may be used more than once')
 
-  parser.add_option("-b", "--startyear", type='int',
-                    default=0, help='Start Year')
+  parser.add_argument("--year", default=None,
+                      help="--year=y is a shortcut to '--start-year=y --end-year=y'")
 
-  parser.add_option("-e", "--endyear", type='int',
-                    default=9999, help='End Year')
+  parser.add_argument("-b", "--startyear", type=int, default=0,
+                      help='Start Year')
 
-  parser.add_option(
-      "-i",
-      "--filter-include",
-      action='append',
-      type='string',
-      help='Include all entries that verify the condition, given in the form string1:field1,field2,...  It may be used more than once and only entries that verify ALL conditions will be retained.')
+  parser.add_argument("-e", "--endyear", type=int, default=9999,
+                      help='End Year')
 
-  parser.add_option(
-      "-x",
-      "--filter-exclude",
-      action='append',
-      type='string',
-      help='Exclude all entries that verify the condition, given in the form string1:field1,field2,...  It may be used more than once and only entries that do not verify ANY condition will be retained.')
+  parser.add_argument("-i", "--filter-include", action='append',
+                      help='Include all entries that verify the condition, given in the form string1:field1,field2,...  It may be used more than once and only entries that verify ALL conditions will be retained.')
 
-  parser.add_option(
-      "",
-      "--keep-keys",
-      action="store_true",
-      default=False,
-      help="Keep the original cite key")
+  parser.add_argument("-x", "--filter-exclude", action='append',
+                      help='Exclude all entries that verify the condition, given in the form string1:field1,field2,...  It may be used more than once and only entries that do not verify ANY condition will be retained.')
 
-  parser.add_option("-I", "--case-sensitive",
-                    action="store_true", default=False,
-                    help="Make the search case sensitive")
+  parser.add_argument("--keep-keys", action="store_true", default=False,
+                      help="Keep the original cite key")
 
-  parser.add_option("-o", "--output",
-                    default=None,
-                    help="Output file. Use '-' for stdout (screen). DEFAULT: No output")
+  parser.add_argument("-I", "--case-sensitive", action="store_true", default=False,
+                      help="Make the search case sensitive")
 
-  parser.add_option("--all-fields", action="store_false", default=True,
-                    help='Export to bibtex all fields')
+  parser.add_argument("-f", "--format", default=None,
+                      help="format of output, possible values are: short, full, bibtex, tex, html, xml   DEFAULT= short")
 
-  parser.add_option(
-      "-f",
-      "--format",
-      default=None,
-      help="format of output, possible values are: short, full, bibtex, tex, html, xml   DEFAULT= short")
+  parser.add_argument("-v", "--verbose", action="store_true", dest="verbose",
+                      default=False, help="Give some informational messages.")
 
-  parser.add_option("-v", "--verbose", action="store_true", dest="verbose",
-                    default=False, help="Give some informational messages.")
+  parser.add_argument("-d", "--save-dump",
+                      help="Save (dump) the database IN INTERNAL FORM for faster access")
 
-  parser.add_option(
-      "-d",
-      "--save-dump",
-      help="Save (dump) the database IN INTERNAL FORM for faster access")
+  # (op, args) = parser.parse_args()
 
-  (op, args) = parser.parse_args()
+  op = parser.parse_args()
 
-  if args == []:
+  if op.files == []:
     dbfiles = [dumpfile]
   else:
-    dbfiles = args
+    dbfiles = op.files
+
   modify_keys = not op.keep_keys
   available_formats = {
       's': 'short',
@@ -140,14 +124,15 @@ Note that two of the input files are compressed
       't': 'latex',
       'b': 'bibtex',
       'h': 'html',
-      'x': 'xml'}
+      'x': 'xml',
+      'd': 'database'}
 
   # Try to guess the format from the extension of the file
   if op.format is None:    # Guess a format
     if op.output == '-':
       formato = 'short'
     elif op.output is not None:
-      ext = os.path.splitext(op.output)[1][1]
+      ext = Path(op.output).suffix[1]
       formato = available_formats.get(ext, 'short')
   else:
     formato = available_formats.get(op.format[0].lower(), 'short')
@@ -170,6 +155,11 @@ Note that two of the input files are compressed
     elif '.bib' in fname or fname == '-':
       try:
         b.import_bibtex(fname, normalize=modify_keys)
+      except BaseException:
+        failed = True
+    elif '.db' in fname:
+      try:
+        b.import_database(fname)
       except BaseException:
         failed = True
     else:
@@ -203,7 +193,7 @@ Note that two of the input files are compressed
   if op.list:
     b.sort(sortorder, reverse)
     print('\n'.join(b.sortedList))
-    optparse.exit()
+    return
 
   for k in items:
     year = int(b.get_item(k).get_field('year', str(op.startyear)))
@@ -215,11 +205,12 @@ Note that two of the input files are compressed
     for cond in op.search:
       ss, ff = get_strng_field(cond)
       # search and append the results.
-      items.extend(bout.search(findstr=ss, fields=ff,
-                               caseSens=op.case_sensitive))
-    #
-    allitems = bout.sortedList.copy()
-    for it in allitems:  # purge not found items
+      items.extend(
+          bout.search(
+              findstr=ss,
+              fields=ff,
+              caseSens=op.case_sensitive))
+    for it in bout.sortedList[:]:  # purge not found items
       if it not in items:
         bout.remove_item(it)
 
@@ -252,27 +243,18 @@ Note that two of the input files are compressed
     bout.sort(sortorder, reverse=reverse)
 
   if op.output is not None:
-    if formato == "bibtex":
-      if op.all_fields:
-        fields = set()
-        for k in b.ListItems:
-          fields = fields | set(b.bib[k].keys())
-      else:
-        fields = None
-      bout.export_bibtex(op.output, fields=fields)
-    else:
-      bout.output(op.output, formato, op.verbose)
+    bout.output(op.output, formato, op.verbose)
   else:
-    print(f'# {len(bout)} items processed')
+    print('# %d items processed' % (len(bout.ListItems)))
 
   if op.save_dump is not None:
     if op.verbose:
-      print('# Saving database to {op.save_dump}...')
+      print('# Saving database to %s...' % (op.save_dump))
     bout.dump(op.save_dump)
 
 
-# if __name__ == "__main__":
-  # main()
+if __name__ == "__main__":
+  main()
 
 
 # Local Variables:
