@@ -5,9 +5,9 @@ Script to perform some simple management and get some information form bibtex fi
 '''
 import yapbib.biblist as biblist
 from yapbib.version import VERSION
-import optparse
 from pathlib import Path
 from os import getenv
+import argparse
 
 ##########################################################################
 # CUSTOMIZE THESE VARIABLES if needed
@@ -35,8 +35,6 @@ def main():
       else:
         ff = l[1].split(':')
     return ss, ff
-
-  import argparse
 
   ##########################################################################
   # Command line options
