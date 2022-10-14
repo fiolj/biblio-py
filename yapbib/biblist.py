@@ -314,6 +314,18 @@ class BibList(dict):
     self.sort()
     return ncount
 
+  def import_database(self, fname):
+    """Import a bibliography from a sqlite database
+
+    Parameters
+    ----------
+    fname : Database filename
+    """
+    fi = Path(fname)
+    con = bibdb.create_dbconnection(fi)
+    if con is None:
+      return None
+
   def import_ads(self, fname, normalize=True):
     """
     Import a bibliography (set of items) from a file
@@ -390,11 +402,15 @@ class BibList(dict):
       return None
 
     tblnm, cols = bibdb.get_dbcolnames(con)
-    if tblnm == '':             # Empty database -> Create the table
-      cols = helper.allfields
+    if not tblnm:             # Empty database -> Create the table
+      tblnm = bibdb.DB_TBLNM
+      cols = fields
       bibdb.create_dbbib(con, fields=cols)
     else:
-      pass
+      try:
+        assert (tblnm == bibdb.DB_TBLNM and cols == helper.allfields), "Database table name and columns  must coincide exactly with default at this moment"
+      except AssertionError as e:
+        print(e)
 
     # Agregamos los items
     cur = con.cursor()
@@ -404,7 +420,7 @@ class BibList(dict):
       cur.execute(f"INSERT INTO {tblnm} VALUES({form});", tuple(v))
     con.commit()
     con.close()
-    # return cur.lastrowid
+
   ##############################
 
   def to_latex(self, style={}, label=r'\item'):

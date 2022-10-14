@@ -4,7 +4,6 @@ Script to perform some simple management and get some information form bibtex fi
 
 '''
 import yapbib.biblist as biblist
-from yapbib.version import VERSION
 import argparse
 
 parser = argparse.ArgumentParser(

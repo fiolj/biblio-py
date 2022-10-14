@@ -68,9 +68,9 @@ def get_dbcolnames(con):
   """
   tabnm = get_dbtablename(con)  # Get table name
 
-  cur = con.cursor()
+  c = con.cursor()
   cols = []
-  for row in cur.execute(f"SELECT name FROM PRAGMA_TABLE_INFO('{tabnm}');"):
+  for row in c.execute(f"SELECT name FROM PRAGMA_TABLE_INFO('{tabnm}');"):
     cols.append(row[0])
   return tabnm, cols
 
@@ -86,21 +86,13 @@ def create_dbbib(conn, fields, tablename=DB_TBLNM):
       Columns to use
   """
 
-  cols = fields[:].pop('_code')
-  strcols = "_code integer PRIMARY KEY, \n  "
+  cols = fields[:]
+  cols.remove('_code')
+  strcols = "_code text NOT NUL PRIMARY KEY, \n  "
   # strcols = ""
   strcols += ",\n  ".join([f"{f.replace('-','_')} text" for f in cols])
   try:
-    # print(f"CREATE TABLE IF NOT EXISTS {tablename} (\n  {strcols}\n);")
     c = conn.cursor()
     c.execute(f"CREATE TABLE IF NOT EXISTS {tablename} (\n  {strcols}\n);")
   except sq.Error as e:
     print(e)
-
-
-dbname = '../sqlite/articlesAll0c1del.db'
-dbname = '../sqlite/new1.db'
-
-con = create_dbconnection(dbname)
-create_dbbib(con, ['author', '_code', '_type', 'title'])
-con.close()
