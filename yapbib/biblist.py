@@ -408,7 +408,8 @@ class BibList(dict):
       bibdb.create_dbbib(con, fields=cols)
     else:
       try:
-        assert (tblnm == bibdb.DB_TBLNM and cols == helper.allfields), "Database table name and columns  must coincide exactly with default at this moment"
+        assert (tblnm == bibdb.DB_TBLNM and cols ==
+                helper.allfields), "Database table name and columns  must coincide exactly with default at this moment"
       except AssertionError as e:
         print(e)
 
