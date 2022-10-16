@@ -25,6 +25,66 @@ def create_dbconnection(db_file):
   return conn
 
 
+def parsefile(fname):
+  """Parses a bibliography database file
+
+  Parameters
+  ----------
+  fname : file-like or string
+    Filename to parse
+
+  Returns
+  -------
+  dict: A dictionary of dictionaries with the items
+  """
+  con = create_dbconnection(fname)
+  if con is None:
+    print(f"Can't open database {fname}")
+    return None
+
+  tbname, cols = get_dbcolnames(con)
+  cur = con.cursor()
+  if tbname != DB_TBLNM:
+    print(f"Warning: Table name in database different from {DB_TBLNM}")
+
+  rows = cur.execute(f"SELECT * FROM {tbname};")  #
+  entries = {}
+  for row in rows:
+    entry = parseentry(row, cols)
+    if entry:
+      entries[entry['_code']] = entry
+
+  return entries
+
+
+def parseentry(row, cols):
+  """Parse a sqlite database row from a string into a bibliography item
+
+  Parameters
+  ----------
+  row : tuple
+
+  cols: list-like of strings
+    names of the columns in the row
+
+  Returns
+  -------
+  dict: bibliography entry
+  """
+  entry = {}
+  for c, r in zip(cols, row):
+    if r:
+      if c in ['author', 'editor']:
+        a = [k.split(',') for k in r.split(";")]
+        if a:
+          entry[c] = a
+        pass
+      else:
+        entry[c] = r
+
+  return entry
+
+
 def get_dbtablename(con):
   """Get table name from connected database.
 
@@ -56,7 +116,6 @@ def get_dbcolnames(con):
   Parameters
   ----------
   con : sqlite3 connection
-
 
   Returns
   -------

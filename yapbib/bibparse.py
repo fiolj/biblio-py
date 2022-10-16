@@ -101,20 +101,19 @@ def get_fields(strng, strict=False):
 # Creates a (hopefully) unique key code
 def create_entrycode(b={}):
   """
-  Creates a 'hopefully unique' entry key from a bibtex item
+  Creates a 'hopefully unique' entry key from a bibliography item
   """
   len_aut = 7  # Length of the author surname used
   try:
-    aut = helper.capitalizestring('%s%s' %
-                                  (b['author'][0][0], b['author'][0][1]))
+    aut = helper.capitalizestring(f"{b['author'][0][0]}{b['author'][0][1]}")
   except BaseException:
-    print((b['author']))
-    print((b['_code']))
-  aut = helper.oversimplify(aut)
+    print("Error in bibparse.create_entrycode: ", (b['author']), (b['_code']), sep="\n")
+
+  aut = helper.oversimplify(aut).strip()
   if len(aut) > len_aut:
     bibid = aut[:len_aut]
   else:
-    bibid = aut.strip()
+    bibid = aut
 
   bibid += b.get('year', '')
   bibid += b.get('journal_abbrev', '')

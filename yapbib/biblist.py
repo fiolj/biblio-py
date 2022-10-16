@@ -314,17 +314,62 @@ class BibList(dict):
     self.sort()
     return ncount
 
-  def import_database(self, fname):
+  def import_database(self, fname, normalize=True):
     """Import a bibliography from a sqlite database
 
     Parameters
     ----------
     fname : Database filename
     """
+    ncount = 0
+    db = bibitem.bibdb.parsefile(fname)
+
+    for k, v in db.items():
+      b1 = bibitem.BibItem(v, normalize=False)
+      key = b1.get_key()               # The key generated
+      status = self.add_item(b1, key)
+      if status:
+        ncount += 1
+        if normalize:
+          self.get_item(key).normalize()  # _code is put equal to key
+
+    return ncount
+
+  def export_database(self, fname="biblio.db", fields=helper.allfields):
+    """
+    Export a bibliography (set of items) to a file in bibtex format:
+    """
     fi = Path(fname)
     con = bibdb.create_dbconnection(fi)
     if con is None:
       return None
+
+    tblnm, cols = bibdb.get_dbcolnames(con)
+    if tblnm == '':             # Empty database -> Create the table
+      tblnm = bibdb.DB_TBLNM
+      cols = fields
+      bibdb.create_dbbib(con, fields=cols, tablename=tblnm)
+    else:
+      try:
+        assert (tblnm == bibdb.DB_TBLNM and fields ==
+                helper.allfields), "Database table name and columns  must coincide exactly with default at this moment"
+      except AssertionError as e:
+        print(e)
+
+    # Agregamos los items
+    cur = con.cursor()
+    form = f"{','.join(len(cols)*'?')}"  # Formato
+    for it in self.get_items():
+      key = it.get_field('_code')
+      r = cur.execute(f"SELECT EXISTS(SELECT 1 FROM {tblnm} WHERE _code='{key}' LIMIT 1);")
+      if r.fetchone()[0]:
+        print(f"Entry {key} already present. Not adding.")
+      else:
+        v = it.to_dbformat(fields=cols)
+        cur.execute(f"INSERT INTO {tblnm} VALUES({form});", tuple(v))
+
+    con.commit()
+    con.close()
 
   def import_ads(self, fname, normalize=True):
     """
@@ -392,41 +437,41 @@ class BibList(dict):
 
   ##############################
 
-  def export_database(self, fname="biblio.db", fields=helper.allfields):
-    """
-    Export a bibliography (set of items) to a file in bibtex format:
-    """
-    fi = Path(fname)
-    con = bibdb.create_dbconnection(fi)
-    if con is None:
-      return None
+  # def export_database(self, fname="biblio.db", fields=helper.allfields):
+  #   """
+  #   Export a bibliography (set of items) to a file in bibtex format:
+  #   """
+  #   fi = Path(fname)
+  #   con = bibdb.create_dbconnection(fi)
+  #   if con is None:
+  #     return None
 
-    tblnm, cols = bibdb.get_dbcolnames(con)
-    if tblnm == '':             # Empty database -> Create the table
-      tblnm = bibdb.DB_TBLNM
-      cols = fields
-      bibdb.create_dbbib(con, fields=cols, tablename=tblnm)
-    else:
-      try:
-        assert (tblnm == bibdb.DB_TBLNM and fields ==
-                helper.allfields), "Database table name and columns  must coincide exactly with default at this moment"
-      except AssertionError as e:
-        print(e)
+  #   tblnm, cols = bibdb.get_dbcolnames(con)
+  #   if tblnm == '':             # Empty database -> Create the table
+  #     tblnm = bibdb.DB_TBLNM
+  #     cols = fields
+  #     bibdb.create_dbbib(con, fields=cols, tablename=tblnm)
+  #   else:
+  #     try:
+  #       assert (tblnm == bibdb.DB_TBLNM and fields ==
+  #               helper.allfields), "Database table name and columns  must coincide exactly with default at this moment"
+  #     except AssertionError as e:
+  #       print(e)
 
-    # Agregamos los items
-    cur = con.cursor()
-    form = f"{','.join(len(cols)*'?')}"  # Formato
-    for it in self.get_items():
-      key = it.get_field('_code')
-      r = cur.execute(f"SELECT EXISTS(SELECT 1 FROM {tblnm} WHERE _code='{key}' LIMIT 1);")
-      if r.fetchone()[0]:
-        print(f"Entry {key} already present. Not adding.")
-      else:
-        v = it.to_dbformat(fields=cols)
-        cur.execute(f"INSERT INTO {tblnm} VALUES({form});", tuple(v))
+  #   # Agregamos los items
+  #   cur = con.cursor()
+  #   form = f"{','.join(len(cols)*'?')}"  # Formato
+  #   for it in self.get_items():
+  #     key = it.get_field('_code')
+  #     r = cur.execute(f"SELECT EXISTS(SELECT 1 FROM {tblnm} WHERE _code='{key}' LIMIT 1);")
+  #     if r.fetchone()[0]:
+  #       print(f"Entry {key} already present. Not adding.")
+  #     else:
+  #       v = it.to_dbformat(fields=cols)
+  #       cur.execute(f"INSERT INTO {tblnm} VALUES({form});", tuple(v))
 
-    con.commit()
-    con.close()
+  #   con.commit()
+  #   con.close()
 
   ##############################
 

@@ -70,7 +70,6 @@ class BibItem(dict):
     """
     t = self._verify_entry(b)
     if t:                               # Copy the dictionary
-
       self.update(b)
 
       if key is not None:
@@ -604,21 +603,17 @@ class BibItem(dict):
     ----------
     fields: iterable. Columns from the database
     """
-    d = {}
-    for i, f in enumerate(fields):
-      if source[i] != '':
-        if f in ['author', 'editor']:
-          a = [k.split(',') for k in source[i].split("|")]
-          if a:
-            d[f] = a
-        elif source[i]:
-          d[f] = source[i]
-    if d is not {}:
-      self.set(d)
+    try:
+      source + ' '
+    except BaseException:
+      raise TypeError('source must be a string')
+    entry = bibdb.parseentry(source, fields)
+    if entry is not None:
+      self.set(entry)
 
   def from_ads(self, source):
     """
-    Reads an item in bibtex form from a string
+    Reads an item in ads (Harvard database) form from a string
     """
     try:
       source + ' '

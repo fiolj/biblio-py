@@ -11,9 +11,9 @@ bibtexfields = ['abstract', 'address', 'affiliation', 'annote', 'author', 'bookt
                 'url', 'volume', 'year']
 
 # Fields that are output literally in bibtex form
-textualfields = ('_code', 'abstract', 'address', 'annote', 'booktitle', 'chapter', 'crossref', 'doi', 'edition',
+textualfields = ['_code', 'abstract', 'address', 'annote', 'booktitle', 'chapter', 'crossref', 'doi', 'edition',
                  'file', 'howpublished', 'institution', 'isbn', 'issn', 'journal', 'keywords', 'month',
-                 'note', 'number', 'organization', 'publisher', 'school', 'series', 'title', 'url', 'volume', 'year')
+                 'note', 'number', 'organization', 'publisher', 'school', 'series', 'title', 'url', 'volume', 'year']
 
 # Some fields that MAY appear + "_code" and "_type"
 otherfields = ['_code', '_type', 'code', 'date-added', 'date-modified', 'daynote', 'firstpage', 'journal_abbrev', 'lastpage']
@@ -533,14 +533,23 @@ def removebraces(str):
   return rembraces_rex.sub('', str)
 
 
-# data = title string
-# @return the capitalized string (first letter is capitalized), rest are capitalized
-# only if capitalized inside braces
 capitalize_rex = re.compile(r'({\w*})')
 cap_rex = re.compile('{([a-zA-Z]*)}')
 
 
 def capitalizestring(data):
+  """Capitalizes a string keeping verbatim characters between braces
+
+  Parameters
+  ----------
+  data = title string
+
+  Returns
+  -------
+  string:
+    the capitalized string (first letter is capitalized), rest are capitalized
+    only if capitalized inside braces
+  """
   ss_list = capitalize_rex.split(data)
   ss = ''
   count = 0
