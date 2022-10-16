@@ -88,13 +88,12 @@ def create_dbbib(conn, fields, tablename=DB_TBLNM):
 
   cols = fields[:]
   cols.remove('_code')
-  strcols = "_code text NOT NUL PRIMARY KEY, \n  "
+  strcols = "_code text NOT NULL PRIMARY KEY, \n  "
   # strcols = ""
   strcols += ",\n  ".join([f"{f.replace('-','_')} text" for f in cols])
   try:
     c = conn.cursor()
     c.execute(f"CREATE TABLE IF NOT EXISTS {tablename} (\n  {strcols}\n);")
-    print(f"2. {get_dbtablename(conn) = }")
-    con.commit()
+    conn.commit()
   except sq.Error as e:
     print(e)

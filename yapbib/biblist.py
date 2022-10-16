@@ -408,18 +408,23 @@ class BibList(dict):
       bibdb.create_dbbib(con, fields=cols, tablename=tblnm)
     else:
       try:
-        assert (tblnm == bibdb.DB_TBLNM and cols ==
+        assert (tblnm == bibdb.DB_TBLNM and fields ==
                 helper.allfields), "Database table name and columns  must coincide exactly with default at this moment"
       except AssertionError as e:
         print(e)
 
     # Agregamos los items
-    print(f"1: {bibdb.get_dbtablename(con)=}")
     cur = con.cursor()
     form = f"{','.join(len(cols)*'?')}"  # Formato
     for it in self.get_items():
-      v = it.to_dbformat(fields=cols)
-      cur.execute(f"INSERT INTO {tblnm} VALUES({form});", tuple(v))
+      key = it.get_field('_code')
+      r = cur.execute(f"SELECT EXISTS(SELECT 1 FROM {tblnm} WHERE _code='{key}' LIMIT 1);")
+      if r.fetchone()[0]:
+        print(f"Entry {key} already present. Not adding.")
+      else:
+        v = it.to_dbformat(fields=cols)
+        cur.execute(f"INSERT INTO {tblnm} VALUES({form});", tuple(v))
+
     con.commit()
     con.close()
 

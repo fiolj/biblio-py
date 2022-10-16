@@ -21,19 +21,19 @@ def main():
   # CONFIGURACION ############################################################
   def get_strng_field(k):
     # l= str(k,encoding=encoding).split(':')
-    l = k.split(':')
-    if len(l) == 1:  # argument was on the form 'search_string. To search in all fields
+    strf = k.split(':')
+    if len(strf) == 1:  # argument was on the form 'search_string. To search in all fields
       ff = []
-      ss = l[0]
-    elif len(l) == 2:
-      if l[0] == '':
+      ss = strf[0]
+    elif len(strf) == 2:
+      if strf[0] == '':
         ss = '*'  # Search all strings
       else:
-        ss = l[0]
-      if l[1] == '':
+        ss = strf[0]
+      if strf[1] == '':
         ff = []  # Search in all fields
       else:
-        ff = l[1].split(':')
+        ff = strf[1].split(':')
     return ss, ff
 
   ##########################################################################
@@ -100,7 +100,7 @@ Note that two of the input files are compressed
                       help="Make the search case sensitive")
 
   parser.add_argument("-f", "--format", default=None,
-                      help="format of output, possible values are: short, full, bibtex, tex, html, xml   DEFAULT= short")
+                      help="format of output, possible values are: short, full, bibtex, tex, html, xml, database (default= short)")
 
   parser.add_argument("-v", "--verbose", action="store_true", dest="verbose",
                       default=False, help="Give some informational messages.")
@@ -110,14 +110,14 @@ Note that two of the input files are compressed
 
   # (op, args) = parser.parse_args()
 
-  op = parser.parse_args()
+  args = parser.parse_args()
 
-  if op.files == []:
+  if args.files == []:
     dbfiles = [dumpfile]
   else:
-    dbfiles = op.files
+    dbfiles = args.files
 
-  modify_keys = not op.keep_keys
+  modify_keys = not args.keep_keys
   available_formats = {
       's': 'short',
       'f': 'full',
@@ -128,21 +128,21 @@ Note that two of the input files are compressed
       'd': 'database'}
 
   # Try to guess the format from the extension of the file
-  if op.format is None:    # Guess a format
-    if op.output == '-':
+  if args.format is None:    # Guess a format
+    if args.output == '-':
       formato = 'short'
-    elif op.output is not None:
-      ext = Path(op.output).suffix[1]
+    elif args.output is not None:
+      ext = Path(args.output).suffix[1]
       formato = available_formats.get(ext, 'short')
   else:
-    formato = available_formats.get(op.format[0].lower(), 'short')
+    formato = available_formats.get(args.format[0].lower(), 'short')
 
   ##########################################################################
   # Create the List object
   b = biblist.BibList()
   ##########################################################################
   # Read the database(s)
-  if op.verbose:
+  if args.verbose:
     print('# Loading database...')
   # b = biblist.BibList()
   for fname in dbfiles:
@@ -164,7 +164,7 @@ Note that two of the input files are compressed
         failed = True
     else:
       failed = True
-    if op.verbose:
+    if args.verbose:
       print(f'# {len(b.ListItems)} new items read')
 
     if failed:
@@ -172,8 +172,8 @@ Note that two of the input files are compressed
           fname)
       parser.error(mensaje)
 
-  if op.sort is not None:
-    sortorder = op.sort.lower().split(',')
+  if args.sort is not None:
+    sortorder = args.sort.lower().split(',')
     if 'reverse' in sortorder:
       reverse = True
     else:
@@ -190,47 +190,47 @@ Note that two of the input files are compressed
   items = b.sortedList[:]  # All items
   bout.abbrevDict.update(b.abbrevDict)
 
-  if op.list:
+  if args.list:
     b.sort(sortorder, reverse)
     print('\n'.join(b.sortedList))
     return
 
   for k in items:
-    year = int(b.get_item(k).get_field('year', str(op.startyear)))
-    if year >= op.startyear and year <= op.endyear:
+    year = int(b.get_item(k).get_field('year', str(args.startyear)))
+    if year >= args.startyear and year <= args.endyear:
       bout.add_item(b.get_item(k), k)
 
-  if op.search is not None:
+  if args.search is not None:
     items = []  # overwrite items from sort
-    for cond in op.search:
+    for cond in args.search:
       ss, ff = get_strng_field(cond)
       # search and append the results.
       items.extend(
           bout.search(
               findstr=ss,
               fields=ff,
-              caseSens=op.case_sensitive))
+              caseSens=args.case_sensitive))
     for it in bout.sortedList[:]:  # purge not found items
       if it not in items:
         bout.remove_item(it)
 
-  if op.filter_exclude is not None:
+  if args.filter_exclude is not None:
     items = []
-    for cond in op.filter_exclude:
+    for cond in args.filter_exclude:
       ss, ff = get_strng_field(cond)
-      items.extend(b.search(findstr=ss, fields=ff, caseSens=op.case_sensitive))
+      items.extend(b.search(findstr=ss, fields=ff, caseSens=args.case_sensitive))
     for it in bout.sortedList[:]:    # purge found items
       if it in items:
         bout.remove_item(it)
 
-  if op.filter_include is not None:
+  if args.filter_include is not None:
     items = []
-    cond = op.filter_include[0]
+    cond = args.filter_include[0]
     ss, ff = get_strng_field(cond)
-    items = b.search(findstr=ss, fields=ff, caseSens=op.case_sensitive)
-    for cond in op.filter_include[1:]:
+    items = b.search(findstr=ss, fields=ff, caseSens=args.case_sensitive)
+    for cond in args.filter_include[1:]:
       ss, ff = get_strng_field(cond)
-      its = b.search(findstr=ss, fields=ff, caseSens=op.case_sensitive)
+      its = b.search(findstr=ss, fields=ff, caseSens=args.case_sensitive)
       for c in items[:]:
         if c in items and c not in its:
           items.remove(c)
@@ -239,18 +239,18 @@ Note that two of the input files are compressed
         bout.remove_item(it)
 
   # First sort
-  if op.sort is not None:
+  if args.sort is not None:
     bout.sort(sortorder, reverse=reverse)
 
-  if op.output is not None:
-    bout.output(op.output, formato, op.verbose)
+  if args.output is not None:
+    bout.output(args.output, formato, args.verbose)
   else:
     print('# %d items processed' % (len(bout.ListItems)))
 
-  if op.save_dump is not None:
-    if op.verbose:
-      print('# Saving database to %s...' % (op.save_dump))
-    bout.dump(op.save_dump)
+  if args.save_dump is not None:
+    if args.verbose:
+      print('# Saving database to %s...' % (args.save_dump))
+    bout.dump(args.save_dump)
 
 
 if __name__ == "__main__":
