@@ -159,7 +159,7 @@ Note that two of the input files are compressed
         failed = True
     elif '.db' in fname:
       try:
-        b.import_database(fname)
+        b.import_database(fname, normalize=modify_keys)
       except BaseException:
         failed = True
     else:
