@@ -16,16 +16,24 @@ import re
 import string
 import codecs
 from . import latex
-# import latex
 latex.register()
-
-# import helper
 
 reg_pages = re.compile(r'\W+')
 
 
 def process_pages(pages):
-  """ Returns a 2-tuple (firstpage,lastpage) from a string"""
+  """Process a range of pages and return initial and final pages
+
+  Parameters
+  ----------
+  pages : string
+    a string of the form: xxx or mmm-nnn (where m and n are numbers)
+
+  Returns
+  -------
+  tuple of strings:
+    2-tuple (firstpage,lastpage)
+  """
   pp = reg_pages.split(pages)
   firstpage = pp[0]
   if len(pp) == 2:
@@ -36,16 +44,39 @@ def process_pages(pages):
 
 
 def bibtexauthor(data):
-  """ Returns a list of authors where each author is a list of the form:
-  [von, Last, First, Jr]
+  """Process a list of author in bibtex form and Returns a list of authors
+  where each author is a list of the form:
+
+                    [von, Last, First, Jr]
+
+  Parameters
+  ----------
+  data : string
+    Author list given in standard bibtex form
+
+
+  Returns
+  -------
+  list:
+    Each element is an author, described by a list
   """
   return list(map(helper.process_name, data.split(' and ')))
 
 
 def get_fields(strng, strict=False):
-  """
-  Returns a list with pairs (field, value) from strng
-  If strict is True, it will only allow known fields, defined in helper.bibtexfields
+  """Process a string from a bibtex entry and identify fields and values
+
+  Parameters
+  ----------
+  strng : string
+
+  strict : boolean
+    If True, only fields recognized by program bibtex are included  (Default value = False)
+
+  Returns
+  -------
+  list:
+    Each element is a pair (field, value)
   """
 
   comma_rex = re.compile(r'\s*[,]')
@@ -100,8 +131,17 @@ def get_fields(strng, strict=False):
 
 # Creates a (hopefully) unique key code
 def create_entrycode(b={}):
-  """
-  Creates a 'hopefully unique' entry key from a bibliography item
+  """Creates a 'hopefully unique' entry key from a bibliography item
+
+  Parameters
+  ----------
+  b : dict
+    describes the bibliografy entry  (Default value = {})
+
+  Returns
+  -------
+  string:
+    An unique key code.
   """
   len_aut = 7  # Length of the author surname used
   try:
@@ -140,7 +180,21 @@ def create_entrycode(b={}):
 
 
 def replace_abbrevs(strs, bitem):
-  """ Resolve all abbreviations found in the value fields of one entry"""
+  """Resolve all abbreviations found in the value fields of one entry
+
+  Parameters
+  ----------
+  strs : string
+    STRING defined in bibtex file
+
+  bitem : dict-like
+    bibliography item
+
+  Returns
+  -------
+  dict-like:
+    modified bibliography item
+  """
   b = bitem
   for f, v in list(b.items()):
     if helper.is_string_like(v):
@@ -149,6 +203,20 @@ def replace_abbrevs(strs, bitem):
 
 
 def parsefile(fname=None):
+  """
+  Read and parses a bibtex file (*.bib)
+
+  Parameters
+  ----------
+  fname : string or file-like
+    Filename or file-handler   (Default value = None)
+
+  Returns
+  -------
+  dict:
+    Each element is a dict whose value describes a bibliography entry.
+    Its key is generated automatically from the data
+  """
   fi = helper.openfile(fname)
   s = fi.read()
   db = parsedata(s)
@@ -156,8 +224,18 @@ def parsefile(fname=None):
 
 
 def parsedata(data):
-  """
-  Parses a string with a bibtex database
+  """Parses a string with a bibtex database
+
+  Parameters
+  ----------
+  data : string
+    Contents of a bibtex file
+
+  Returns
+  -------
+  tuple: (strings, entries)
+    - strings is a dict with all defined strings
+    - entries is a dict with all the bibtex entries
   """
   # Regular expressions to use
   # A '@' followed by any word and an opening
@@ -202,8 +280,16 @@ def parsedata(data):
 
 
 def parseentry(source):
-  """
-  Reads an item in bibtex form from a string
+  """Reads an item in bibtex form from a string
+
+  Parameters
+  ----------
+  source : string
+
+  Returns
+  -------
+  tuple: (None, entry) or (string, None)
+  depending if the source has a bibtex STRING definition or an entry
   """
   try:
     source + ' '
@@ -261,6 +347,7 @@ def parseentry(source):
 
 
 def test():
+  """Test """
   if sys.argv[1:]:
     filepath = sys.argv[1]
   else:

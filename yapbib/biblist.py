@@ -2,7 +2,7 @@
 '''
 Class storing a bibliography
 
-A Class that to store a list of references (list of papers, books, manuals, ...)
+A Class that store a list of references (list of papers, books, manuals, ...)
 It is based in dictionaries, with a unique self-generated key
 
 Example of use:
@@ -26,7 +26,6 @@ print(unicode(it)) # Use this if it has non-ascii characters
 import sys
 import os
 from pathlib import Path
-# import textwrap
 import pickle as pickle
 
 # import bibitem
@@ -40,11 +39,10 @@ latex.register()
 
 
 # Index used internally for each part of a name
-# (A_VON, A_LAST, A_FIRST, A_JR)= range(4)
-
+# (A_VON, A_FIRST, A_LAST, A_JR)= range(4)
 
 class BibList(dict):
-  '''Class storing a bibliography  (list of papers, books, manuals, ...)'''
+  """Class storing a bibliography(list of papers, books, manuals, ...)"""
 
   def __init__(self):
     self.ListItems = []
@@ -61,6 +59,13 @@ class BibList(dict):
     return len(self.ListItems)
 
   def update(self, blist):
+    """
+    Update the bibiography list with a new bibliography list
+
+    Parameters
+    ----------
+    blist : BibList or dict Object
+    """
     try:
       self.bib.update(blist.bib)  # blist es un objeto del tipo BibList
       self.set_properties_from(blist)
@@ -71,18 +76,27 @@ class BibList(dict):
         raise TypeError('Argument incorrect type, must be BibList object')
 
   def set_properties_from(self, blist):
+    """Copy properties from other biblist object
+
+    Does not fail if properties are not found
+
+    Parameters
+    ----------
+    blist : BibList object
     """
-    Try to get properties from other biblist object
-    """
+    # JF: TODO: If blist is a dictionary we could make the list from the keys()
     try:
       self.ListItems += blist.ListItems
-      self.ListItems = list(set(self.ListItems))
     except BaseException:
       pass
+    else:
+      self.ListItems = list(set(self.ListItems))
+
     try:
       self.abbrevDict.update(blist.abbrevDict)
     except BaseException:
       pass
+
     if self.issorted:
       self.sort()
     else:
@@ -107,9 +121,18 @@ class BibList(dict):
     return s
 
   def preview(self, n=None):
-    """
-    Show a preview of the publications (sorted).
+    """Show a preview of the publications (sorted).
+
     Optionally, only show the first n of them. If n is None, show all publications.
+
+    Parameters
+    ----------
+    n : int
+      If not None, only the first n values are shown (Default value = None)
+
+    Returns
+    -------
+
     """
     s = ''
     nn = len(self.ListItems)
@@ -124,6 +147,15 @@ class BibList(dict):
     return s
 
   def add_item(self, bib, key=None):
+    """Add a new bibliography entry into the list
+
+    Parameters
+    ----------
+    bib : BibItem object or dict
+
+    key : string
+      key  (Default value = None)
+    """
     be = bibitem.BibItem(bib, key)
     key = be.get_key()
     if key is None:
@@ -147,6 +179,13 @@ class BibList(dict):
     return True
 
   def remove_item(self, key):
+    """Remove an entry from the List
+
+    Parameters
+    ----------
+    key : string
+      The item to remove
+    """
     if key in self.ListItems[:]:
       self.ListItems.remove(key)
       self.sortedList.remove(key)
@@ -156,12 +195,37 @@ class BibList(dict):
       return False
 
   def get_items(self):
+    """List all items"""
     return list(self.bib.values())
 
   def get_item(self, key):
+    """Retrieve one entry
+
+    Parameters
+    ----------
+    key : string
+      key of the entry to retrieve
+
+    Returns
+    -------
+    BibItem object:
+      Bibliography entry
+    """
     return self.bib.get(key)
 
   def set_item(self, key, value):
+    """Sets one bibliography entry that already is in the list
+
+    If key is not in the list, does not add it.
+
+    Parameters
+    ----------
+    key : string
+      key to use
+
+    value : BibItem or dict
+      Value to update
+    """
     "Set the value of a given item (that already exists)"
     if key in self.ListItems:
       self.bib[key].update(value)
@@ -170,6 +234,20 @@ class BibList(dict):
       return False
 
   def insertAbbrev(self, abbrev, value):
+    """
+    Add an item to the list of abbreviations
+    Parameters
+    ----------
+    abbrev : string
+      name of the string
+
+    value : string
+      definition of the string
+
+    Returns
+    -------
+    True or False indicating if abbrev was added
+    """
     if abbrev in self.abbrevDict:
       return False
     self.abbrevDict[abbrev] = value
@@ -182,20 +260,27 @@ class BibList(dict):
       self.get_item(k).resolve_abbrevs(self.abbrevDict)
 
   def List(self):
+    """List all items in bibliography """
     return self.ListItems
 
-  def sort(self, order=[], reverse=None):
+  def sort(self, order=[], reverse=False):
+    """Sort the entries according to the specified order
+
+    Parameters
+    ----------
+    order : list
+      Each value is a string indicating a field (Default value = [])
+    reverse : boolean
+      If sorting must be in reverse order  (Default value = False)
     """
-    Sort the entries according to the specified order
-    """
-    if order == []:
+    if not order:
       order = self.sortorder
     else:
       self.sortorder = order
-    if reverse is None:
-      reverse = self.reverse
-    else:
+    if reverse:
       self.reverse = reverse
+    else:
+      reverse = self.reverse
 
     numericfields = ['year', 'volume', 'number', 'firstpage', 'lastpage']
     sortorder = order
@@ -222,11 +307,27 @@ class BibList(dict):
     return self.sortedList
 
   def search(self, findstr, fields=[], caseSens=False, types='all'):
-    """
-    Search on the bibliography for findstr
+    """Search on the bibliography
     The result is a list with the keys of the items that match the search
     keys are the keys that we look
     types are on what kind of publication do we search (article, book,...)
+
+    Parameters
+    ----------
+    findstr : string
+      Expression to search for
+
+    fields : list-like
+      fields to search  (Default value = [])
+    caseSens : boolean
+      flag indicating if search is case sensitive   (Default value = False)
+    types : string
+      Type of bibliography entry to search  (Default value = 'all')
+
+    Returns
+    -------
+    list:
+      keys of entries where the expression is found
     """
     result = []
     for f in self.sortedList:
@@ -249,7 +350,7 @@ class BibList(dict):
 #     self.sort()
 
   def normalize(self):
-    '''Make bibtex key tha same that internal key'''
+    """Make bibtex key tha same that internal key"""
     for b in self.sortedList:
       self.get_item(b).normalize()
 
@@ -257,10 +358,19 @@ class BibList(dict):
       # import methods
       # 3
   def load(self, fname):
-    '''
-    Load a biblist from file "fname" using the standard cPickle module.
+    """Load a biblist from file "fname" using the standard cPickle module.
     It can be used uncompressed or compressed with gzip or bzip
-    '''
+
+    Parameters
+    ----------
+    fname : string or file-like
+      File where the bibliography is "dumped"
+
+    Returns
+    -------
+    Biblist object:
+      List of items found in file
+    """
     try:
       fi = helper.openfile(fname, 'rb')
       c = pickle.load(fi)
@@ -273,10 +383,16 @@ class BibList(dict):
       raise ValueError('Error updating data')
 
   def dump(self, fname, protocol=pickle.HIGHEST_PROTOCOL):
-    '''
-    Store the biblist in file "fname" using the standard cPickle module.
+    """Store the biblist in file "fname" using the standard cPickle module.
     It can be used uncompressed or compressed with gzip or bzip
-    '''
+
+    Parameters
+    ----------
+    fname : string or file-like
+
+    protocol :
+      Pickle protocol to use  (Default value = pickle.HIGHEST_PROTOCOL)
+    """
     # if not '.dmp' in fname: fname='%s.dmp' %(fname)
     try:
       fo = helper.openfile(fname, 'wb')
@@ -286,9 +402,17 @@ class BibList(dict):
       raise ValueError('Error loading data')
 
   def import_bibtex(self, fname=None, normalize=True, ReplaceAbbrevs=True):
-    """
-    Import a bibliography (set of items) from a file
+    """Import a bibliography (set of items) from a file
     If normalize the code (citekey) is overwritten with a standard key following our criteria
+
+    Parameters
+    ----------
+    fname : string or file-like
+      Bibtex filename  (Default value = None)
+    normalize : boolean
+      flag indicating that key must be created (Default value = True)
+    ReplaceAbbrevs : boolean
+      Replace all abbreviations in the items (Default value = True)
     """
     ncount = 0
     st, db = bibitem.bibparse.parsefile(fname)
@@ -320,6 +444,9 @@ class BibList(dict):
     Parameters
     ----------
     fname : Database filename
+
+    normalize : boolean
+      flag indicating that key must be created (Default value = True)
     """
     ncount = 0
     db = bibitem.bibdb.parsefile(fname)
@@ -336,9 +463,15 @@ class BibList(dict):
     return ncount
 
   def import_ads(self, fname, normalize=True):
-    """
-    Import a bibliography (set of items) from a file
+    """Import a bibliography (set of items) from a file
     If normalize the code (citekey) is overwritten with a standard key following our criteria
+
+    Parameters
+    ----------
+    fname : Database filename
+
+    normalize : boolean
+      flag indicating that key must be created (Default value = True)
     """
     ncount = 0
     db = bibitem.adsparse.parsefile(fname)
@@ -356,12 +489,28 @@ class BibList(dict):
     # export methods
 ##########################################################################
   def set_default_styles(self):
+    """Reset sytles to default values """
     for item in self.get_items():
       item.set_default_styles()
 
   def to_bibtex(self, indent=2, width=80, fields=None, encoding='latex'):
-    """
-    Export all entries to a bibtex file. All strings are resolved.
+    """Convert all entries to bibtex format. All strings are resolved.
+
+    Parameters
+    ----------
+    indent : int
+      Indent to use in bibtex file  (Default value = 2)
+    width : int
+      Width of paragraphs   (Default value = 80)
+    fields : list
+      List of fields to include in exported file (Default value = None)
+    encoding : string
+      Encoding to use for output file   (Default value = 'latex')
+
+    Returns
+    -------
+    string:
+      Contents of bibliography in bibtex form
     """
     if not self.issorted:
       self.sort()
@@ -390,8 +539,20 @@ class BibList(dict):
 
   def export_bibtex(self, fname=None, indent=2, width=80,
                     fields=None, encoding='latex'):
-    """
-    Export a bibliography (set of items) to a file in bibtex format:
+    """Export a bibliography (set of items) to a file in bibtex format:
+
+    Parameters
+    ----------
+    fname : string or file-like
+         (Default value = None)
+    indent : int
+      Indent to use in bibtex file  (Default value = 2)
+    width : int
+      Width of paragraphs   (Default value = 80)
+    fields : list
+      List of fields to include in exported file (Default value = None)
+    encoding : string
+      Encoding to use for output file   (Default value = 'latex')
     """
     fi = helper.openfile(fname, 'w')
     s = self.to_bibtex(indent, width, fields, encoding=encoding)
@@ -402,8 +563,18 @@ class BibList(dict):
   ##############################
 
   def export_database(self, fname="biblio.db", fields=helper.allfields):
-    """
-    Export a bibliography (set of items) to a file in bibtex format:
+    """Export a bibliography (set of items) to a file in bibtex format:
+
+    Parameters
+    ----------
+    fname : string or file-like
+         (Default value = "biblio.db")
+    indent : int
+      Indent to use in bibtex file  (Default value = 2)
+    width : int
+      Width of paragraphs   (Default value = 80)
+    fields : list
+      List of fields to include in exported file (Default value = helper.allfields)
     """
     fi = Path(fname)
     con = bibdb.create_dbconnection(fi)
@@ -440,6 +611,20 @@ class BibList(dict):
   ##############################
 
   def to_latex(self, style={}, label=r'\item'):
+    """Convert to latex form
+
+    Parameters
+    ----------
+    style : dict
+      Definition of style used for each field (Default value = {})
+    label : string
+      prefix to use before each entry (Default value = r'\\item')
+
+    Returns
+    -------
+    string:
+      Latex-formated list of items
+    """
     if not self.issorted:
       self.sort()
 
@@ -457,8 +642,20 @@ class BibList(dict):
 
   def export_latex(self, fname=None, style={},
                    label=r'\item', head=None, tail=None):
-    """
-    Export a bibliography (set of items) to a file in latex format:
+    """Export a bibliography (set of items) to a file in latex format:
+
+    Parameters
+    ----------
+    fname : string or file-like
+      Output filename (Default value = None)
+    style : dict
+      Definition of style used for each field (Default value = {})
+    label : string
+      prefix to use before each entry (Default value = r'\\item')
+    head : string
+      Text to include before list (Default value = None)
+    tail : string
+      Text to include after list (Default value = None)
     """
     if head is None:
       head = r'''\documentclass[12pt]{article}
@@ -484,6 +681,18 @@ class BibList(dict):
 
   ##############################
   def to_html(self, style={}):
+    """Convert to html form
+
+    Parameters
+    ----------
+    style : dict
+      Definition of style used for each field (Default value = {})
+
+    Returns
+    -------
+    string:
+      Contents in html form
+    """
     if not self.issorted:
       self.sort()
 
@@ -503,12 +712,28 @@ class BibList(dict):
 
   def export_html(self, fname=None, style={}, head='', tail='',
                   separate_css='biblio.css', css_style=None, encoding='utf-8'):
-    """
-    Export a bibliography (set of items) to a file in html format: style is a dictionary
+    """Export a bibliography (set of items) to a file in html format: style is a dictionary
     (like in bibitem objects) where the values is a pair (open,close) to insert around the
     data.
-    head and tail are html code to insert before and after the list of publications
+    head and tail
     separate_css may have the
+
+    Parameters
+    ----------
+    fname : string or file-like
+      Output filename (Default value = None)
+    style : dict
+      Definition of style used for each field (Default value = {})
+    head : string
+      html code to insert before the list of publications  (Default value = '')
+    tail : string
+      html code to insert after the list of publications  (Default value = '')
+    separate_css : string
+      Name of a css style sheet file (Default value = 'biblio.css')
+    css_style : string
+      css style (Default value = None)
+    encoding : string
+      HTML encoding  (Default value = 'utf-8')
     """
     # default style
     def_css_style = """
@@ -589,6 +814,20 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
 
   ##############################
   def to_xml(self, prefix='', indent=2):
+    """Convert to xml form
+
+    Parameters
+    ----------
+    prefix : string
+      Text to include before output  (Default value = '')
+    indent : int
+      Indent to use (Default value = 2)
+
+    Returns
+    -------
+    string:
+      Contents in xml format
+    """
     if not self.issorted:
       self.sort()
 
@@ -606,10 +845,22 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
     return s
 
   def export_xml(self, fname=None, prefix='', head='', tail='', indent=2):
-    """
-    Export a bibliography (set of items) to a file in xml format:
-    A prefix may be added to account for a namespace. But if added both head and tail
+    """Export a bibliography (set of items) to a file in xml format:
+     But if added both head and tail
     should take it into account to make it a valid xml document
+
+    Parameters
+    ----------
+    fname : string or file-like
+      Output filename (Default value = None)
+    prefix : string
+      A prefix may be added to account for a namespace.  (Default value = '')
+    head : string
+      xml code to insert before the list of publications  (Default value = '')
+    tail : string
+      xml code to insert after the list of publications  (Default value = '')
+    indent : int
+         (Default value = 2)
     """
     if head == '':
       head = '''<?xml version="1.0" encoding="utf-8"?>
@@ -625,28 +876,50 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
     helper.closefile(fi)
 
   def output(self, fout=None, formato=None, verbose=True):
-    """
-    Export all entries to a fout file with default options. All strings are resolved.
+    """Export all entries to a fout file with default options. All strings are resolved.
     following formats are defined:
-    short (default)
-    full
-    bibtex
-    latex
-    html
-    xml
-    database
+          short (default)
+          full
+          bibtex
+          latex
+          html
+          xml
+          database
+
+    Parameters
+    ----------
+    fout : string or file-like
+         (Default value = None)
+    formato : string
+      One of the possible formats (Default value = None)
+    verbose : boolean
+      Print informational text (Default value = True)
+
     """
     def write_full(fout):
+      """Writer in full format
+
+      Parameters
+      ----------
+      fout : string or file-like
+      """
       fi = helper.openfile(fout, 'w')
       fi.write(str(self))
       helper.closefile(fi)
 
     def write_short(fout):
+      """Output in Short format
+
+      Parameters
+      ----------
+      fout : string or file-like
+      """
       # fi = helper.openfile(fout, 'w'); fi.write(self.preview().encode(self.encoding))
       fi = helper.openfile(fout, 'w')
       fi.write(self.preview())
       helper.closefile(fi)
 
+    # Available export methods
     exp_meth = {'b': self.export_bibtex, 'd': self.export_database,
                 'l': self.export_latex, 't': self.export_latex,
                 'h': self.export_html, 'x': self.export_xml,
