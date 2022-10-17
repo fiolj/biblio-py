@@ -1,4 +1,5 @@
 import sqlite3 as sq
+from . import helper
 
 DB_TBLNM = 'biblio'
 
@@ -74,7 +75,7 @@ def parseentry(row, cols):
   entry = {}
   for c, r in zip(cols, row):
     if r:
-      if c in ['author', 'editor']:
+      if c in helper.namefields:
         a = [k.split(',') for k in r.split(";")]
         if a:
           entry[c] = a

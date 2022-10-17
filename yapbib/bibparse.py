@@ -147,7 +147,8 @@ def create_entrycode(b={}):
   try:
     aut = helper.capitalizestring(f"{b['author'][0][0]}{b['author'][0][1]}")
   except BaseException:
-    print("Error in bibparse.create_entrycode: ", (b['author']), (b['_code']), sep="\n")
+    print("Error in bibparse.create_entrycode: ",
+          (b['author']), (b['_code']), sep="\n")
 
   aut = helper.oversimplify(aut).strip()
   if len(aut) > len_aut:
@@ -324,9 +325,9 @@ def parseentry(source):
     entry['_code'] = p.group()[:-1]
     ff = get_fields(s[2][p.end():])
     for n, d in ff:
-      if n == 'author' or n == 'editor':
+      if n in helper.namefields:
         entry[n] = bibtexauthor(d)
-      elif n == 'title' or n == 'abstract':
+      elif n in ['title', 'abstract']:
         t = helper.capitalizestring(d)
         # JF: Algo no está bien. Porque no estoy convertiendo latex a strings
         # entry[n] = codecs.decode(t, 'latex+utf8', 'ignore')

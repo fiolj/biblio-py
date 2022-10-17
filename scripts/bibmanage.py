@@ -144,7 +144,7 @@ Note that two of the input files are compressed
   # Read the database(s)
   if args.verbose:
     print('# Loading database...')
-  # b = biblist.BibList()
+
   for fname in dbfiles:
     failed = False
     if '.dmp' in fname:
@@ -168,8 +168,8 @@ Note that two of the input files are compressed
       print(f'# {len(b.ListItems)} new items read')
 
     if failed:
-      mensaje = 'Database file %s not found or failed to load. Set the name as an option or set the environment variable BIBDB\n' % (
-          fname)
+      mensaje = f"Database {fname} not found or failed to load.\n"
+      mensaje += "Set the name as an option or set the environment variable BIBDB\n"
       parser.error(mensaje)
 
   if args.sort is not None:
@@ -198,18 +198,16 @@ Note that two of the input files are compressed
   for k in items:
     year = int(b.get_item(k).get_field('year', str(args.startyear)))
     if year >= args.startyear and year <= args.endyear:
-      bout.add_item(b.get_item(k), k)
+      # bout.add_item(b.get_item(k), k)
+      bout.add_item(b.get_item(k))
 
-  if args.search is not None:
+  if args.search:
     items = []  # overwrite items from sort
     for cond in args.search:
       ss, ff = get_strng_field(cond)
       # search and append the results.
-      items.extend(
-          bout.search(
-              findstr=ss,
-              fields=ff,
-              caseSens=args.case_sensitive))
+      items.extend(bout.search(findstr=ss, fields=ff,
+                               caseSens=args.case_sensitive))
     for it in bout.sortedList[:]:  # purge not found items
       if it not in items:
         bout.remove_item(it)
@@ -218,11 +216,8 @@ Note that two of the input files are compressed
     items = []
     for cond in args.filter_exclude:
       ss, ff = get_strng_field(cond)
-      items.extend(
-          b.search(
-              findstr=ss,
-              fields=ff,
-              caseSens=args.case_sensitive))
+      items.extend(b.search(findstr=ss, fields=ff,
+                            caseSens=args.case_sensitive))
     for it in bout.sortedList[:]:    # purge found items
       if it in items:
         bout.remove_item(it)
@@ -242,16 +237,17 @@ Note that two of the input files are compressed
       if it not in items:
         bout.remove_item(it)
 
+  # print(f"\n\nbibmanage Line 243: {bout.get_items()=}")
   # First sort
-  if args.sort is not None:
+  if args.sort:
     bout.sort(sortorder, reverse=reverse)
 
-  if args.output is not None:
+  if args.output:
     bout.output(args.output, formato, args.verbose)
   else:
     print('# %d items processed' % (len(bout.ListItems)))
 
-  if args.save_dump is not None:
+  if args.save_dump:
     if args.verbose:
       print('# Saving database to %s...' % (args.save_dump))
     bout.dump(args.save_dump)

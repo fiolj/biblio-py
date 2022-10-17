@@ -28,8 +28,6 @@ from . import latex
 from . import bibdb
 latex.register()
 
-namefields = ['author', 'editor']
-
 
 # Index used internally for each part of a name
 A_VON = 0
@@ -47,23 +45,25 @@ class BibItem(dict):
     """
     Initialize the object.
     """
-    self.key = ''
+    self.key = key
     self.html_style = {}
     self.latex_style = {}
-    if bib == {}:
-      self.update({})
-      # JF: Modified 21/07/14 because already set at beginning of function
-      # self.key = None
-      self.set_default_styles()
-    else:
+    self.encoding = 'utf8'
+
+    if bib:
       self.set(bib, key)
       if normalize:
         self.normalize()
-    self.encoding = 'utf8'
+    else:
+      self.update({})
+      self.set_default_styles()
+    # print(
+    # f"bibitem. Line 60: {key = },  {self['_code'] = },  {self.get_key() =
+    # }")
 
   def set(self, b, key=None):
     """Set the values of the object to those given by the dictionary.
-    If b is not a valid dictionary it will return an empty object
+    If b is not a valid dictionary or BibItem it will return an empty object
 
     Parameters
     ----------
@@ -72,30 +72,15 @@ class BibItem(dict):
     key : string
       Value, if we want to use an explicit key  (Default value = None)
     """
-    t = helper.verify_entry(b)
-    if t:                               # Copy the dictionary
+    if helper.verify_entry(b):
       helper.add_journal_abbrev(b)
-      self.update(b)
+      self.update(b)            # Copy the dictionary
 
-      if key is not None:
-        self.key = key
-      else:
-        try:
-          if b.get_key() is not None:
-            self.key = b.get_key()  # b is a BibItem object but has not key
-          else:
-            self.key = self.create_entrycode()
-        except BaseException:  # b is a dictionary
-          self.key = self.create_entrycode()
-
-      if self.key == '':
-        self.key = None
-      elif self.get_field('_code', '') == '':
-        self.normalize()
-      try:
-        self.set_styles(html=b.html_style, latex=b.latex_style)
-      except BaseException:
-        self.set_default_styles()
+      self.key = self.create_entrycode()
+      if key:
+        self["_code"] = key
+      else:                     # if b is a dict or a BibItem with no key = "_code"
+        self["_code"] = b.get("_code", self.key)
     else:
       self.key = None
 
@@ -236,7 +221,7 @@ class BibItem(dict):
       Each value is the last name of an author in authorlist
     """
     who = who.lower()
-    if who not in ['author', 'editor']:
+    if who not in helper.namefields:
       raise AttributeError(f"who must be author or editor, not {who}.")
 
     if who in list(self.keys()):
@@ -339,13 +324,9 @@ class BibItem(dict):
     return self.get_authorsList(format=1, Initial=True)[0]
 
   def get_editors(self):
-    aa = self.get_authorsList(format=0, Initial=False, who='editor')
-    if len(aa) == 1:
-      return aa[0]
-    else:
-      return ', '.join(aa[:-1]) + ' and ' + aa[-1]
+    return self.get_authors(Initial=False, smart=False, who='editor')
 
-  def get_authors(self, Initial=False, smart=False):
+  def get_authors(self, Initial=False, smart=False, who='author'):
     """Returns a string with the authors in the form:
     author_1, author_2, author_3, ... author_n-1 and author_n
     and each author has the form: F[irst|.] M[iddle|.] [von] Last
@@ -356,6 +337,8 @@ class BibItem(dict):
       Use only initials of family names
     smart : bool (Default value = False)
       If there are more than MAX_AUTHORS authors, cut and add et al
+    who: string
+      Field to get (author or editor)
 
     Returns
     -------
@@ -363,7 +346,7 @@ class BibItem(dict):
       Formatted author list
     """
     MAX_AUTHORS = 5
-    aa = self.get_authorsList(format=0, Initial=Initial)
+    aa = self.get_authorsList(format=0, Initial=Initial, who=who)
     if len(aa) == 1:
       return aa[0]
     elif len(aa) > 1:
@@ -415,10 +398,8 @@ class BibItem(dict):
     """
     if field == 'key':
       return self.key
-    elif field == 'author':
-      return self.get_authors()
-    elif field == 'editor':
-      return self.get_editors()
+    elif field in helper.namefields:
+      return self.get_authors(Initial=False, smart=False, who=field)
     elif field == 'affiliation':
       return self.get_affiliation()
     elif field == 'pages':
@@ -458,7 +439,7 @@ class BibItem(dict):
       Formatted bibtex entry
     """
     if fields is None:
-      fields = namefields + helper.textualfields[:]
+      fields = helper.namefields + helper.textualfields[:]
 
     initial_indent = indent * ' '
     # Indent the values of the fields
@@ -469,7 +450,7 @@ class BibItem(dict):
     fields = helper.make_unique(fields)
     # Add list of authors
     all_fields = fields.copy()
-    for f in namefields:
+    for f in helper.namefields:
       if f in fields:
         all_fields.remove(f)
         if f in self:
@@ -499,7 +480,8 @@ class BibItem(dict):
 
     # Some fields that are copied literally
     for kk in all_fields:
-      if kk in self and not kk.startswith('_') and (kk not in namefields):
+      if kk in self and not kk.startswith(
+              '_') and (kk not in helper.namefields):
         if kk in helper.nowrapfields:  # Not wrap
           s += '%s%s = {%s}, \n' % (initial_indent, kk, self[kk])
         else:

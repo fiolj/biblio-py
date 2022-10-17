@@ -39,7 +39,7 @@ latex.register()
 
 
 # Index used internally for each part of a name
-# (A_VON, A_FIRST, A_LAST, A_JR)= range(4)
+# (A_VON, A_LAST, A_FIRST, A_JR)= range(4)
 
 class BibList(dict):
   """Class storing a bibliography(list of papers, books, manuals, ...)"""
@@ -155,7 +155,13 @@ class BibList(dict):
 
     key : string
       key  (Default value = None)
+
+    Returns
+    -------
+    string:
+      Internal key of added item or None on failing
     """
+    # print(f"add_item: {key = }")
     be = bibitem.BibItem(bib, key)
     key = be.get_key()
     if key is None:
@@ -165,18 +171,19 @@ class BibList(dict):
 
     if key in self.ListItems:
       if key == self.get_item(key).get_field('_code'):
-        sys.stderr.write(
-            'W: ENTRY ALREADY PRESENT: %s (%s)\n' %
-            (key, bib['_code']))
-        return False
-      else:
-        key = be.get_field('_code')
+        sys.stderr.write(f"W: ENTRY ALREADY PRESENT: {key} {bib['_code']}\n")
+        return None
+      # else:
+      #   key = be.get_field('_code')
 
     self.bib[key] = be
+    # print(f"{be = }")
+    # print(f"{key = }")
+    # print(f"{self.bib[key] = }")
     self.ListItems.append(key)
     self.sortedList.append(key)
     self.issorted = False
-    return True
+    return key
 
   def remove_item(self, key):
     """Remove an entry from the List
@@ -422,16 +429,19 @@ class BibList(dict):
 
     self.keepAbbrevs = not ReplaceAbbrevs
     if db is not None:
-      for k, v in list(db.items()):
-        b1 = bibitem.BibItem(
-            bibitem.bibparse.replace_abbrevs(self.abbrevDict, dict(v)),
-            key=k, normalize=normalize)
-        key = b1.get_key()               # The key is generated
+      for k, v in list(db.items()):  # type(v) = dict
         if self.keepAbbrevs:
-          status = self.add_item(v, key)
-        else:
-          status = self.add_item(b1, key)
-        if status:
+          v = bibitem.bibparse.replace_abbrevs(self.abbrevDict, v)
+        # print(f"biblist Line 428. Create item for {k}. {normalize =}")
+        # print(f"{v.get('_code')=}, {type(v)=}")
+        # b1 = bibitem.BibItem(v, key=k, normalize=normalize)
+
+        # key = b1.get_key()               # The key is generated
+        # print(f" Options {key =}")
+        # print(f"biblist Line 433. imported item v = \n{v}.")
+        key = self.add_item(v)
+        # print(f"biblist Line 438. imported item self = \n{self}.")
+        if key:
           ncount += 1
           if normalize:
             self.get_item(key).normalize()  # _code is put equal to key
@@ -453,9 +463,9 @@ class BibList(dict):
 
     for k, v in db.items():
       b1 = bibitem.BibItem(v, normalize=normalize)
-      key = b1.get_key()               # The key generated
-      status = self.add_item(b1, key)
-      if status:
+      # key = b1.get_key()               # The key generated
+      key = self.add_item(b1)
+      if key:
         ncount += 1
         if normalize:
           self.get_item(key).normalize()  # _code is put equal to key
@@ -477,11 +487,11 @@ class BibList(dict):
     db = bibitem.adsparse.parsefile(fname)
     if db is not None:
       for k, v in list(db.items()):
-        status = self.add_item(v)
-        if status:
+        key = self.add_item(v)
+        if key:
           ncount += 1
           if normalize:
-            self.get_item(self.ListItems[-1]).normalize()
+            self.get_item(key).normalize()
     self.sort()
     return ncount
 
@@ -598,7 +608,8 @@ class BibList(dict):
     form = f"{','.join(len(cols)*'?')}"  # Formato
     for it in self.get_items():
       key = it.get_field('_code')
-      r = cur.execute(f"SELECT EXISTS(SELECT 1 FROM {tblnm} WHERE _code='{key}' LIMIT 1);")
+      r = cur.execute(
+          f"SELECT EXISTS(SELECT 1 FROM {tblnm} WHERE _code='{key}' LIMIT 1);")
       if r.fetchone()[0]:
         print(f"Entry {key} already present. Not adding.")
       else:
@@ -670,7 +681,8 @@ class BibList(dict):
     #                                           label=label).encode('latex').decode('utf-8'),
     #                       tail)
     # fi = helper.openfile(fname, 'w'); fi.write(s); helper.closefile(fi)
-    # s = '%s\n%s\n%s\n' % (head, self.to_latex(style=style, label=label), tail)
+    # s = '%s\n%s\n%s\n' % (head, self.to_latex(style=style, label=label),
+    # tail)
     s = '{}\n{}\n{}\n'.format(
         head, self.to_latex(
             style=style, label=label), tail)
@@ -831,17 +843,13 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
     if not self.issorted:
       self.sort()
 
-    s = ''
+    s = ""
     for li in self.sortedList:
+      # copy the item to resolve_abbrevs
+      bib = bibitem.BibItem(self.get_item(li))
       if self.keepAbbrevs:
-        # copy the item to resolve_abbrevs
-        bib = bibitem.BibItem(self.get_item(li))
         bib.resolve_abbrevs(self.abbrevDict)
-        ss = bib.to_xml(p=prefix, indent=indent)
-      else:
-        ss = self.get_item(li).to_xml(p=prefix, indent=indent)
-
-      s += '%s' % (ss)
+      s += f"{bib.to_xml(p=prefix, indent=indent)}"
     return s
 
   def export_xml(self, fname=None, prefix='', head='', tail='', indent=2):
@@ -914,7 +922,8 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
       ----------
       fout : string or file-like
       """
-      # fi = helper.openfile(fout, 'w'); fi.write(self.preview().encode(self.encoding))
+      # fi = helper.openfile(fout, 'w');
+      # fi.write(self.preview().encode(self.encoding))
       fi = helper.openfile(fout, 'w')
       fi.write(self.preview())
       helper.closefile(fi)
