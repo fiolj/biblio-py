@@ -98,7 +98,7 @@ def remove_fields(item, cond):
   ff, ty = get_strng_field(cond)
   if item.get_field('_type') in [t.lower() for t in ty] or ty == []:
     if item.get_field(ff) is not None:
-      del(item[ff])
+      del (item[ff])
 
 
 def find_bibfile(fbib):
@@ -264,8 +264,6 @@ def main():
     else:
       print('# Warning: %s not found in database' % (k))
   mensaje = '# created with:  %s\n' % (' '.join(sys.argv))
-  # print(type(bout.to_bibtex()))
-  # print(bout.to_bibtex())
   fi = open(output, encoding='utf-8', mode='w')
   fi.write(mensaje + bout.to_bibtex())
   fi.close()

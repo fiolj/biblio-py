@@ -161,7 +161,6 @@ class BibList(dict):
     string:
       Internal key of added item or None on failing
     """
-    # print(f"add_item: {key = }")
     be = bibitem.BibItem(bib, key)
     key = be.get_key()
     if key is None:
@@ -173,13 +172,8 @@ class BibList(dict):
       if key == self.get_item(key).get_field('_code'):
         sys.stderr.write(f"W: ENTRY ALREADY PRESENT: {key} {bib['_code']}\n")
         return None
-      # else:
-      #   key = be.get_field('_code')
 
     self.bib[key] = be
-    # print(f"{be = }")
-    # print(f"{key = }")
-    # print(f"{self.bib[key] = }")
     self.ListItems.append(key)
     self.sortedList.append(key)
     self.issorted = False
@@ -432,15 +426,7 @@ class BibList(dict):
       for k, v in list(db.items()):  # type(v) = dict
         if self.keepAbbrevs:
           v = bibitem.bibparse.replace_abbrevs(self.abbrevDict, v)
-        # print(f"biblist Line 428. Create item for {k}. {normalize =}")
-        # print(f"{v.get('_code')=}, {type(v)=}")
-        # b1 = bibitem.BibItem(v, key=k, normalize=normalize)
-
-        # key = b1.get_key()               # The key is generated
-        # print(f" Options {key =}")
-        # print(f"biblist Line 433. imported item v = \n{v}.")
         key = self.add_item(v)
-        # print(f"biblist Line 438. imported item self = \n{self}.")
         if key:
           ncount += 1
           if normalize:
@@ -470,6 +456,7 @@ class BibList(dict):
         if normalize:
           self.get_item(key).normalize()  # _code is put equal to key
 
+    self.sort()
     return ncount
 
   def import_ads(self, fname, normalize=True):
@@ -492,6 +479,7 @@ class BibList(dict):
           ncount += 1
           if normalize:
             self.get_item(key).normalize()
+
     self.sort()
     return ncount
 

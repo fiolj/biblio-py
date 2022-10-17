@@ -117,6 +117,7 @@ Note that two of the input files are compressed
   else:
     dbfiles = args.files
 
+  ignore_case = not args.case_sensitive
   modify_keys = not args.keep_keys
   available_formats = {
       's': 'short',
@@ -207,7 +208,7 @@ Note that two of the input files are compressed
       ss, ff = get_strng_field(cond)
       # search and append the results.
       items.extend(bout.search(findstr=ss, fields=ff,
-                               caseSens=args.case_sensitive))
+                               ignore_case=ignore_case))
     for it in bout.sortedList[:]:  # purge not found items
       if it not in items:
         bout.remove_item(it)
@@ -217,7 +218,7 @@ Note that two of the input files are compressed
     for cond in args.filter_exclude:
       ss, ff = get_strng_field(cond)
       items.extend(b.search(findstr=ss, fields=ff,
-                            caseSens=args.case_sensitive))
+                            ignore_case=ignore_case))
     for it in bout.sortedList[:]:    # purge found items
       if it in items:
         bout.remove_item(it)
@@ -226,10 +227,10 @@ Note that two of the input files are compressed
     items = []
     cond = args.filter_include[0]
     ss, ff = get_strng_field(cond)
-    items = b.search(findstr=ss, fields=ff, caseSens=args.case_sensitive)
+    items = b.search(findstr=ss, fields=ff, ignore_case=ignore_case)
     for cond in args.filter_include[1:]:
       ss, ff = get_strng_field(cond)
-      its = b.search(findstr=ss, fields=ff, caseSens=args.case_sensitive)
+      its = b.search(findstr=ss, fields=ff, ignore_case=ignore_case)
       for c in items[:]:
         if c in items and c not in its:
           items.remove(c)
@@ -237,19 +238,20 @@ Note that two of the input files are compressed
       if it not in items:
         bout.remove_item(it)
 
-  # print(f"\n\nbibmanage Line 243: {bout.get_items()=}")
   # First sort
   if args.sort:
     bout.sort(sortorder, reverse=reverse)
 
   if args.output:
     bout.output(args.output, formato, args.verbose)
+    if args.verbose:
+      print(f"# Saving database to {args.output}")
   else:
-    print('# %d items processed' % (len(bout.ListItems)))
+    print(f"# {len(bout.ListItems)} items processed")
 
   if args.save_dump:
     if args.verbose:
-      print('# Saving database to %s...' % (args.save_dump))
+      print(f"# Saving database to {args.save_dump}...")
     bout.dump(args.save_dump)
 
 
