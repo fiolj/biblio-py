@@ -14,7 +14,6 @@ There are two field related to the journal: journal and journal_abbrev
 
 '''
 import sys
-import os
 import textwrap
 import codecs
 
@@ -26,10 +25,13 @@ from . import bibparse
 from . import adsparse
 from . import helper
 from . import latex
+from . import bibdb
 latex.register()
 
+namefields = ['author', 'editor']
 
-# Index used for internally for each part of a name
+
+# Index used internally for each part of a name
 A_VON = 0
 A_LAST = 1
 A_FIRST = 2
@@ -39,9 +41,7 @@ A_JR = 3
 
 
 class BibItem(dict):
-  """
-  Class that store a bibliography item
-  """
+  """Class that store a bibliography item"""
 
   def __init__(self, bib={}, key=None, normalize=False):
     """
@@ -52,7 +52,8 @@ class BibItem(dict):
     self.latex_style = {}
     if bib == {}:
       self.update({})
-      self.key = None
+      # JF: Modified 21/07/14 because already set at beginning of function
+      # self.key = None
       self.set_default_styles()
     else:
       self.set(bib, key)
@@ -61,13 +62,19 @@ class BibItem(dict):
     self.encoding = 'utf8'
 
   def set(self, b, key=None):
-    """
-    Set the values of the object to those given by the dictionary.
+    """Set the values of the object to those given by the dictionary.
     If b is not a valid dictionary it will return an empty object
-    """
-    t = self._verify_entry(b)
-    if t:                               # Copy the dictionary
 
+    Parameters
+    ----------
+    b : dict
+      data
+    key : string
+      Value, if we want to use an explicit key  (Default value = None)
+    """
+    t = helper.verify_entry(b)
+    if t:                               # Copy the dictionary
+      helper.add_journal_abbrev(b)
       self.update(b)
 
       if key is not None:
@@ -93,24 +100,17 @@ class BibItem(dict):
       self.key = None
 
   def resolve_abbrevs(self, strs={}):
+    """Replace abbreviations in the entry
+
+    Parameters
+    ----------
+    strs : dict
+      {name: value} pairs  (Default value = {})
+    """
     bibparse.replace_abbrevs(strs, self)
 
-  def _verify_entry(self, b):
-    '''Verify that the entry is valid'''
-    for f in helper.minimalfields:
-      if f not in b:
-        return False
-
-    if 'journal' in b:
-      if 'journal_abbrev' not in b:
-        # Create one abbrev
-        journal, abbrev = helper.identify_some_journals(b)
-        b['journal_abbrev'] = abbrev
-        b['journal'] = journal
-        return True
-    return True
-
   def normalize(self):
+    """Use generated key """
     self['_code'] = self.key
 
   def set_default_styles(self):
@@ -170,6 +170,17 @@ class BibItem(dict):
     self.latex_style = default_latex_style
 
   def set_styles(self, html={}, latex={}):
+    """Set the style to use for formatting
+
+    Parameters
+    ----------
+    html : dict
+      key is the field
+      value is a pair to use for each field (Default value = {})
+    latex : dict
+      key is the field
+      value is a pair to use for each field (Default value = {})
+    """
     # Output styles
     if html != {}:
       self.html_style.update(html)
@@ -200,9 +211,7 @@ class BibItem(dict):
       return s
 
   def preview(self):
-    """
-    Preview some information on the item. It does not print correctly when missing fields
-    """
+    """Preview some information on the item. It does not print correctly when missing fields"""
     s = "%22s: %s, " % (self.key, self.get_authors(Initial=True, smart=True))
     s += "%s %s, " % (self.get_field('journal_abbrev', ''),
                       self.get_field('volume', ''))
@@ -211,13 +220,24 @@ class BibItem(dict):
     # return s.encode(self.encoding, 'ignore')
 
   def get_listnames_last(self, who='author', strict=False):
-    """
-    Retrieve the authors Last names and return them as a list
+    """Retrieve the authors Last names for all authors and return them as a list
     Default bib.get_listnames_last() returns: [von last1, von last2, ...]
+
+    Parameters
+    ----------
+    who : string
+      Options are 'author' or 'editor' (Default value = 'author')
+    strict : bool
+      Only last (not von part) (Default value = False)
+
+    Returns
+    -------
+    list:
+      Each value is the last name of an author in authorlist
     """
     who = who.lower()
     if who not in ['author', 'editor']:
-      raise AttributeError("who must be author or editor, not {}".format(who))
+      raise AttributeError(f"who must be author or editor, not {who}.")
 
     if who in list(self.keys()):
       if strict:  # Return Last names
@@ -228,14 +248,40 @@ class BibItem(dict):
       return []
 
   def get_authors_last(self, separator=', '):
-    "Returns a string with the last names of the authors separated by a comma"
+    """Returns a string with the last names of the authors
+
+    Parameters
+    ----------
+    separator : string
+      text separating each last name from the others (Default value = ', ')
+
+    Returns
+    -------
+    string:
+      Lastnames
+    """
+
     return separator.join(self.get_listnames_last(who='author', strict=False))
 
   def _format_one_author(self, auth, format=0, Initial=False):
     """Returns the author as:
-    format= 0  =>   F[irst|.] M[iddle|.] von Last[ Junior]
-    format= 1  =>   von Last, F[irst|.] M[iddle|.]
-    If Initial is True, only the initials of first names are printed
+
+    Parameters
+    ----------
+    auth : list
+      author in the internal form
+    format : int
+      Required output format  (Default value = 0)
+        format= 0  =>   F[irst|.] M[iddle|.] von Last[ Junior]
+        format= 1  =>   von Last, F[irst|.] M[iddle|.]
+
+    Initial : bool
+          If True, only the initials of first names are printed (Default value = False)
+
+    Returns
+    -------
+    string:
+      Formatted author
     """
 
     first = ''
@@ -265,10 +311,23 @@ class BibItem(dict):
     return autor.replace('  ', ' ')
 
   def get_authorsList(self, format=0, Initial=False, who='author'):
-    """
-    Returns a list of authors where each author is in the form:
-    format= 0  =>   F[irst|.] M[iddle|.] von Last
-    format= 1  =>   von Last, F[irst|.] M[iddle|.]
+    """Returns a list of authors
+
+    Parameters
+    ----------
+    format : int
+      Required output format  (Default value = 0)
+        format= 0  =>   F[irst|.] M[iddle|.] von Last[ Junior]
+        format= 1  =>   von Last, F[irst|.] M[iddle|.]
+
+    Initial : bool
+          If True, only the initials of first names are printed (Default value = False)
+    who : string
+      field to process, usually 'author' or 'editor'  (Default value = 'author')
+
+    Returns
+    -------
+    list:
     """
     if who in self:
       return list(map(self._format_one_author, self[who], len(
@@ -280,17 +339,28 @@ class BibItem(dict):
     return self.get_authorsList(format=1, Initial=True)[0]
 
   def get_editors(self):
-    aa = self.get_authorsList(format=0, Initial=False)
+    aa = self.get_authorsList(format=0, Initial=False, who='editor')
     if len(aa) == 1:
       return aa[0]
     else:
       return ', '.join(aa[:-1]) + ' and ' + aa[-1]
 
   def get_authors(self, Initial=False, smart=False):
-    """
-    Returns a string with the authors in the form:
+    """Returns a string with the authors in the form:
     author_1, author_2, author_3, ... author_n-1 and author_n
     and each author has the form: F[irst|.] M[iddle|.] [von] Last
+
+    Parameters
+    ----------
+    Initial : bool (Default value = False)
+      Use only initials of family names
+    smart : bool (Default value = False)
+      If there are more than MAX_AUTHORS authors, cut and add et al
+
+    Returns
+    -------
+    string:
+      Formatted author list
     """
     MAX_AUTHORS = 5
     aa = self.get_authorsList(format=0, Initial=Initial)
@@ -303,19 +373,46 @@ class BibItem(dict):
         return ', '.join(aa[:-1]) + ' and ' + aa[-1]
 
   def get_affiliation(self):
+    """Returns a string with affiliation data """
     return ';'.join(self.get('affiliation', []))
 
   def get_type(self):
+    """Returns the type of entry """
     return self.get_field('_type', 'article')
 
   def create_entrycode(self, _create_func_=None):
-    """  Creates a 'hopefully unique' key    """
+    """Creates a 'hopefully unique' key
+
+    Parameters
+    ----------
+    _create_func_ : function
+      function used to create the key for the entry (Default value = None)
+
+    Returns
+    -------
+    string:
+      new key
+    """
     if _create_func_ is None:
       return bibparse.create_entrycode(self)
     else:
       return _create_func_(self)
 
   def get_field(self, field, d=None):
+    """Returns a field from item
+
+    Parameters
+    ----------
+    field : string1
+      field to return
+    d : string
+      default value to return  (Default value = None)
+
+    Returns
+    -------
+    string:
+      Value of bibitem field
+    """
     if field == 'key':
       return self.key
     elif field == 'author':
@@ -330,21 +427,36 @@ class BibItem(dict):
       return self.get(field, d)
 
   def getpages(self):
+    """Returns pages as a string of the form 'initial-last' """
     s = ''
     if 'firstpage' in self:
       s += self['firstpage'].strip()
       if 'lastpage' in self:
         p = self['lastpage'].strip()
         if p != '':
-          s += '-%s' % (p)
+          s += f"-{p}"
     return s
 
   def to_bibtex(self, indent=2, width=80, fields=None, encoding='latex'):
-    """
-    Format an entry as a bibtex item and returns it as a string,
+    """Format an entry as a bibtex item and returns it as a string,
     the argument wrap is the length of lines in output
+
+    Parameters
+    ----------
+    indent: int
+      indentation size(Default value=2)
+    width: int
+      Paragraph width(Default value=80)
+    fields: list
+      Entry fields to include(Default value=None)
+    encoding: string
+      Text econding(Default value='latex')
+
+    Returns
+    -------
+    string:
+      Formatted bibtex entry
     """
-    namefields = ['author', 'editor']
     if fields is None:
       fields = namefields + helper.textualfields[:]
 
@@ -354,8 +466,9 @@ class BibItem(dict):
                                 break_long_words=False)
     s = '@{0}{{{1},\n'.format(self['_type'].upper(), self['_code'])
 
+    fields = helper.make_unique(fields)
     # Add list of authors
-    all_fields = fields
+    all_fields = fields.copy()
     for f in namefields:
       if f in fields:
         all_fields.remove(f)
@@ -403,9 +516,42 @@ class BibItem(dict):
       s = s.encode(encoding, 'ignore').decode('utf-8')
     return s
 
-  def to_xml(self, p='', indent=2):
+  def to_dbformat(self, fields=helper.allfields):
+    """Return a tuple in appropriate format to insert in a sqlite database
+
+    Parameters
+    ----------
+    fields: iterable. Columns to use for output to a database
+         (Default value=helper.allfields)
+
+    Returns
+    -------
+    list :
+      Each element corresponds to a column in the database
     """
-    Converts the item to xml format. The prefix is added to each entry
+    columns = []
+    for f in fields:
+      if f in ['author', 'editor']:
+        s = [",".join(k) for k in self.get(f, '')]
+        columns.append(";".join(s))
+      else:
+        columns.append(self.get_field(f, ""))
+    return columns
+
+  def to_xml(self, p='', indent=2):
+    """Converts the item to xml format.
+
+    Parameters
+    ----------
+    p: string
+      Prefix added to each entry (Default value='')
+    indent:
+      Indentation size for each level  (Default value=2)
+
+    Returns
+    -------
+    string:
+      XML formatted entry
     """
     sp = indent
     spc = indent * ' '
@@ -440,9 +586,17 @@ class BibItem(dict):
     return s
 
   def to_html(self, style={}):
-    """
-    Converts the item to html format with the given style The style is a pair (before,
-    after) surrounding the corresponding field (except for authors)
+    """Converts the item to html format with the given style
+
+    Parameters
+    ----------
+    style: dict
+       each values is a pair(before, after) surrounding the corresponding field, except for authors
+       (Default value={})
+
+    Returns
+    -------
+    HTML formatted entry
     """
 
     fields = ['title', 'author', 'journal', 'volume', 'number', 'month', 'booktitle', 'chapter',
@@ -501,8 +655,18 @@ class BibItem(dict):
     # return s
 
   def to_latex(self, style={}):
-    """
-    As its name indicates, it converts bibtex data to a latex bibitem
+    """As its name indicates, it converts bibtex data to a latex bibitem
+
+    Parameters
+    ----------
+    style:
+       each values is a pair(before, after) surrounding the corresponding field, except for authors
+       (Default value={})
+
+
+    Returns
+    -------
+    LaTeX formatted entry
     """
 
     fields = [
@@ -556,6 +720,12 @@ class BibItem(dict):
     return s
 
   def display(self, fpp=sys.stdout):
+    """Displays the entry
+
+    Parameters
+    ----------
+    fpp: Device  (Default value=sys.stdout)
+    """
     if isinstance(fpp, type('')):
       fp = codecs.open(fpp, 'w', encoding=self.encoding)
     else:
@@ -567,8 +737,11 @@ class BibItem(dict):
     # import methods
     # 3
   def from_bibtex(self, source):
-    """
-    Reads an item in bibtex form from a string
+    """Reads an item in bibtex form from a string
+
+    Parameters
+    ----------
+    source: string
     """
     try:
       source + ' '
@@ -578,9 +751,34 @@ class BibItem(dict):
     if entry is not None:
       self.set(entry)
 
+  # def from_dbformat(self, source, fields=helper.allfields):
+  #   """Return an item from a string from a sqlite database
+
+  #   Parameters
+  #   ----------
+  #   source: string
+
+  #   fields: iterable. Columns from the database
+  #        (Default value=helper.allfields)
+
+  #   Returns
+  #   -------
+
+  #   """
+  #   try:
+  #     source + ' '
+  #   except BaseException:
+  #     raise TypeError('source must be a string')
+  #   entry = bibdb.parseentry(source, fields)
+  #   if entry is not None:
+  #     self.set(entry)
+
   def from_ads(self, source):
-    """
-    Reads an item in bibtex form from a string
+    """Reads an item in ads(Harvard database) form from a string
+
+    Parameters
+    ----------
+    source: string
     """
     try:
       source + ' '
@@ -594,22 +792,39 @@ class BibItem(dict):
   # matching methods
   # 3
 
-  def search(self, findstr, fields=[], caseSens=False):
+  def search(self, findstr, fields=[], ignore_case=True):
+    """Search an expression in the entry
+
+    Parameters
+    ----------
+    findstr: string
+      expression to search
+
+    fields: list
+      Fields where to search the expression (Default value=[]).
+      Empty list means 'search in all fields'
+    ignore_case: bool
+      flag indicating if the search must be case-sensitive   (Default value=False)
+
+    Returns
+    -------
+    bool: indicating if the expression was found
+    """
     if findstr == '*':
       return True
     if fields == []:   # Busca en todos los campos
       fields = self.get_fields()
 
-    if caseSens:
-      s = findstr
-    else:
+    if ignore_case:
       s = findstr.lower()
+    else:
+      s = findstr
 
     for f in fields:
       if f not in self.get_fields():
         continue
       v = self.get_field(f)
-      if not caseSens:
+      if ignore_case:
         try:
           v = v.lower()
         except BaseException:
@@ -619,15 +834,25 @@ class BibItem(dict):
 
     # Search for string in key
     if 'key' in fields:
-      if caseSens:
-        return s in self.key
-      else:
+      if ignore_case:
         return s in self.key.lower()
+      else:
+        return s in self.key
     else:
       return False
 
   def matchAuthorList(self, it):
-    """ Test whether two publications have the same authors """
+    """Test loosely whether two publications have the same authors
+
+    Parameters
+    ----------
+    it: bibliography item to compare to
+
+    Returns
+    -------
+    bool:
+      Indicating if authors are the same
+    """
     # First we match the last (von Last) names
     a1s = self.get_listnames_last('author', False)
     a2s = it.get_listnames_last('author', False)
@@ -649,7 +874,19 @@ class BibItem(dict):
     return True
 
   def compare(self, it):
-    """ Compare if two items are in fact the same """
+    """Compare if two items describe the same bibliography
+
+    Parameters
+    ----------
+    it:
+
+    Returns
+    -------
+
+    """
+    # If they are different type, they are different
+    if self.get('_type') != it.get('_type'):
+      return False
 
     # If the doi is the same, we are done
     if self.get('doi', '0') == self.get('doi', '1'):
@@ -677,28 +914,28 @@ class BibItem(dict):
 
 
 def test():
-  """
-  Test the class and its methods
-  """
+  """Test the class and its methods"""
 
   css = """
+
+
 .title a,
-.title {  font-weight: bold;	color: rgb(20,20,20) ;}
-ol.bibliography li{	margin-bottom:0.5em;}
-.journal {  font-style: italic;}
-.journal:after {content:", ";}
-.publisher:before {content:" (";}
-.publisher:after {content:") ";}
-.series:after {content:", ";}
-.year:before {content:" (";}
-.year:after {content:").";}
-.authors {display:block;}
-.volume { font-weight: bold;}
-.button {display:inline; border: 3px ridge;line-height:2.2em;margin: 0pt 10pt 0pt 0pt;padding:1pt;}
-.masterthesis{content:"Master Thesis"}
-.phdthesis{content:"Phd Thesis"}
-div.abstracts {display: inline; font-weight: bold; text-decoration : none;  border: 3px ridge;}
-div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,100,110); text-align: justify;}
+.title {font-weight: bold;	color: rgb(20, 20, 20);}
+ol.bibliography li{margin-bottom: 0.5em;}
+.journal {font-style: italic; }
+.journal: after {content: ", ";}
+.publisher: before {content: " (";}
+.publisher: after {content: ") ";}
+.series: after {content: ", ";}
+.year: before {content: " (";}
+.year: after {content: ").";}
+.authors {display: block; }
+.volume {font-weight: bold; }
+.button {display: inline; border: 3px ridge; line-height: 2.2em; margin: 0pt 10pt 0pt 0pt; padding: 1pt;}
+.masterthesis{content: "Master Thesis"}
+.phdthesis{content: "Phd Thesis"}
+div.abstracts {display: inline; font-weight: bold; text-decoration: none;  border: 3px ridge; }
+div.abstract {display: none; padding: 0em 1 % 0em 1%; border: 3px double rgb(130, 100, 110); text-align: justify;}
 """
   hhead = '''
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -707,9 +944,9 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
       //<![CDATA[
       function toggle(thisid) { var thislayer=document.getElementById(thisid); if (thislayer.style.display == 'block') { thislayer.style.display='none';} else { thislayer.style.display='block';}}//]]> </script></head> <body id="page-body">
   '''
-  hfoot = """ </body></html> """
+  hfoot = """ < /body > </html > """
 
-  b = BibItem({'_type': 'article', 'author': [['della', 'Picca', 'Renata', ''], ['', r'Mart{\'{\i}}nez', 'R. O.', ''], ['', 'Fiol', 'J.', ''], ['', 'Macri', 'P.', '']], 'year': '2008', 'firstpage': '402', 'lastpage': '406', 'abstract': 'We employ different theoretical models, both classical and quantum-mechanical, to explore the recoil-ion momentum distribution in positron atom collisions. We pay special attention to the vicinity of the kinematical threshold between ionization and positronium formation. We demonstrate that it is intertwined by dynamical constraints to the formation of highly excited and low-lying continuum electron positron states. Finally we discuss how the study of recoil- ion momentum distribution, which is characteristic of a reaction microscopy technique, might represent an alternative approach to the standard spectroscopy of electrons and positrons.', 'title': 'Threshold effects in the ionization of atoms by positron impact',
+  b = BibItem({'_type': 'article', 'author': [['della', 'Picca', 'Renata', ''], ['', r'Mart{\'{\\i}}nez', 'R. O.', ''], ['', 'Fiol', 'J.', ''], ['', 'Macri', 'P.', '']], 'year': '2008', 'firstpage': '402', 'lastpage': '406', 'abstract': 'We employ different theoretical models, both classical and quantum-mechanical, to explore the recoil-ion momentum distribution in positron atom collisions. We pay special attention to the vicinity of the kinematical threshold between ionization and positronium formation. We demonstrate that it is intertwined by dynamical constraints to the formation of highly excited and low-lying continuum electron positron states. Finally we discuss how the study of recoil- ion momentum distribution, which is characteristic of a reaction microscopy technique, might represent an alternative approach to the standard spectroscopy of electrons and positrons.', 'title': 'Threshold effects in the ionization of atoms by positron impact',
                '_code': 'Fiol07NIMB',
                'journal': 'Nuclear Instruments and Methods in Physics Research B',
                'year': '2008',
@@ -727,14 +964,14 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
   year = {2008},
   volume = {266},
   doi = {10.1016/j.nimb.2007.12.040},
-  url = {http://adsabs.harvard.edu/abs/2008NIMPB.266..402B},
+  url = {http: // adsabs.harvard.edu/abs/2008NIMPB.266..402B},
   abstract = {We employ different theoretical models, both classical and
       quantum-mechanical, to explore the recoil-ion momentum distribution in
       positron atom collisions. We pay special attention to the vicinity of the
       kinematical threshold between ionization and positronium formation. We
       demonstrate that it is intertwined by dynamical constraints to the
       formation of highly excited and low-lying continuum electron positron
-      states. Finally we discuss how the study of recoil- ion momentum
+      states. Finally we discuss how the study of recoil - ion momentum
       distribution, which is characteristic of a reaction microscopy technique,
       might represent an alternative approach to the standard spectroscopy of
       electrons and positrons.},
@@ -743,12 +980,12 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
 """
   atest = """
 %R 2008JPhB...41n5204M
-%T Transfer ionization and total electron emission for 100 keV amu<SUP>-1</SUP>
-He<SUP>2+</SUP> colliding on He and H<SUB>2</SUB>
+%T Transfer ionization and total electron emission for 100 keV amu < SUP > -1 < /SUP >
+He < SUP > 2+</SUP > colliding on He and H < SUB > 2 < /SUB >
 %A Mart\xednez, S.; Bernardi, G.; Focke, P.; Su\xe1rez, S.; Fregenal, D.
 %F Centro At\xf3mico Bariloche and Instituto BalseiroComisi\xf3n Nacional de Energ\xeda
 At\xf3mica and Universidad Nacional de Cuyo, Argentina., 8400 S C de Bariloche,
-R\xedo Negro, Argentina <EMAIL>bernardi@cab.cnea.gov.ar</EMAIL>
+R\xedo Negro, Argentina < EMAIL > bernardi@cab.cnea.gov.ar < /EMAIL >
 %J Journal of Physics B: Atomic, Molecular, and Optical Physics, Volume 41,
 Issue 14, pp. 145204 (2008).
 %V 41
@@ -756,21 +993,20 @@ Issue 14, pp. 145204 (2008).
 %P 5204
 %G IOP
 %I ABSTRACT: Abstract;
-   EJOURNAL: Electronic On-line Article (HTML);
+   EJOURNAL: Electronic On-line Article(HTML);
    REFERENCES: References in the Article;
    AR: Also-Read Articles;
-%U http://adsabs.harvard.edu/abs/2008JPhB...41n5204M
-%B We have measured electron emission for transfer ionization (TI) and
-total electron emission (TEE, all emission processes) for 100 keV
-amu<SUP>-1</SUP> He<SUP>2+</SUP> on He and H<SUB>2</SUB> targets. Double
+%U http: // adsabs.harvard.edu/abs/2008JPhB...41n5204M
+%B We have measured electron emission for transfer ionization(TI) and
+total electron emission(TEE, all emission processes) for 100 keV
+amu < SUP > -1 < /SUP > He < SUP > 2+</SUP > on He and H < SUB > 2 < /SUB > targets. Double
 differential cross sections have been obtained for emission angles
 \\u03b8 = 0\xb0, 20\xb0 and 45\xb0, and electron energies ranging
-from 2 to 300 eV. Pure ionization, mainly due to single ionization,
 dominates the low-energy electron emission. The main observed structure
 in the electron spectra, a cusp centred at \\u03b8 = 0\xb0 and at a
 speed equal to that of the incident projectile, presents an asymmetric
 shape. This is in contrast to the symmetric shape observed by us at 25
-keV amu<SUP>-1</SUP> for the same collision systems, suggesting a change
+keV amu < SUP > -1 < /SUP > for the same collision systems, suggesting a change
 in the cusp formation mechanism for TI within this energy range.
 %Y DOI: 10.1088/0953-4075/41/14/145204
 """
@@ -845,6 +1081,7 @@ in the cusp formation mechanism for TI within this energy range.
 
 
 def main():
+  """ """
   test()
 
 

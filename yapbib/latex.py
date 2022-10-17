@@ -21,10 +21,6 @@ D. Eppstein, October 2003.
 
 import codecs
 import re
-try:
-  set([1, 2, 2, 1])
-except BaseException:
-  from sets import Set as set
 
 
 def register():
