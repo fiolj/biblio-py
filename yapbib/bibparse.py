@@ -70,7 +70,7 @@ def get_fields(strng, strict=False):
   ----------
   strng : string
 
-  strict : boolean
+  strict : bool
     If True, only fields recognized by program bibtex are included  (Default value = False)
 
   Returns

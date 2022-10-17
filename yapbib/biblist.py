@@ -270,7 +270,7 @@ class BibList(dict):
     ----------
     order : list
       Each value is a string indicating a field (Default value = [])
-    reverse : boolean
+    reverse : bool
       If sorting must be in reverse order  (Default value = False)
     """
     if not order:
@@ -306,7 +306,7 @@ class BibList(dict):
     self.sortedList = [x[-1] for x in s]
     return self.sortedList
 
-  def search(self, findstr, fields=[], caseSens=False, types='all'):
+  def search(self, findstr, fields=[], ignore_case=True, types='all'):
     """Search on the bibliography
     The result is a list with the keys of the items that match the search
     keys are the keys that we look
@@ -319,8 +319,8 @@ class BibList(dict):
 
     fields : list-like
       fields to search  (Default value = [])
-    caseSens : boolean
-      flag indicating if search is case sensitive   (Default value = False)
+    ignore_case : bool
+      flag indicating if search is case sensitive   (Default value = True)
     types : string
       Type of bibliography entry to search  (Default value = 'all')
 
@@ -335,7 +335,7 @@ class BibList(dict):
         if findstr == '*':
           found = True
         else:
-          found = self.get_item(f).search(findstr, fields, caseSens)
+          found = self.get_item(f).search(findstr, fields, ignore_case)
         if found:
           result.append(f)
     return result
@@ -403,15 +403,15 @@ class BibList(dict):
 
   def import_bibtex(self, fname=None, normalize=True, ReplaceAbbrevs=True):
     """Import a bibliography (set of items) from a file
-    If normalize the code (citekey) is overwritten with a standard key following our criteria
+    If normalize the code (citekey) is overwritten with a standard key
 
     Parameters
     ----------
     fname : string or file-like
       Bibtex filename  (Default value = None)
-    normalize : boolean
-      flag indicating that key must be created (Default value = True)
-    ReplaceAbbrevs : boolean
+    normalize : bool
+      flag indicating if the key must be created (Default value = True)
+    ReplaceAbbrevs : bool
       Replace all abbreviations in the items (Default value = True)
     """
     ncount = 0
@@ -445,7 +445,7 @@ class BibList(dict):
     ----------
     fname : Database filename
 
-    normalize : boolean
+    normalize : bool
       flag indicating that key must be created (Default value = True)
     """
     ncount = 0
@@ -470,7 +470,7 @@ class BibList(dict):
     ----------
     fname : Database filename
 
-    normalize : boolean
+    normalize : bool
       flag indicating that key must be created (Default value = True)
     """
     ncount = 0
@@ -892,7 +892,7 @@ div.abstract {display: none;padding: 0em 1% 0em 1%; border: 3px double rgb(130,1
          (Default value = None)
     formato : string
       One of the possible formats (Default value = None)
-    verbose : boolean
+    verbose : bool
       Print informational text (Default value = True)
 
     """

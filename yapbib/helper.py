@@ -328,6 +328,41 @@ reg_defstrng = re.compile(
 # reg_defstrng= re.compile('[{]*DEFINITIONOFSTRING[(](\w+)[)][}]*',re.I)
 
 
+def verify_entry(b):
+  """Verify that the entry is valid (minimal fields are present)
+
+  Parameters
+  ----------
+  b : dict
+    entry values
+
+  Returns
+  -------
+  bool:
+    True if is valid
+  """
+  for f in minimalfields:
+    if f not in b:
+      return False
+  return True
+
+
+def add_journal_abbrev(b):
+  """Try to add journal abbreviation
+
+  Parameters
+  ----------
+  b : dict
+    entry values
+  """
+  if 'journal' in b:
+    if 'journal_abbrev' not in b:
+      # Create one abbrev
+      journal, abbrev = identify_some_journals(b)
+      b['journal_abbrev'] = abbrev
+      b['journal'] = journal
+
+
 def replace_abbrevs(strs, sourcestrng):
   if 'DEFINITIONOFSTRING' in sourcestrng or 'definitionofstring' in sourcestrng:
     v = sourcestrng
@@ -659,7 +694,8 @@ def replace_tags(strng, what='All'):
   if ww == 'all' or ww == 'accents':
     # latex-specific character replacements
     for i, o in accent_tags:
-      strng = string.replace(strng, i, o)
+      # strng = string.replace(strng, i, o)
+      strng = strng.replace(i, o)
 
   if ww == 'all' or ww == 'other':
     # Other LaTeX tags, handled by regexps
