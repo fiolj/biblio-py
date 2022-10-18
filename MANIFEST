@@ -14,11 +14,14 @@ doc/source/scripting.txt
 doc/source/tesis.py
 query_ads/__init__.py
 query_ads/query_ads.py
+scripts/bibadmin.py
 scripts/bibextract.py
 scripts/bibmanage.py
 scripts/get_papers.py
+scripts/test_sqlite.py
 yapbib/__init__.py
 yapbib/adsparse.py
+yapbib/bibdb.py
 yapbib/bibitem.py
 yapbib/biblist.py
 yapbib/bibparse.py

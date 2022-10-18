@@ -14,7 +14,7 @@
 # Written by Juan Fiol <juanfiol@gmail.com>
 import os
 import glob
-from distutils.core import setup
+from setuptools import setup
 from yapbib.version import VERSION
 
 

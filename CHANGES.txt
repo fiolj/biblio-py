@@ -1,5 +1,9 @@
 # Last Changes
 
+## v. 0.7.4
+
+  - Added option for import/export to sqlite database. Cleaned-up code. Fixed some bugs.
+
 ## v. 0.7.1
 
   - Fixed bugs in bibmanage searching. Added option to bibtex output.
