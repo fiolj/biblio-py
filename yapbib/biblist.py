@@ -73,7 +73,8 @@ class BibList(dict):
       try:
         self.bib.update(blist)  # blist es solo un diccionario
       except BaseException:
-        raise TypeError('Argument incorrect type, must be BibList object')
+        raise TypeError(
+            'Argument incorrect type, must be BibList or dict object')
 
   def set_properties_from(self, blist):
     """Copy properties from other biblist object
@@ -146,7 +147,7 @@ class BibList(dict):
     # s = str(s, self.encoding, 'ignore')
     return s
 
-  def add_item(self, bib, key=None):
+  def add_item(self, bib, key=None, repeated='ignore'):
     """Add a new bibliography entry into the list
 
     Parameters
@@ -169,14 +170,20 @@ class BibList(dict):
       return False
 
     if key in self.ListItems:
-      if key == self.get_item(key).get_field('_code'):
+      # if key == self.get_item(key).get_field('_code'):
+      if repeated == 'replace':
+        self.bib[key] = be
+      elif repeated == 'merge-orig':
+        self.get_item(key).update(be)
+      elif repeated == 'merge-new':
+        be.update(self.get_item(key))
+      else:
         sys.stderr.write(f"W: ENTRY ALREADY PRESENT: {key} {bib['_code']}\n")
-        return None
-
-    self.bib[key] = be
-    self.ListItems.append(key)
-    self.sortedList.append(key)
-    self.issorted = False
+    else:
+      self.bib[key] = be
+      self.ListItems.append(key)
+      self.sortedList.append(key)
+      self.issorted = False
     return key
 
   def remove_item(self, key):

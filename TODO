@@ -1,13 +1,14 @@
-- *Regression*: When exporting to bibtex (with latex encoding) the "$" are missing
+- *Regression*: When exporting to bibtex (with latex encoding) the "$" are missing -> DONE
 - bibparse should be more informative if the bibtex file is not well formatted
 
-- Internally *always* use the generated key.
-  The field "_code" is reserved for the original idenfier "key", if normalize is not True
+- Internally *always* use the generated key.  -> DONE
+  The field "_code" is reserved for the original idenfier "key", if normalize is not True  
 
 - Make easier to change the rule for generating the internal key. Document it!
+  It could be a property of the BibItem Class
 
-- If entry is present, give choice to:
+- In bibmanage.py: if entry is present, give choice to:  -> DONE
   - Force replacing item
   - Update (merging keeping original. i.e.: modifying only fields non existing in the original)
-  - Update (mergin keeping new version)
+  - Update (merging keeping new version)
   - Do not add (current behavior)

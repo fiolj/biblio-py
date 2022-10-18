@@ -72,6 +72,8 @@ Note that two of the input files are compressed
   parser.add_argument("-o", "--output", default=None, metavar="Output",
                       help="Output file. Use '-' for stdout (screen)")
 
+  parser.add_argument('--repeated', choices=['ignore', 'replace', "merge-old", "merge-new"], default='ignore',
+                      help="Action to take when importing repeated entries")
   parser.add_argument("--sort",
                       help="Sort the items according to the following fields, for instance to sort them accoding to year and then author we would use --sort=year,author. In the same example, to sort in reverse order we would use: --sort=year,author,reverse. (default: key).")
 

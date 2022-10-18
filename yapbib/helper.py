@@ -575,7 +575,7 @@ cap_rex = re.compile('{([a-zA-Z]*)}')
 
 
 def capitalizestring(data):
-  """Capitalizes a string keeping verbatim characters between braces
+  """Capitalizes a string preserving character that are between braces
 
   Parameters
   ----------

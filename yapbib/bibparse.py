@@ -16,6 +16,7 @@ import re
 import string
 import codecs
 from . import latex
+# from pylatexenc.latex2text import LatexNodes2Text
 latex.register()
 
 reg_pages = re.compile(r'\W+')
@@ -328,9 +329,14 @@ def parseentry(source):
       if n in helper.namefields:
         entry[n] = bibtexauthor(d)
       elif n in ['title', 'abstract']:
-        t = helper.capitalizestring(d)
+        # May be is better to do not change capitalization
+        # t = helper.capitalizestring(d)
+        # t = LatexNodes2Text().latex_to_text(d)
+        t = d
+        #
         # JF: Algo no está bien. Porque no estoy convertiendo latex a strings
         # entry[n] = codecs.decode(t, 'latex+utf8', 'ignore')
+        #
         entry[n] = t
       elif n == 'pages':
         entry['firstpage'], entry['lastpage'] = process_pages(d)

@@ -16,7 +16,7 @@ There are two field related to the journal: journal and journal_abbrev
 import sys
 import textwrap
 import codecs
-
+import re
 # import bibparse
 # import adsparse
 # import helper
@@ -202,7 +202,6 @@ class BibItem(dict):
                       self.get_field('volume', ''))
     s += "%s (%s).\n" % (self.get_field('pages'), self.get_field('year', ''))
     return s
-    # return s.encode(self.encoding, 'ignore')
 
   def get_listnames_last(self, who='author', strict=False):
     """Retrieve the authors Last names for all authors and return them as a list
@@ -445,8 +444,9 @@ class BibItem(dict):
     # Indent the values of the fields
     wrap = textwrap.TextWrapper(width=width, subsequent_indent=3 * initial_indent,
                                 break_long_words=False)
-    s = '@{0}{{{1},\n'.format(self['_type'].upper(), self['_code'])
+    stype = f"@{self['_type'].upper()}{{{self['_code']},\n"
 
+    s = ""
     fields = helper.make_unique(fields)
     # Add list of authors
     all_fields = fields.copy()
@@ -458,21 +458,18 @@ class BibItem(dict):
           wrap.initial_indent = initial_indent
           s += wrap.fill(f + ' = {' + autores + '},') + '\n'
 
-    # put braces around upper case in titles
+    # put braces around upper case in texts
     braces_field = ['title', 'abstract']
     for kk in braces_field:
       if kk in all_fields:
         all_fields.remove(kk)
       if kk in self:
         tit = helper.cap_rex.sub(r'\1', self[kk])
-        if len(tit) < 1:        # No debería ser!
-          print((self.key, self[kk]))
-        f = tit[0]
-        for c in tit[1:]:
-          if c.isupper():
-            f = f + '{' + c + '}'
-          else:
-            f = f + c
+        if len(tit) < 1:        # It should never happen!
+          print(f"Error in field {kk} of {self.key}\n {self[kk]}")
+
+        # Add braces
+        f = tit[0] + re.sub(r"([A-ZÑ])", r"{\1}", tit[1:])
 
         f = f.encode(encoding).decode('utf-8')
         f = helper.add_math(f)
@@ -494,9 +491,9 @@ class BibItem(dict):
     s += '}\n'
 
     if encoding is not None:
-      # Convert to latex some characters using encoding
+      # Convert to latex some characters
       s = s.encode(encoding, 'ignore').decode('utf-8')
-    return s
+    return stype + s
 
   def to_dbformat(self, fields=helper.allfields):
     """Return a tuple in appropriate format to insert in a sqlite database
