@@ -5,3 +5,9 @@
   The field "_code" is reserved for the original idenfier "key", if normalize is not True
 
 - Make easier to change the rule for generating the internal key. Document it!
+
+- If entry is present, give choice to:
+  - Force replacing item
+  - Update (merging keeping original. i.e.: modifying only fields non existing in the original)
+  - Update (mergin keeping new version)
+  - Do not add (current behavior)
